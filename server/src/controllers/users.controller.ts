@@ -12,7 +12,6 @@ import {
   NotFoundException,
   UseGuards,
   Req,
-  Request
 } from '@nestjs/common';
 import { UsersService } from '../repositories/users.service';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -96,7 +95,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Get("/list")
+  @Get("users/list")
   findAll(){
     return this.usersService.findAll();
   }
