@@ -29,10 +29,10 @@ const ENDPOINT = {
 export { default as PaginatedTable } from "./PaginatedTable";
 
 // L'URL de base du serveur
-const SERVERURLS = `http://localhost:5000/`;
+const SERVERURLS = `http://213.210.20.233:5000/`;
 
 // L'URL pour les images d'utilisateur
-const IMAGES_URLS = `http://localhost:5000/uploads/`;
+const IMAGES_URLS = `http://213.210.20.233:5000/uploads/`;
 
 const IMAGES_LINKS = {
   users: "users/",
