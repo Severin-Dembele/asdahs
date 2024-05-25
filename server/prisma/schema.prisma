@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Division {
+  id        Int       @id @default(autoincrement())
+  name      String
+  shortname String
+  deleteAt  DateTime?
+  createAt  DateTime  @default(now())
+  union     Union[]
+}
+
+model Union {
+  id         Int          @id @default(autoincrement())
+  name       String
+  shortname  String
+  deleteAt   DateTime?
+  division   Division     @relation(fields: [divisionId], references: [id])
+  divisionId Int
+  conference Conference[]
+}
+
+model Conference {
+  id        Int       @id @default(autoincrement())
+  name      String
+  shortname String
+  deleteAt  DateTime?
+  union     Union     @relation(fields: [unionId], references: [id])
+  church    Church[]
+  unionId   Int
+}
+
+model Church {
+  id           Int        @id @default(autoincrement())
+  name         String
+  city         String
+  country      String
+  deleteAt     DateTime?
+  conference   Conference @relation(fields: [conferenceId], references: [id])
+  conferenceId Int
+  user         User[]
+}
+
+model User {
+  id                     Int                      @id @default(autoincrement())
+  name                   String
+  email                  String                   @unique
+  profile                String
+  role                   Role?
+  status                 Status                   @default(NOT_STARTED)
+  telephone              String
+  password               String
+  church                 Church                   @relation(fields: [churchId], references: [id])
+  isActive               Boolean                  @default(true)
+  createAt               DateTime                 @default(now())
+  updateAt               DateTime                 @updatedAt
+  formulaireInvestigator formulaireInvestigator[]
+  churchId               Int
+  reponseRepondu         ReponseRepondu[]
+}
+
+enum Status {
+  NOT_STARTED
+  PROGRESS
+  CLOSED
+  REOPENED
+}
+
+enum Role {
+  ADMIN
+  INVESTIGATOR
+  RESPONDENT
+}
+
+model Section {
+  id            Int         @id @default(autoincrement())
+  title         String
+  description   String?
+  sous_sections Section[]   @relation("sub_sections")
+  section       Section?    @relation("sub_sections", fields: [sectionId], references: [id])
+  sectionId     Int?
+  formulaire    Formulaire? @relation(fields: [formulaireId], references: [id])
+  formulaireId  Int?
+  deleteAt      DateTime?
+  question      Question[]
+}
+
+model Formulaire {
+  id                     Int                      @id @default(autoincrement())
+  title                  String
+  description            String?
+  dateDebut              DateTime?
+  dateFin                DateTime?
+  token                  String?
+  isValid                Boolean                  @default(false)
+  createAt               DateTime                 @default(now())
+  updateAt               DateTime                 @updatedAt
+  deleteAt               DateTime?
+  section                Section[]
+  formulaireInvestigator formulaireInvestigator[]
+  repondant              repondant[]
+  ReponseRepondu         ReponseRepondu[]
+}
+
+model Question {
+  id             Int              @id @default(autoincrement())
+  title          String           @db.Text
+  type           QuestionType
+  section        Section          @relation(fields: [sectionId], references: [id])
+  createdAt      DateTime         @default(now())
+  updateAt       DateTime         @updatedAt
+  deleteAt       DateTime?
+  sectionId      Int
+  option         Option[]
+  reponseRepondu ReponseRepondu[]
+}
+
+model Option {
+  id         Int       @id @default(autoincrement())
+  title      String    @db.Text
+  question   Question  @relation(fields: [questionId], references: [id])
+  deleteAt   DateTime?
+  questionId Int
+}
+
+model ReponseRepondu {
+  id           Int        @id @default(autoincrement())
+  title        String     @db.Text
+  question     Question   @relation(fields: [questionId], references: [id])
+  formulaire   Formulaire @relation(fields: [formulaireId], references: [id])
+  deleteAt     DateTime?
+  questionId   Int
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+  formulaireId Int
+}
+
+model formulaireInvestigator {
+  id           Int        @id @default(autoincrement())
+  investigator User       @relation(fields: [userId], references: [id])
+  formulaire   Formulaire @relation(fields: [formulaireId], references: [id])
+  userId       Int
+  formulaireId Int
+}
+
+model repondant {
+  id           Int        @id @default(autoincrement())
+  email        String
+  formulaire   Formulaire @relation(fields: [formulaireId], references: [id])
+  isRepondu    Boolean
+  formulaireId Int
+}
+
+enum QuestionType {
+  REPONSE_COURTE
+  PARAGRAPHE
+  CHOIX_MULTIPLE
+  CASE_COCHER
+  LISTE_DEROULANTE
+  ECHELLE_LINEAIRE
+  DATE
+  HEURE
+}

@@ -1,0 +1,196 @@
+body {
+  margin: 0;
+}
+
+@keyframes fade-in-right {
+  0% {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 2s ease-in-out;
+}
+
+
+.dot-bricks {
+  position: relative;
+  top: 8px;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #0171BB;
+  color: #0171BB;
+  box-shadow: 9991px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB, 10007px 0 0 0 #0171BB;
+  animation: dot-bricks 2s infinite ease;
+}
+
+@keyframes dot-bricks {
+  0% {
+    box-shadow: 9991px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB, 10007px 0 0 0 #0171BB;
+  }
+
+  8.333% {
+    box-shadow: 10007px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB, 10007px 0 0 0 #0171BB;
+  }
+
+  16.667% {
+    box-shadow: 10007px -16px 0 0 #0171BB, 9991px -16px 0 0 #0171BB, 10007px 0 0 0 #0171BB;
+  }
+
+  25% {
+    box-shadow: 10007px -16px 0 0 #0171BB, 9991px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB;
+  }
+
+  33.333% {
+    box-shadow: 10007px 0 0 0 #0171BB, 9991px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB;
+  }
+
+  41.667% {
+    box-shadow: 10007px 0 0 0 #0171BB, 10007px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB;
+  }
+
+  50% {
+    box-shadow: 10007px 0 0 0 #0171BB, 10007px -16px 0 0 #0171BB, 9991px -16px 0 0 #0171BB;
+  }
+
+  58.333% {
+    box-shadow: 9991px 0 0 0 #0171BB, 10007px -16px 0 0 #0171BB, 9991px -16px 0 0 #0171BB;
+  }
+
+  66.666% {
+    box-shadow: 9991px 0 0 0 #0171BB, 10007px 0 0 0 #0171BB, 9991px -16px 0 0 #0171BB;
+  }
+
+  75% {
+    box-shadow: 9991px 0 0 0 #0171BB, 10007px 0 0 0 #0171BB, 10007px -16px 0 0 #0171BB;
+  }
+
+  83.333% {
+    box-shadow: 9991px -16px 0 0 #0171BB, 10007px 0 0 0 #0171BB, 10007px -16px 0 0 #0171BB;
+  }
+
+  91.667% {
+    box-shadow: 9991px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB, 10007px -16px 0 0 #0171BB;
+  }
+
+  100% {
+    box-shadow: 9991px -16px 0 0 #0171BB, 9991px 0 0 0 #0171BB, 10007px 0 0 0 #0171BB;
+  }
+}
+
+/**
+  * ==============================================
+  * Dot Floating
+  * ==============================================
+  */
+
+.scroller {
+  max-width: 100%;
+}
+
+.scroller__inner {
+  padding-block: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.scroller[data-animated="true"] {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg,
+      transparent,
+      white 20%,
+      white 80%,
+      transparent);
+  mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+}
+
+.scroller[data-animated="true"] .scroller__inner {
+  width: max-content;
+  flex-wrap: nowrap;
+  animation: scroll var(--_animation-duration, 400s) var(--_animation-direction, forwards) linear infinite;
+}
+
+.scroller[data-direction="right"] {
+  --_animation-direction: reverse;
+}
+
+.scroller[data-direction="left"] {
+  --_animation-direction: forwards;
+}
+
+.scroller[data-speed="fast"] {
+  --_animation-duration: 200s;
+}
+
+.scroller[data-speed="slow"] {
+  --_animation-duration: 100s;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+/* general styles */
+
+
+
+
+.tag-list {
+  margin: 0;
+  padding-inline: 0;
+  list-style: none;
+}
+
+.tag-list li {
+  padding: 1rem;
+  background: var(--clr-primary-400);
+  box-shadow: 0 0.5rem 1rem -0.25rem #ccc;
+}
+
+/* for testing purposed to ensure the animation lined up correctly */
+
+
+
+.spinner {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  animation: spinner-plncf9 4s infinite;
+}
+
+.spinner::before,
+.spinner::after {
+  content: "";
+  grid-area: 1/1;
+  border: 9px solid;
+  border-radius: 50%;
+  border-color: #474bff #474bff #0000 #0000;
+  mix-blend-mode: darken;
+  animation: spinner-plncf9 1s infinite linear;
+}
+
+.spinner::after {
+  border-color: #0000 #0000 #dbdcef #dbdcef;
+  animation-direction: reverse;
+}
+
+@keyframes spinner-plncf9 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
