@@ -84,7 +84,7 @@ enum Role {
 model Section {
   id            Int         @id @default(autoincrement())
   title         String
-  description   String?
+  description   String?     @db.Text
   sous_sections Section[]   @relation("sub_sections")
   section       Section?    @relation("sub_sections", fields: [sectionId], references: [id])
   sectionId     Int?
@@ -97,7 +97,7 @@ model Section {
 model Formulaire {
   id                     Int                      @id @default(autoincrement())
   title                  String
-  description            String?
+  description            String?                  @db.Text
   dateDebut              DateTime?
   dateFin                DateTime?
   token                  String?
