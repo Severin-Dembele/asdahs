@@ -64,9 +64,9 @@ function LayoutVisitor() {
             <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <button type="button" className="flex text-sm ">
+                  <Link to={'/africanhealthstudy/panel-administration/account'} type="button" className="flex text-sm " >
                     <p>Severin connecter</p>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

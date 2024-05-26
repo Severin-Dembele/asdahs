@@ -25,6 +25,9 @@ export class UsersService {
 
   findAllUniqueNameUser(){
     return this.prisma.user.findMany({
+      where:{
+        OR: [{ role: 'ADMIN' }, { role: 'INVESTIGATOR' }],
+      },
       orderBy: {
         createAt: 'desc',
       },
@@ -78,6 +81,7 @@ export class UsersService {
         email: updateUserDto.email,
         name: updateUserDto.name,
         telephone: updateUserDto.telephone,
+        role: updateUserDto.role,
       },
     });
   }

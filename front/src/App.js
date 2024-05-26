@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { FrameEror404 } from "./frame";
 import { Authentification, AdminAuthGuard, AdminRoutes } from "./routes/admin";
-import { VisitorHome } from "./pages/visitor";
+import { VisitoWelcomePage, VisitorAbout, VisitorHome } from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
 import { InvestigatorSocietalFormulaire } from "./pages/investigator";
 function App() {
@@ -43,7 +43,7 @@ function App() {
         {" "}
         <Router>
           <Routes>
-            <Route index element={<Authentification />} />
+            <Route index element={<VisitoWelcomePage />} />
 
             <Route
               path="africanhealthstudy/*"
@@ -58,6 +58,10 @@ function App() {
             <Route
               path="africanhealthstudy/panel-administration/authentification"
               element={<Authentification />}
+            />
+            <Route
+              path="about"
+              element={<VisitorAbout />}
             />
             <Route
               path="investigator/*"

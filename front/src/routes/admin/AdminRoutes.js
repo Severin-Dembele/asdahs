@@ -18,6 +18,7 @@ import {
   AdminSettingChurch,
   AdminSettingUnion,
   AdminSettingConference,
+  AdminAccounSetting,
 } from "../../pages/admin";
 import { FrameEror404 } from "../../frame";
 
@@ -27,7 +28,7 @@ function AdminRoutes() {
       <Route element={<LayoutAdmin />}>
         <Route index element={<AdminHome />} />
         <Route path="panel-administration">
-          <Route index element={<AdminImpactSocietalFormulaire />} />
+          <Route index element={<AdminStatistique />} />
           <Route path="details/:id" element={<AdminDetailForm />} />
           <Route
             path="details-section/:id"
@@ -35,6 +36,8 @@ function AdminRoutes() {
           />
 
           <Route path="statistic" element={<AdminStatistique />} />
+          <Route path="account" element={<AdminAccounSetting />} />
+
 
           <Route
             path="details-question/:id"

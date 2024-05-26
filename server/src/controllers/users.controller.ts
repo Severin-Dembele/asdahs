@@ -61,7 +61,6 @@ export class UsersController {
       });
     });
 
-    console.log(data);
     const formulaireData =
       await this.formulaireInvestigatorService.createList(data);
     return formulaireData;
@@ -95,7 +94,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Get("users/list")
+  @Get("/list")
   findAll(){
     return this.usersService.findAll();
   }
@@ -110,7 +109,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  @UseInterceptors(FileInterceptor('avatar'))
+  @UseInterceptors(FileInterceptor('profile'))
   @ApiConsumes('multipart/form-data')
   update(
     @Param('id', ParseIntPipe) id: string,

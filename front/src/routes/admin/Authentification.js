@@ -32,7 +32,7 @@ export default function Authentification() {
       } else if (response?.data?.role === "INVESTIGATOR") {
         navigation("/investigator");
       }else{
-        navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjM5Njg1MiwiZXhwIjoxNzE4OTg4ODUyfQ.RMye-I4JpPbaCB4ZTRitqStZGWDZyx4XI7-D9e1GOsQ")
+        navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
       }
     } catch (error) {
       console.log(error?.response);

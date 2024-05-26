@@ -14,6 +14,7 @@ export { default as AdminDetailsSections } from "./AdminDetailsSections";
 export { default as AdminQuestionDetails } from "./AdminQuestionDetails";
 export { default as AdminStatistique } from "./AdminStatistique";
  
+export { default as AdminAccounSetting } from "./AdminAccounSetting";
 
 
 export { default as AdminSetting } from "./AdminSetting";
