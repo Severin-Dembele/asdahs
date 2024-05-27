@@ -42,6 +42,7 @@ export class ChurchService {
         city: updateChurchDto.city,
         country: updateChurchDto.country,
         name: updateChurchDto.name,
+        typeChurch: updateChurchDto.typeChurch,
       },
     });
   }
