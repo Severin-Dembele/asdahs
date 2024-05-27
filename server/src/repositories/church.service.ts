@@ -14,6 +14,7 @@ export class ChurchService {
         country: createChurchDto.country,
         name: createChurchDto.name,
         conferenceId: conferenceId,
+        typeChurch: createChurchDto.typeChurch
       },
     });
   }

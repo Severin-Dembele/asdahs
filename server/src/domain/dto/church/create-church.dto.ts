@@ -7,4 +7,6 @@ export class CreateChurchDto {
   city: string;
   @ApiProperty()
   country: string;
+  @ApiProperty()
+  typeChurch: string;
 }

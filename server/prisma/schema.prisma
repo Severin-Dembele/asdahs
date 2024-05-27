@@ -42,8 +42,9 @@ model Conference {
 model Church {
   id           Int        @id @default(autoincrement())
   name         String
-  city         String
-  country      String
+  city         String?
+  typeChurch   String?
+  country      String?
   deleteAt     DateTime?
   conference   Conference @relation(fields: [conferenceId], references: [id])
   conferenceId Int
@@ -59,6 +60,7 @@ model User {
   status                 Status                   @default(NOT_STARTED)
   telephone              String
   password               String
+  typeChurch String?
   church                 Church                   @relation(fields: [churchId], references: [id])
   isActive               Boolean                  @default(true)
   createAt               DateTime                 @default(now())
