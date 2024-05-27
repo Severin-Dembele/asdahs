@@ -22,26 +22,26 @@ export class FormulairesService {
   findOne(id: number) {
     return this.prisma.formulaire.findFirst({
       where: { id: id },
-      include:{
-        section:{
-          include:{
+      include: {
+        section: {
+          include: {
             sous_sections: {
-              include:{
+              include: {
                 question: {
-                  include:{
-                    option: true
-                  }
-                }
-              }
+                  include: {
+                    option: true,
+                  },
+                },
+              },
             },
-            question:{
-              include:{
-                option: true
-              }
+            question: {
+              include: {
+                option: true,
+              },
             },
           },
-        }
-      }
+        },
+      },
     });
   }
 
@@ -97,5 +97,26 @@ export class FormulairesService {
       });
     }
     return qcm;
+  }
+
+  createFormulaireInvestigator(formulaireInvestigator) {
+    try {
+      return this.prisma.formulaireInvestigator.create({
+        data: {
+          formulaireId: formulaireInvestigator.formulaireId,
+          userId: formulaireInvestigator.userId,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getFormulaireInvestigator(userId, formulaireId) {
+    this.prisma.formulaireInvestigator.findMany({
+      where: {
+        AND: [{ userId: userId }, { formulaireId: formulaireId }],
+      },
+    });
   }
 }

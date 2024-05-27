@@ -16,7 +16,7 @@ import { Logging } from './infrastructure/logger/logging';
 async function bootstrap() {
   const loggerService = new Logging();
   const config = new DocumentBuilder()
-    .setTitle('API Essitech-Group')
+    .setTitle('API')
     .setVersion('1.0')
     .addTag('users')
     .build();

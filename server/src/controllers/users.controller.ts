@@ -32,7 +32,7 @@ export class UsersController {
     private readonly mailService: MailsService,
   ) {}
 
- /* @Post()
+  /* @Post()
   @UseInterceptors(FileInterceptor('avatar'))
   @ApiConsumes('multipart/form-data')
   create(@UploadedFile() file: Express.Multer.File, @Body() createUserDto) {
@@ -94,8 +94,8 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Get("/list")
-  findAll(){
+  @Get('/list')
+  findAll() {
     return this.usersService.findAll();
   }
 
@@ -123,5 +123,10 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Get(':userId/users')
+  findReponsesUsers(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findAllReponseUsers(id);
   }
 }

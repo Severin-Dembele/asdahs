@@ -10,6 +10,8 @@ import { OptionService } from '../reponse-propose/option.service';
 import { ReponseReponduService } from '../reponse-repondu/reponse-repondu.service';
 import { AuthModule } from './auth/auth.module';
 import { SectionService } from '../section/section.service';
+import { UsersService } from 'src/repositories/users.service';
+import { UsersModule } from './users.module';
 
 @Module({
   controllers: [FormulaireController],
@@ -23,6 +25,7 @@ import { SectionService } from '../section/section.service';
   imports: [
     AuthModule,
     PrismaModule,
+    UsersModule,
     MulterModule.register({
       storage: diskStorage({
         destination: './uploads/formulaires',

@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -32,6 +34,7 @@ const fs = require('fs');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fastCsv = require('fast-csv');
 import * as xlsx from 'xlsx';
+import { UsersService } from 'src/repositories/users.service';
 
 @Controller('formulaires')
 @ApiTags('formulaires')
@@ -43,6 +46,7 @@ export class FormulaireController {
     private optionService: OptionService,
     private reponseReponduService: ReponseReponduService,
     private authService: AuthService,
+    private userService: UsersService,
   ) {}
 
   @Post()
@@ -219,6 +223,27 @@ export class FormulaireController {
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
     const createReponseRepondu: CreateReponseReponduDto[] = [];
+    const user = await this.userService.findOne(data.sub);
+    if (user == null) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    } else {
+      if (user.role == 'INVESTIGATOR') {
+        const formulaireInvestigator =
+          await this.formulaireService.getFormulaireInvestigator(
+            user.id,
+            idFormulaire,
+          );
+        if (
+          formulaireInvestigator == null ||
+          formulaireInvestigator == undefined
+        ) {
+          this.formulaireService.createFormulaireInvestigator({
+            userId: user.id,
+            formulaireId: idFormulaire,
+          });
+        }
+      }
+    }
     for (let i = 0; i < reponseRepondu.length; i++) {
       const item: any[] = reponseRepondu[i].reponses;
       for (let j = 0; j < item.length; j++) {

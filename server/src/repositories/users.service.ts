@@ -23,32 +23,32 @@ export class UsersService {
     });
   }
 
-  findAllUniqueNameUser(){
+  findAllUniqueNameUser() {
     return this.prisma.user.findMany({
-      where:{
+      where: {
         OR: [{ role: 'ADMIN' }, { role: 'INVESTIGATOR' }],
       },
       orderBy: {
         createAt: 'desc',
       },
-    })
+    });
   }
 
   findAll() {
     return this.prisma.user.findMany({
-      include:{
+      include: {
         church: {
-          include:{
+          include: {
             conference: {
-              include:{
-                union:{
-                  include:{
-                    division: true
-                  }
-                }
-              }
-            }
-          }
+              include: {
+                union: {
+                  include: {
+                    division: true,
+                  },
+                },
+              },
+            },
+          },
         },
       },
       orderBy: {
@@ -73,7 +73,6 @@ export class UsersService {
     });
   }
 
-
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id: id },
@@ -88,5 +87,24 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  findAllReponseUsers(userId: number) {
+    return this.prisma.user.findMany({
+      where: {
+        id: userId,
+      },
+      include: {
+        reponseRepondu: {
+          include: {
+            question: {
+              include: {
+                reponseRepondu: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }
