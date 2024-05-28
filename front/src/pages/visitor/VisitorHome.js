@@ -132,9 +132,9 @@ function VisitorHome() {
   }
   return (
     <div className="min-h-[95vh] flex justify-center ">
-      <div className="w-full lg:max-w-5xl ">
+      <div className="w-full max-w-3xl p-8 bg-white rounded-lg shadow-lg lg:max-w-5xl">
         <section className="bg-center bg-no-repeat bg-blend-multiply backgrougImage">
-          <div className="max-w-screen-xl px-4 py-24 mx-auto text-center lg:py-46 "></div>
+          <div className="max-w-screen-xl px-4 py-24 pt-10 mx-auto text-center lg:py-46 "></div>
         </section>
 
         <h1 className="mb-4 text-xl font-extrabold leading-none tracking-tight text-center md:text-2xl lg:text-3xl">
@@ -173,11 +173,11 @@ function VisitorHome() {
                       {section?.question?.length > 0 &&
                         section?.question.map((question, index) => (
                           <li
-                            // className="flex items-center justify-center my-2 bg-white"
+                            className="flex flex-wrap mb-7"
                             key={index}
                           >
                             <div className="container mx-auto bg-white rounded-md">
-                              <label className="block mb-2 text-sm font-semibold text-black">
+                              <label className="block mb-2 font-semibold text-black text">
                                 {question?.title} :
                               </label>
                               {renderFormField(question)}
@@ -201,7 +201,7 @@ function VisitorHome() {
                             {soussection?.question?.length > 0 &&
                               soussection?.question.map((question, indexQ) => (
                                 <li
-                                  // className="flex items-center justify-center my-2 bg-white"
+                                  // className="mb-4 bg-red-400"
                                   key={indexQ}
                                 >
                                   <div className="container p-6 py-2 mx-auto bg-white rounded-md">
@@ -331,7 +331,7 @@ function VisitorHome() {
             type="text"
             name={question?.id}
             onChange={handleInputChange}
-            className="block py-1.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-950 focus:outline-none focus:ring-0 focus:border-blue-950 peer"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         );
       case "ECHELLE_LINEAIRE":
@@ -368,13 +368,15 @@ function VisitorHome() {
           <textarea
             name={question?.id}
             onChange={handleInputChange}
-            className="block p-1.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-950 focus:border-blue-950 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-950 dark:focus:border-blue-950"
+            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           ></textarea>
         );
       case "CHOIX_MULTIPLE":
         return renderMultipleChoice(question);
       case "CASE_COCHER":
-        return renderRadioButtons(question);
+        return <div class="flex flex-wrap font-normal ">
+          {renderRadioButtons(question)}
+        </div>;
       case "LISTE_DEROULANTE":
         return renderDropdown(question);
       default:
@@ -407,7 +409,7 @@ function VisitorHome() {
     return (
       <>
         {question?.option?.map((reponse, idx) => (
-          <div key={idx} className="flex items-center mb-4">
+          <div key={idx} className="flex items-center mb-4 me-7">
             <input
               type="radio"
               name={question?.id}
