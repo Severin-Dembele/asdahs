@@ -132,7 +132,7 @@ function VisitorHome() {
   }
   return (
     <div className="min-h-[95vh] flex justify-center ">
-      <div className="w-full max-w-3xl p-8 bg-white rounded-lg shadow-lg lg:max-w-5xl">
+      <div className="w-full max-w-3xl lg:p-8 bg-whiterounded-lg shadow-lg lg:max-w-5xl md:p-2">
         <section className="bg-center bg-no-repeat bg-blend-multiply backgrougImage">
           <div className="max-w-screen-xl px-4 py-24 pt-10 mx-auto text-center lg:py-46 "></div>
         </section>
@@ -146,12 +146,12 @@ function VisitorHome() {
           <span className="font-light"> {formulaire?.description} </span>
         </h1>
         {/* <p>{JSON.stringify(formData)}</p> */}
-        <div className="m-9">
+        <div className="m-9 sm:m-3">
           <ol
             style={{
               listStyle: "upper-roman",
             }}
-            className="space-y-1 text-gray-900 list-outside dark:text-gray-400 md:text-xs lg:text-xl"
+            className="space-y-1 text-gray-900 list-outside dark:text-gray-400 md:text-xs lg:text-xl "
           >
             {formulaire?.section?.length > 0 &&
               formulaire?.section
