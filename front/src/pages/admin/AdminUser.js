@@ -248,7 +248,7 @@ function AdminSettingUnion() {
               <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th></th>
+                    {/* <th></th> */}
                     <th scope="col" class="px-4 py-3">Full Name</th>
                     {/* <th scope="col" class="px-4 py-3">Login</th> */}
                     <th scope="col" class="px-4 py-3">Phone</th>
@@ -265,13 +265,13 @@ function AdminSettingUnion() {
                     <>
                       {getPaginatedData()?.map((item, index) => (
                         <tr key={index} class="border-b dark:border-gray-700">
-                          <th>
+                          {/* <th>
                             <img
                               alt={`p-${index}`}
                               className="max-h-11"
                               src={`${IMAGES_URLS}${IMAGES_LINKS.users}${item?.profile}`}
                             />
-                          </th>
+                          </th> */}
                           <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}</th>
                           <td class="px-4 py-3">{item?.telephone}</td>
                           <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.email}</th>
