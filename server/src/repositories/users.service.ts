@@ -89,10 +89,10 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  findAllReponseUsers(userId: number) {
-    return this.prisma.user.findMany({
+  findAllReponseUsers(userId: string) {
+    return this.prisma.user.findUnique({
       where: {
-        id: userId,
+        id: parseInt(userId),
       },
       include: {
         reponseRepondu: {

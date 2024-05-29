@@ -125,8 +125,8 @@ export class UsersController {
     return this.usersService.remove(+id);
   }
 
-  @Get(':userId/reponses')
-  findReponsesUsers(@Param('id', ParseIntPipe) id: number) {
+  @Get(':id/reponses')
+  findReponsesUsers(@Param('id') id: string) {
     return this.usersService.findAllReponseUsers(id);
   }
 }
