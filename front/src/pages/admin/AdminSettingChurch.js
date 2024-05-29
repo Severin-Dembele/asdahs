@@ -90,6 +90,8 @@ function AdminSettingChurch() {
         setIsModal(false);
         setAlertModal(true);
 
+        console.log(formData);
+
         try {
             let endpoint = ENDPOINT.conferences;
             let response;
@@ -171,7 +173,7 @@ function AdminSettingChurch() {
         };
 
 
-        const propertiesToFilter1 = ['shortname', 'name'];
+        const propertiesToFilter1 = ['shortname', 'name', 'typeChurch', 'city', 'country'];
         const resultatsRecherche1 = filterList(listInitial, propertiesToFilter1);
         setList(resultatsRecherche1);
     };
@@ -253,6 +255,7 @@ function AdminSettingChurch() {
                                     <tr>
                                         <th scope="col" class="px-4 py-3">Name</th>
                                         <th scope="col" class="px-4 py-3">City</th>
+                                        <th scope="col" class="px-4 py-3">Type</th>
 
                                         <th scope="col" class="px-4 py-3">
                                             <span class="sr-only">Actions</span>
@@ -264,8 +267,12 @@ function AdminSettingChurch() {
                                         <>
                                             {getPaginatedData()?.map((item, index) => (
                                                 <tr key={index} class="border-b dark:border-gray-700">
-                                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.shortname}</th>
-                                                    <td class="px-4 py-3">{item?.city} <br/>{item?.country}</td>
+                                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"> 
+                                                    {item?.name} <br/>
+                                                     {item?.shortname}</th>
+                                                   
+                                                    <td class="px-4 py-3">{item?.city} <br />{item?.country}</td>
+                                                    <td>{item?.typeChurch}</td>
 
                                                     <td class="px-4 py-3 flex items-center justify-end">
                                                         <div className="flex justify-center">
@@ -319,28 +326,28 @@ function AdminSettingChurch() {
                     <div className="flex flex-col gap-1">
                         <div>
                             <div className="block mb-2">
-                                <Label htmlFor="name" value="Churches shortname." />
+                                <Label htmlFor="name" value="Churche name." />
                             </div>
                             <TextInput
-                                id="shortname"
+                                id="name"
                                 sizing="md"
-                                name="shortname"
+                                name="name"
                                 helperText={
-                                    !formData?.shortname ? (
+                                    !formData?.name ? (
                                         <span className="font-normal text-red-500">
                                             Please fill in this field. Thank you..
                                         </span>
                                     ) : null
                                 }
-                                value={formData.shortname}
+                                value={formData.name}
                                 onChange={handleChange}
                                 label={`Titre du formulaire`}
                                 type="text"
                             />
                         </div>
-                        
+
                         <div>
-                            <div className="block mb-2">
+                            {/* <div className="block mb-2">
                                 <Label htmlFor="name" value="Type of Church" />
                             </div>
                             <TextInput
@@ -357,7 +364,52 @@ function AdminSettingChurch() {
                                 onChange={handleChange}
                                 label={`Type of Church`}
                                 type="checkbox"
-                            />
+                            /> */}
+                            <div className="block mb-2">
+                                <Label htmlFor="name" value="Type of Church" />
+                            </div>
+                            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="typeChurch"
+                                            name="typeChurch"
+                                            onChange={handleChange}
+                                            value="Small"
+                                            checked={formData?.typeChurch === 'Small'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Small</label>
+                                    </div>
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input type="radio"
+                                            id="typeChurch"
+                                            name="typeChurch"
+                                            value="Medium"
+                                            checked={formData?.typeChurch === 'Medium'}
+                                            onChange={handleChange}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Medium</label>
+                                    </div>
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="typeChurch"
+                                            onChange={handleChange}
+                                            name="typeChurch"
+                                            value="Large"
+                                            checked={formData?.typeChurch === 'Large'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Large</label>
+                                    </div>
+                                </li>
+
+                            </ul>
+
                         </div>
 
                         <div>

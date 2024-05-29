@@ -1,37 +1,193 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { ENDPOINT } from '../../utils';
+import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
+
+import { Modal, Label, Button, TextInput, Textarea, Select } from 'flowbite-react';
 
 function InvestigatorAddUser() {
+
+    const [formData, setFormData] = useState({
+        typeChurch: '',
+        fullName: null,
+        conferenceId: "",
+        phone: "",
+        email: "",
+        churchName: "",
+    });
+    const [listConference, setListConference] = useState([]);
+
+    const handleChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
+    };
+
+
+    const reloadData = () => {
+        Promise.all([
+            getData(ENDPOINT.conferences)
+        ])
+            .then(([confRes]) => {
+
+                setListConference(confRes?.data || []);
+            })
+            .catch(error => {
+                // Gérer les erreurs ici
+            });
+    };
+
+    useEffect(() => {
+        reloadData();
+    }, []);
+
+
+    const [message, setMessage] = useState('Information');
+
+    const handleSubmit = async () => {
+
+
+        try {
+            let response;
+            response = await postDataWithNoToken(`${ENDPOINT.conferences}/${formData?.conferenceId}/${ENDPOINT.churches}`, formData, false);
+
+            const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
+            setMessage(successMessage);
+            setFormData({});
+        } catch (error) {
+            console.log("Error", error?.response);
+            const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
+            setMessage(errorMessage);
+        }
+    };
+
+
+
+
+
     return (
-       
+
 
         <div className="">
 
             <section class="bg-white dark:bg-gray-900">
-                <div class="py-8 lg:py-16 lg:px-4 md:p-1 mx-auto max-w-screen-md">
+                <div class="py-8 lg:py-16 lg:px-4 p-4 mx-auto max-w-screen-md">
                     <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Adding respondent</h2>
 
                     <form action="#" class="space-y-8">
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Name</label>
-                            <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@flowbite.com" required />
-                        </div>
-                        
-                        <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Phone/Whataspp</label>
-                            <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@flowbite.com" required />
-                        </div>
-                        <div>
-                            <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email adress</label>
-                            <input type="text" id="subject" class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Let us know how we can help you" required />
+                            <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Name</label>
+                            <input
+
+                                value={formData.fullName}
+                                type="text" id="fullName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
 
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Church</label>
-                            <input type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="name@flowbite.com" required />
+                            <label
+                                for="phone"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Phone/Whataspp</label>
+                            <input type="tel"
+                                id="phone"
+                                name="phone"
+                                value={formData.phone}
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
-                       
+                        <div>
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email adress</label>
+                            <input type="email"
 
-                        <button type="submit" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-blue-700 sm:w-fit hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Send message</button>
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
+                        </div>
+                        <div>
+                            <div className="block mb-2">
+                                <Label htmlFor="conferenceId" value="Conference" />
+                            </div>
+                            <Select
+                                id="conferenceId"
+                                sizing="md"
+                                name="conferenceId"
+                                helperText={
+                                    !formData?.conferenceId ? (
+                                        <span className="font-normal text-red-500"></span>
+                                    ) : null
+                                }
+                                value={formData?.conferenceId}
+                                onChange={handleChange}
+                                label={"conferenceId"}
+                                type="name"
+                            >
+                                <option disabled>Choose option</option>
+                                {listConference && (
+                                    listConference.map((item, index) => (
+                                        <option key={index} value={item?.id}> {item?.name} </option>
+                                    ))
+                                )}
+                            </Select>
+                        </div>
+
+                        <div>
+                            <label for="churchName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Church</label>
+                            <input type="text"
+                                id="churchName"
+                                name="churchName"
+                                value={formData.churchName}
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
+                        </div>
+
+                        <div>
+                            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="typeChurch"
+                                            name="typeChurch"
+                                            onChange={handleChange}
+                                            value="Small"
+                                            checked={formData?.typeChurch === 'Small'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Small</label>
+                                    </div>
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input type="radio"
+                                            id="typeChurch"
+                                            name="typeChurch"
+                                            value="Medium"
+                                            checked={formData?.typeChurch === 'Medium'}
+                                            onChange={handleChange}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Medium</label>
+                                    </div>
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="typeChurch"
+                                            onChange={handleChange}
+                                            name="typeChurch"
+                                            value="Large"
+                                            checked={formData?.typeChurch === 'Large'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Large</label>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+
+                        <button class="py-3 m-2 text-sm font-medium text-center text-white rounded-lg bg-blue-900 w-full lg:w-20 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Save
+                        </button>
+
                     </form>
                 </div>
             </section>
