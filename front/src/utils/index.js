@@ -29,10 +29,10 @@ const ENDPOINT = {
 export { default as PaginatedTable } from "./PaginatedTable";
 
 // L'URL de base du serveur
-const SERVERURLS = `https://backend.asdahs.online/`;
+const SERVERURLS =  process.env.API_SERVER;
 
 // L'URL pour les images d'utilisateur
-const IMAGES_URLS = `https://backend.asdahs.online/uploads/`;
+const IMAGES_URLS = `${process.env.API_SERVER}uploads/`;
 
 const IMAGES_LINKS = {
   users: "users/",
