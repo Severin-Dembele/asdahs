@@ -51,19 +51,18 @@ import { ConferenceModule } from './modules/conference.module';
     MailerModule.forRootAsync({
       useFactory: async () => ({
         transport: {
-          host: 'smtp.titan.email',
-          port: 587,
+          service: 'gmail',
           secure: false,
           auth: {
-            user: 'essitech@essitechgroup.com',
-            pass: 'Ess1Tech#2023',
+            user: 'bienvenueudes96@gmail.com',
+            pass: 'nesu tziz oaow iohk',
           },
         },
         defaults: {
-          from: 'essitech@essitechgroup.com',
+          from: 'bienvenueudes96@gmail.com',
         },
         template: {
-          dir: join(__dirname, 'templates'),
+          dir: join(__dirname, 'mails/templates'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,

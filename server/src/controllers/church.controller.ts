@@ -11,6 +11,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
 import { UpdateChurchDto } from 'src/domain/dto/church/update-church.dto';
+import { MailsService } from 'src/mails/mails.service';
+import { AuthService } from 'src/repositories/auth/auth.service';
 import { ChurchService } from 'src/repositories/church.service';
 import { UsersService } from 'src/repositories/users.service';
 
@@ -19,6 +21,8 @@ export class ChurchController {
   constructor(
     private readonly churchService: ChurchService,
     private readonly userService: UsersService,
+    private readonly mailService: MailsService,
+    private readonly authService: AuthService,
   ) {}
 
   @Post('conferences/:id/churches')
@@ -29,13 +33,25 @@ export class ChurchController {
   @Post('churches/:id/users')
   @UseInterceptors(FileInterceptor('profile'))
   @ApiConsumes('multipart/form-data')
-  createUser(
+  async createUser(
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: number,
     @Body() userDto,
   ) {
     userDto.profile = file ? file.filename : null;
-    return this.userService.create(id, userDto);
+    const user = await this.userService.create(id, userDto);
+    if ((user.role = 'RESPONDENT')) {
+      const token = await this.authService.generateAccessTokenRespondant(
+        user.id,
+        user.email,
+      );
+      await this.mailService.sendMailRespondent(
+        user.email,
+        token,
+        process.env.SERVER_FRONT_URL,
+      );
+    }
+    return user;
   }
 
   @Get('churches/:id')

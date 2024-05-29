@@ -27,9 +27,15 @@ export class AuthService {
     const payload = { sub: user.id, username: user.email };
     return {
       access_token: await this.jwtService.signAsync(payload),
-      role: user.role
+      role: user.role,
     };
   }
+
+  generateAccessTokenRespondant(userId, email) {
+    const payload = { sub: userId, username: email };
+    return this.jwtService.signAsync(payload);
+  }
+
   validateToken(token: string) {
     try {
       return this.jwtService.verify(token);
