@@ -328,7 +328,7 @@ function AdminSettingUnion() {
 
         <Modal.Header>Adding an administrator </Modal.Header>
         <Modal.Body>
-          <form className="flex items-center justify-center">
+          {/* <form className="flex items-center justify-center">
             {!selectedImage ? (
               <img
                 src={`${IMAGES_URLS}${IMAGES_LINKS.users}${formData?.profile}`}
@@ -346,8 +346,8 @@ function AdminSettingUnion() {
                 className=" max-w-sm border "
               />
             )}
-          </form>
-          <div className="flex items-center justify-center">
+          </form> */}
+          {/* <div className="flex items-center justify-center">
             <label htmlFor="fileInput" className="cursor-pointer">
               <input
                 id="fileInput"
@@ -377,7 +377,7 @@ function AdminSettingUnion() {
                 <line x1="18" y1="3" x2="18" y2="9" />
               </svg>
             </label>
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-1">
             <div>

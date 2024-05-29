@@ -25,7 +25,7 @@ export function clear() {
   localStorage.clear();
 }
 
-export const SERVERURLS = `http://213.210.20.233:5000/`;
+export const SERVERURLS = `https://backend.asdahs.online/`;
 
 const storedData = localStorage.getItem(
   "africanhealthstudy"

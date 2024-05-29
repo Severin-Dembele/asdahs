@@ -339,6 +339,26 @@ function AdminSettingChurch() {
                             />
                         </div>
                         
+                        <div>
+                            <div className="block mb-2">
+                                <Label htmlFor="name" value="Type of Church" />
+                            </div>
+                            <TextInput
+                                id="typeChurch"
+                                name="typeChurch"
+                                helperText={
+                                    !formData?.typeChurch ? (
+                                        <span className="font-normal text-red-500">
+                                            Please fill in this field. Thank you..
+                                        </span>
+                                    ) : null
+                                }
+                                value={formData?.typeChurch}
+                                onChange={handleChange}
+                                label={`Type of Church`}
+                                type="checkbox"
+                            />
+                        </div>
 
                         <div>
                             <div className="block mb-2">

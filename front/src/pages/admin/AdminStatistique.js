@@ -139,7 +139,7 @@ function AdminStatistique() {
       </div>
 
       <div className='lg:columns-2  sm:columns-1 m-2'>
-        <div className='w-1/2 sm:w-full'>
+        <div className='w-full '>
 
           <form>
             <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -218,7 +218,7 @@ function AdminStatistique() {
           </form>
 
         </div>
-        <div className='w-1/2 sm:w-full'>
+        <div className='w-full'>
 
           <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
 
