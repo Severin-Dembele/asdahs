@@ -57,7 +57,7 @@ function LayoutVisitor() {
                 <img
                   src={require("../../images/logo.png")}
                   className="h-8 mr-3"
-                  alt="EssitechLogo"
+                  alt="ASDAHS"
                 />
               </Link>
             </div>
