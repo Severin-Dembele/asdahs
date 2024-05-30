@@ -20,6 +20,14 @@ export class CreateUserDto {
   @ApiProperty()
   role: 'INVESTIGATOR' | 'ADMIN';
 
+  @ApiProperty()
+  typeChurch: string;
+
+  @ApiProperty()
+  churchName: string;
+
+  userConnected: string;
+
   public toEntity(): User {
     let userEntity: User;
     userEntity.name = this.name;

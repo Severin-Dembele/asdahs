@@ -61,6 +61,7 @@ model User {
   telephone              String
   password               String
   typeChurch String?
+  churchName String?
   church                 Church                   @relation(fields: [churchId], references: [id])
   isActive               Boolean                  @default(true)
   createAt               DateTime                 @default(now())

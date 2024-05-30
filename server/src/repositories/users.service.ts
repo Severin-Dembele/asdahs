@@ -19,7 +19,9 @@ export class UsersService {
         role: createUserDto.role,
         status: 'NOT_STARTED',
         churchId: idChurch,
-        userCreated: createUserDto.email
+        userCreated: createUserDto.userConnected,
+        churchName: createUserDto.churchName,
+        typeChurch: createUserDto.typeChurch
       },
     });
   }
