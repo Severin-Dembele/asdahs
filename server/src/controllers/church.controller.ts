@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -37,8 +38,13 @@ export class ChurchController {
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: number,
     @Body() userDto,
+    @Req() request: Request
   ) {
     userDto.profile = file ? file.filename : null;
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const userConnected = await this.userService.findOne(parseInt(data.sub));
+    userDto.userConnected = userConnected.email;
     const user = await this.userService.create(id, userDto);
     if ((user.role = 'RESPONDENT')) {
       const token = await this.authService.generateAccessTokenRespondant(

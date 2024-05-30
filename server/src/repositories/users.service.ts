@@ -19,6 +19,7 @@ export class UsersService {
         role: createUserDto.role,
         status: 'NOT_STARTED',
         churchId: idChurch,
+        userCreated: createUserDto.email
       },
     });
   }
