@@ -322,9 +322,9 @@ function AdminSettingConference() {
                                 <Label htmlFor="name" value="Conference shortname." />
                             </div>
                             <TextInput
-                                id="shortname"
+                               
                                 sizing="md"
-                                name="shortname"
+                                
                                 helperText={
                                     !formData?.shortname ? (
                                         <span className="font-normal text-red-500">
@@ -332,6 +332,8 @@ function AdminSettingConference() {
                                         </span>
                                     ) : null
                                 }
+                                id="shortname"
+                                name="shortname"
                                 value={formData.shortname}
                                 onChange={handleChange}
                                 label={`Titre du formulaire`}

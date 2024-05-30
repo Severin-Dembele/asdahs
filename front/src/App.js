@@ -5,7 +5,7 @@ import { FrameEror404 } from "./frame";
 import { Authentification, AdminAuthGuard, AdminRoutes } from "./routes/admin";
 import { VisitoWelcomePage, VisitorAbout, VisitorHome } from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
-import { InvestigatorSocietalFormulaire } from "./pages/investigator";
+import { InvestigatorSocietalFormulaire ,InvestigatorAddUser} from "./pages/investigator";
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -72,6 +72,10 @@ function App() {
                     <Route
                       path="/investigator"
                       element={<InvestigatorSocietalFormulaire />}
+                    />
+                     <Route
+                      path="/useradd"
+                      element={<InvestigatorAddUser />}
                     />
                   </Routes>
                 </InvestigatorAuthGuard>
