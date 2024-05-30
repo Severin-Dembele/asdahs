@@ -87,6 +87,8 @@ export class UsersService {
         name: updateUserDto.name,
         telephone: updateUserDto.telephone,
         role: updateUserDto.role,
+        churchName: updateUserDto.churchName,
+        typeChurch: updateUserDto.typeChurch
       },
     });
   }
