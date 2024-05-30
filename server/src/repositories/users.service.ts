@@ -21,7 +21,11 @@ export class UsersService {
         churchId: idChurch,
         userCreated: createUserDto.userConnected,
         churchName: createUserDto.churchName,
-        typeChurch: createUserDto.typeChurch
+        typeChurch: createUserDto.typeChurch,
+        conferenceId:
+          createUserDto.conferenceId == null
+            ? null
+            : parseInt(createUserDto.conferenceId),
       },
     });
   }
@@ -39,8 +43,8 @@ export class UsersService {
 
   findAll(username: string) {
     return this.prisma.user.findMany({
-      where:{
-        userCreated: username
+      where: {
+        userCreated: username,
       },
       include: {
         church: {
@@ -88,7 +92,11 @@ export class UsersService {
         telephone: updateUserDto.telephone,
         role: updateUserDto.role,
         churchName: updateUserDto.churchName,
-        typeChurch: updateUserDto.typeChurch
+        typeChurch: updateUserDto.typeChurch,
+        conferenceId:
+          updateUserDto.conferenceId == null
+            ? null
+            : parseInt(updateUserDto.conferenceId),
       },
     });
   }

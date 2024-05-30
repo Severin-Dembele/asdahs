@@ -28,6 +28,8 @@ export class CreateUserDto {
 
   userConnected: string;
 
+  conferenceId: string;
+
   public toEntity(): User {
     let userEntity: User;
     userEntity.name = this.name;
