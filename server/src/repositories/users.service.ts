@@ -35,8 +35,11 @@ export class UsersService {
     });
   }
 
-  findAll() {
+  findAll(username: string) {
     return this.prisma.user.findMany({
+      where:{
+        userCreated: username
+      },
       include: {
         church: {
           include: {

@@ -95,8 +95,11 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get('/list')
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(@Req() request: Request) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const userConnected = await this.usersService.findOne(parseInt(data.sub));
+    return this.usersService.findAll(userConnected.email);
   }
 
   @Get(':id')
