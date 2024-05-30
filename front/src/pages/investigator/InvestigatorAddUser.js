@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { ENDPOINT } from '../../utils';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
+import { useNavigate } from 'react-router-dom';
 
 import { Modal, Label, Button, TextInput, Textarea, Select } from 'flowbite-react';
 
 function InvestigatorAddUser() {
+    const navigate = useNavigate();
+
 
     const [formData, setFormData] = useState({
         typeChurch: '',
-        fullName: null,
+        name: null,
         conferenceId: "",
-        phone: "",
+        telephone: "",
         email: "",
         churchName: "",
+        role: "RESPONDENT",
+        password: "7Q$GV1TI#KOALLA#2023"
     });
     const [listConference, setListConference] = useState([]);
 
@@ -49,11 +54,13 @@ function InvestigatorAddUser() {
 
         try {
             let response;
-            response = await postDataWithNoToken(`${ENDPOINT.conferences}/${formData?.conferenceId}/${ENDPOINT.churches}`, formData, false);
+            response = await postData(`${ENDPOINT.churches}/1/${ENDPOINT.users}`, formData);
+
 
             const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
             setMessage(successMessage);
             setFormData({});
+            console.log(response);
         } catch (error) {
             console.log("Error", error?.response);
             const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
@@ -73,24 +80,26 @@ function InvestigatorAddUser() {
             <section class="bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 lg:px-4 p-4 mx-auto max-w-screen-md">
                     <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Adding respondent</h2>
-
-                    <form action="#" class="space-y-8">
+                   
+                    <div class="space-y-8">
                         <div>
-                            <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Name</label>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Name</label>
                             <input
-
-                                value={formData.fullName}
-                                type="text" id="fullName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                type="text" id="name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
 
                         <div>
                             <label
-                                for="phone"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Phone/Whataspp</label>
+                                for="telephone"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">telephone/WhatsApp</label>
                             <input type="tel"
-                                id="phone"
-                                name="phone"
-                                value={formData.phone}
+                                id="telephone"
+                                name="telephone"
+                                onChange={handleChange}
+                                value={formData.telephone}
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
                         <div>
@@ -99,6 +108,7 @@ function InvestigatorAddUser() {
 
                                 id="email"
                                 name="email"
+                                onChange={handleChange}
                                 value={formData.email}
                                 class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
@@ -134,6 +144,7 @@ function InvestigatorAddUser() {
                             <input type="text"
                                 id="churchName"
                                 name="churchName"
+                                onChange={handleChange}
                                 value={formData.churchName}
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
@@ -183,12 +194,19 @@ function InvestigatorAddUser() {
 
                         </div>
 
+                        <button
+                            onClick={() => { navigate(-1) }}
+                            class="py-3 m-2 text-sm font-medium text-center text-white rounded-lg bg-red-900 w-full lg:w-20 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                            Cancel
+                        </button>
 
-                        <button class="py-3 m-2 text-sm font-medium text-center text-white rounded-lg bg-blue-900 w-full lg:w-20 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button
+                            onClick={() => { handleSubmit() }}
+                            class="py-3 m-2 text-sm font-medium text-center text-white rounded-lg bg-blue-900 w-full lg:w-20 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Save
                         </button>
 
-                    </form>
+                    </div>
                 </div>
             </section>
         </div>

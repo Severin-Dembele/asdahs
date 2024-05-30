@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
-import { ENDPOINT, PaginatedTable } from '../../utils';
+import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
@@ -158,7 +158,7 @@ function AdminStatistique() {
     setListConference(filteredConferences);
 
 
-    const matchesUnion = unionId ? listInitial.filter(item =>item.church?.conference?.union?.id === parseInt(unionId, 10)) : listInitial;
+    const matchesUnion = unionId ? listInitial.filter(item => item.church?.conference?.union?.id === parseInt(unionId, 10)) : listInitial;
     setList(matchesUnion)
   };
 
@@ -170,7 +170,7 @@ function AdminStatistique() {
     setListChurch(filteredChurches);
     const matchesConference = conferenceId ? listInitial.filter(item => item.church?.conference?.id === parseInt(conferenceId, 10)) : listInitial;
     setList(matchesConference);
-    
+
   };
 
 
@@ -207,12 +207,12 @@ function AdminStatistique() {
   return (
     <div className='p-2'>
       <div className="flex flex-wrap items-center justify-between text-center">
-        <p className="mt-3 mb-6 text-3xl font-bold">Dashboard</p>
+        {/* <p className="mt-3 mb-6 text-3xl font-bold">Dashboard</p> */}
 
       </div>
       <div>
 
-      {/* <div className='lg:columns-2  sm:columns-1 m-2'> */}
+        {/* <div className='lg:columns-2  sm:columns-1 m-2'> */}
         {/* <div className='w-full '>
 
           <form>
@@ -368,6 +368,7 @@ function AdminStatistique() {
                   <tr>
                     <th scope="col" class="px-4 py-3">Full Name</th>
                     {/* <th scope="col" class="px-4 py-3">Conference</th> */}
+                    <th scope="col" class="px-4 py-3">Consent</th>
                     <th scope="col" class="px-4 py-3">Church</th>
                     <th scope="col" class="px-4 py-3">Status</th>
                     <th scope="col" class="px-4 py-3">
@@ -381,6 +382,7 @@ function AdminStatistique() {
                       {getPaginatedData()?.map((item, index) => (
                         <tr key={index} class="border-b dark:border-gray-700">
                           <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}</th>
+                          <td>Yes /  No</td>
                           {/* <td class="px-4 py-3">{item?.church?.conference?.name}</td> */}
                           <td class="px-4 py-3">
                             {item?.church?.name} <br />
@@ -393,15 +395,22 @@ function AdminStatistique() {
                                   item?.status === "CLOSED" ? "bg-green-500" :
                                     item?.status === "REOPENED" ? "bg-blue-500" : "bg-gray-500"
                                 }`}></div>
-                              {item?.status}
+                              {formatStatus(item?.status)}
                             </div>
                           </td>
 
 
                           <td class="px-4 py-3 flex items-center justify-end">
                             <div className="flex justify-center">
-
                             <button
+                                onClick={() => {
+                                  navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
+                                }}
+                                className="px-4 py-1 m-1 text-center text-white bg-green-500 border rounded-md"
+                              >
+                                Enroll
+                              </button>
+                              <button
                                 onClick={() => {
                                   setFormData({
                                     ...item,
@@ -413,17 +422,9 @@ function AdminStatistique() {
                                 View
                               </button>
 
-                              {/* <button
-                                onClick={() => {
-                                  setFormData({
-                                    ...item,
-                                  });
-                                  setIsModal(true);
-                                }}
-                                className="px-4 py-1 m-1 text-center bg-green-500 border rounded-md"
-                              >
-                                Edit
-                              </button>
+                              
+
+                              {/*
                               <button
                                 onClick={() => {
                                   deleteDta(item?.id);

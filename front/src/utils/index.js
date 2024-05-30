@@ -67,6 +67,15 @@ const ROLE_LIST = [
   { value: "RESPONDENT", label: 'Respondent' }
 ];
 
+function formatStatus(status) {
+  // Convert the status to lowercase, split by underscore, capitalize each word, and join them back
+  return status
+    .toLowerCase()
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // Exportation des constantes ENDPOINT
 export {
   ENDPOINT,
@@ -76,4 +85,5 @@ export {
   IMAGES_LINKS,
   OPTIONS_SELCT,
   ROLE_LIST,
+  formatStatus
 };
