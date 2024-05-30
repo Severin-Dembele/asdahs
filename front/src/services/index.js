@@ -25,7 +25,9 @@ export function clear() {
   localStorage.clear();
 }
 
-export const SERVERURLS = `https://backend.asdahs.online/`;
+// export const SERVERURLS =  process.env.API_SERVER;
+
+export const SERVERURLS = `https://backend.asdahs.online/`
 
 const storedData = localStorage.getItem(
   "africanhealthstudy"
@@ -95,7 +97,7 @@ export function putData(endpoint, data) {
 }
 
 export function getData(endpoint) {
-  
+
   return axios.get(`${SERVERURLS}${endpoint}`, {
     headers: {
       authorization: `Bearer ${token}`,
@@ -112,3 +114,6 @@ export function deleteData(endpoint) {
     },
   });
 }
+
+
+

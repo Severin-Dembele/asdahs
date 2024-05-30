@@ -12,8 +12,13 @@ function AdminStatistique() {
   const [listInitial, setListInitial] = useState([]);
   const [listUnion, setListUnion] = useState([]);
   const [listConference, setListConference] = useState([]);
+  const [listConferenceInitial, setListConferenceInitial] = useState([]);
   const [listDivision, setListDivision] = useState([]);
+  const [listUnionInitial, setListUnionInitial] = useState([]);
+
   const [listChurch, setListChurch] = useState([]);
+  const [listChurchInitial, setListChurchInitial] = useState([]);
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -29,9 +34,12 @@ function AdminStatistique() {
       ]);
 
       setListDivision(divisionRes?.data || []);
+      setListUnionInitial(unionRes?.data || []);
       setListUnion(unionRes?.data || []);
       setListConference(confRes?.data || []);
+      setListConferenceInitial(confRes?.data || []);
       setListChurch(churchRes?.data || []);
+      setListChurchInitial(churchRes?.data || []);
       setList(userRes?.data || []);
       setListInitial(userRes?.data || []);
     } catch (error) {
@@ -115,21 +123,86 @@ function AdminStatistique() {
   const [selectedUnion, setSelectedUnion] = useState(null);
   const [selectedDivision, setSelectedDivision] = useState(null);
 
-  const handleFilter = (conferenceId, churchId, divisionId, unionId) => {
-    const filterListById = (list, conferenceId, churchId, divisionId, unionId) => {
+  // const handleFilter = (conferenceId, churchId, divisionId, unionId) => {
+  //   const filterListById = (list, conferenceId, churchId, divisionId, unionId) => {
+  //     return list.filter(item => {
+  //       const matchesConference = conferenceId ? item.church?.conference?.id === parseInt(conferenceId, 10) : true;
+  //       const matchesChurch = churchId ? item.church?.id === parseInt(churchId, 10) : true;
+  //       const matchesDivision = divisionId ? item.church?.conference?.union?.division?.id === parseInt(divisionId, 10) : true;
+  //       const matchesUnion = unionId ? item.church?.conference?.union?.id === parseInt(unionId, 10) : true;
+
+  //       return matchesConference && matchesChurch && matchesDivision && matchesUnion;
+  //     });
+  //   };
+
+  //   const filteredList = filterListById(listInitial, conferenceId, churchId, divisionId, unionId);
+  //   setList(filteredList);
+  // };
+
+  const handleFilterDivisions = (divisionId) => {
+    // Filtrer la liste des unions en fonction de divisionId si celui-ci n'est pas nul, sinon renvoyer la liste initiale
+    const filteredUnions = divisionId ? listUnionInitial.filter(item => item.divisionId === parseInt(divisionId, 10)) : listUnionInitial;
+    // Mettre à jour la liste des unions avec les unions filtrées
+    setListUnion(filteredUnions);
+
+
+    const matchesDivision = divisionId ? listInitial.filter(item => item.church?.conference?.union?.division?.id === parseInt(divisionId, 10)) : listInitial;
+    setList(matchesDivision)
+  };
+
+  const handleFilterUnion = (unionId) => {
+    // Filtrer la liste des conférences en fonction de unionId si celui-ci n'est pas nul, sinon renvoyer la liste initiale
+    const filteredConferences = unionId ? listConferenceInitial.filter(item => item.unionId === parseInt(unionId, 10)) : listConferenceInitial;
+
+    // Mettre à jour la liste des conférences avec les conférences filtrées
+    setListConference(filteredConferences);
+
+
+    const matchesUnion = unionId ? listInitial.filter(item =>item.church?.conference?.union?.id === parseInt(unionId, 10)) : listInitial;
+    setList(matchesUnion)
+  };
+
+  const handleFilterConference = (conferenceId) => {
+    // Filtrer la liste des églises en fonction de conferenceId si celui-ci n'est pas nul, sinon renvoyer la liste initiale
+    const filteredChurches = conferenceId ? listChurchInitial.filter(item => item.conferenceId === parseInt(conferenceId, 10)) : listChurchInitial;
+
+    // Mettre à jour la liste des églises avec les églises filtrées
+    setListChurch(filteredChurches);
+    const matchesConference = conferenceId ? listInitial.filter(item => item.church?.conference?.id === parseInt(conferenceId, 10)) : listInitial;
+    setList(matchesConference);
+    
+  };
+
+
+  const handleFilter = (selectedConference, selectedChurch, selectedDivision, selectedUnion) => {
+    // Vérifier si les identifiants sélectionnés sont nuls
+    const isAnyIdSelected = selectedConference || selectedChurch || selectedDivision || selectedUnion;
+
+    const filterListById = (list, selectedConference, selectedChurch, selectedDivision, selectedUnion) => {
       return list.filter(item => {
-        const matchesConference = conferenceId ? item.church?.conference?.id === parseInt(conferenceId, 10) : true;
-        const matchesChurch = churchId ? item.church?.id === parseInt(churchId, 10) : true;
-        const matchesDivision = divisionId ? item.church?.conference?.union?.division?.id === parseInt(divisionId, 10) : true;
-        const matchesUnion = unionId ? item.church?.conference?.union?.id === parseInt(unionId, 10) : true;
+        const matchesConference = selectedConference ? item.conferenceId === parseInt(selectedConference, 10) : true;
+        const matchesChurch = selectedChurch ? item.churchId === parseInt(selectedChurch, 10) : true;
+        const matchesDivision = selectedDivision ? item.church?.conference?.union?.divisionId === parseInt(selectedDivision, 10) : true;
+        const matchesUnion = selectedUnion ? item.church?.conference?.unionId === parseInt(selectedUnion, 10) : true;
 
         return matchesConference && matchesChurch && matchesDivision && matchesUnion;
       });
     };
 
-    const filteredList = filterListById(listInitial, conferenceId, churchId, divisionId, unionId);
+    // Si aucun identifiant sélectionné n'est présent, retournez la liste initiale
+    if (!isAnyIdSelected) {
+      setList(listInitial);
+      return;
+    }
+
+    // Sinon, filtrez la liste en fonction des identifiants sélectionnés
+    const filteredList = filterListById(listInitial, selectedConference, selectedChurch, selectedDivision, selectedUnion);
     setList(filteredList);
   };
+
+
+
+
 
   return (
     <div>
@@ -143,43 +216,7 @@ function AdminStatistique() {
 
           <form>
             <div className="grid gap-6 mb-6 md:grid-cols-2">
-             
-             
-              <div>
-                <label htmlFor="select-union" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Union</label>
-                <select
-                  id="select-union"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedUnion(value);
-                    handleFilter(selectedConference, selectedChurch, selectedDivision, value);
-                  }}
-                >
-                  <option selected>Choose a union</option>
-                  {listUnion && listUnion.map((item, index) => (
-                    <option key={index} value={item.id}>{item.name}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label htmlFor="select-conference" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Conference</label>
-                <select
-                  id="select-conference"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedConference(value);
-                    handleFilter(value, selectedChurch, selectedDivision, selectedUnion);
-                  }}
-                >
-                  <option selected>Choose a conference</option>
-                  {listConference && listConference.map((item, index) => (
-                    <option key={index} value={item.id}>{item.name}</option>
-                  ))}
-                </select>
-              </div>
+
               <div>
                 <label htmlFor="select-division" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Division</label>
                 <select
@@ -188,15 +225,51 @@ function AdminStatistique() {
                   onChange={(e) => {
                     const value = e.target.value;
                     setSelectedDivision(value);
-                    handleFilter(selectedConference, selectedChurch, value, selectedUnion);
+                    handleFilterDivisions(value);
                   }}
                 >
-                  <option selected>Choose a division</option>
+                  <option selected value={null}>Choose a division</option>
                   {listDivision && listDivision.map((item, index) => (
                     <option key={index} value={item.id}>{item.name}</option>
                   ))}
                 </select>
               </div>
+              <div>
+                <label htmlFor="select-union" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Union</label>
+                <select
+                  id="select-union"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedUnion(value);
+                    handleFilterUnion(value);
+                  }}
+                >
+                  <option selected value={null}>Choose a union</option>
+                  {listUnion && listUnion.map((item, index) => (
+                    <option key={index} value={item.id}>{item.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="select-conference" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Conference</label>
+                <select
+                  id="select-conference"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedConference(value);
+                    handleFilterConference(value);
+                  }}
+                >
+                  <option selected value={null}>Choose a conference</option>
+                  {listConference && listConference.map((item, index) => (
+                    <option key={index} value={item.id}>{item.name}</option>
+                  ))}
+                </select>
+              </div>
+
               <div>
                 <label htmlFor="select-church" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select church</label>
                 <select
@@ -205,10 +278,10 @@ function AdminStatistique() {
                   onChange={(e) => {
                     const value = e.target.value;
                     setSelectedChurch(value);
-                    handleFilter(selectedConference, value, selectedDivision, selectedUnion);
+                    handleFilterConference(selectedConference, value, selectedDivision, selectedUnion);
                   }}
                 >
-                  <option selected>Choose a church</option>
+                  <option selected value={null}>Choose a church</option>
                   {listChurch && listChurch.map((item, index) => (
                     <option key={index} value={item.id}>{item.name}</option>
                   ))}
@@ -325,6 +398,19 @@ function AdminStatistique() {
 
                           <td class="px-4 py-3 flex items-center justify-end">
                             <div className="flex justify-center">
+
+                            <button
+                                onClick={() => {
+                                  setFormData({
+                                    ...item,
+                                  });
+                                  setIsModal(true);
+                                }}
+                                className="px-4 py-1 m-1 text-center text-white bg-gray-500 border rounded-md"
+                              >
+                                View
+                              </button>
+
                               <button
                                 onClick={() => {
                                   setFormData({

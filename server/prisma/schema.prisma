@@ -65,6 +65,7 @@ model User {
   isActive               Boolean                  @default(true)
   createAt               DateTime                 @default(now())
   updateAt               DateTime                 @updatedAt
+  userCreated            String?
   formulaireInvestigator formulaireInvestigator[]
   churchId               Int
   reponseRepondu         ReponseRepondu[]

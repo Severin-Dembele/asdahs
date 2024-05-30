@@ -6,10 +6,12 @@ import { PrismaModule } from 'src/infrastructure/config/prisma/prisma.module';
 import { ChurchService } from 'src/repositories/church.service';
 import * as path from 'path';
 import { UsersService } from 'src/repositories/users.service';
+import { MailsService } from 'src/mails/mails.service';
+import { AuthService } from 'src/repositories/auth/auth.service';
 
 @Module({
   controllers: [ChurchController],
-  providers: [ChurchService, UsersService],
+  providers: [ChurchService, UsersService, MailsService, AuthService],
   imports: [
     PrismaModule,
     MulterModule.register({

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { FrameEror404 } from "./frame";
-import { Authentification, AdminAuthGuard, AdminRoutes } from "./routes/admin";
+import { Authentification, AdminAuthGuard, AdminRoutes, ResetPassWord } from "./routes/admin";
 import { VisitoWelcomePage, VisitorAbout, VisitorHome } from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
 import { InvestigatorSocietalFormulaire ,InvestigatorAddUser} from "./pages/investigator";
@@ -58,6 +58,10 @@ function App() {
             <Route
               path="africanhealthstudy/panel-administration/authentification"
               element={<Authentification />}
+            />
+             <Route
+              path="africanhealthstudy/panel-administration/reset_password"
+              element={<ResetPassWord/>}
             />
             <Route
               path="about"

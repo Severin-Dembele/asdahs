@@ -108,12 +108,12 @@ export default function Authentification() {
 
               <div className="flex items-center justify-between">
 
-                <div className="text-sm">
+                <div className="text-sm m-1 underline">
                   <Link
-                    href="#"
+                    to="/africanhealthstudy/panel-administration/reset_password"
                     className="font-semibold text-blue-950 hover:text-blue-950"
                   >
-                    Forgot password ?{" "}
+                  Forgot your password ?{" "}
                   </Link>
                 </div>
               </div>

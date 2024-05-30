@@ -29,10 +29,10 @@ const ENDPOINT = {
 export { default as PaginatedTable } from "./PaginatedTable";
 
 // L'URL de base du serveur
-const SERVERURLS = `https://backend.asdahs.online/`;
+const SERVERURLS =  process.env.API_SERVER;
 
 // L'URL pour les images d'utilisateur
-const IMAGES_URLS = `https://backend.asdahs.online/uploads/`;
+const IMAGES_URLS = `${process.env.API_SERVER}uploads/`;
 
 const IMAGES_LINKS = {
   users: "users/",
@@ -67,6 +67,15 @@ const ROLE_LIST = [
   { value: "RESPONDENT", label: 'Respondent' }
 ];
 
+function formatStatus(status) {
+  // Convert the status to lowercase, split by underscore, capitalize each word, and join them back
+  return status
+    .toLowerCase()
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // Exportation des constantes ENDPOINT
 export {
   ENDPOINT,
@@ -76,4 +85,5 @@ export {
   IMAGES_LINKS,
   OPTIONS_SELCT,
   ROLE_LIST,
+  formatStatus
 };

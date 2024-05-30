@@ -53,7 +53,7 @@ export class MailsService {
     });
   }
 
-  sendMailParticipant(email: string, fullname: string){
+  sendMailParticipant(email: string, fullname: string) {
     this.mailerService.sendMail({
       to: email,
       from: 'essitech@essitechgroup.com',
@@ -74,15 +74,28 @@ export class MailsService {
     });
   }
 
-  sendMailInvestigator(email: string, token){
+  sendMailInvestigator(email: string, token) {
     this.mailerService.sendMail({
       to: email,
       from: 'essitech@essitechgroup.com',
       subject: 'Essitech Contact',
       template: 'investigator',
-      context:{
-        token: token
+      context: {
+        token: token,
+      },
+    });
+  }
+
+  sendMailRespondent(email: string, token, url) {
+    this.mailerService.sendMail({
+      to: email,
+      from: 'bienvenueudes96@gmail.com',
+      subject: 'Formulaire',
+      template: 'respondent',
+      context: {
+        url: url,
+        token: token,
       }
-    })
+    });
   }
 }
