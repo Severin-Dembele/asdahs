@@ -29,6 +29,7 @@ export class CreateUserDto {
   userConnected: string;
 
   conferenceId: string;
+  selfResponse: string;
 
   public toEntity(): User {
     let userEntity: User;

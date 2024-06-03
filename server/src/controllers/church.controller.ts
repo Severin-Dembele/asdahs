@@ -47,7 +47,7 @@ export class ChurchController {
       const userConnected = await this.userService.findOne(parseInt(data.sub));
       userDto.userConnected = userConnected.email;
     }
-    const user = await this.userService.create(id, userDto);
+    const user = await this.userService.create(userDto);
     if (user.role == 'RESPONDENT') {
       const token = await this.authService.generateAccessTokenRespondant(
         user.id,

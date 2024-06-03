@@ -32,13 +32,41 @@ export class UsersController {
     private readonly mailService: MailsService,
   ) {}
 
-  /* @Post()
-  @UseInterceptors(FileInterceptor('avatar'))
+  @Post()
+  @UseInterceptors(FileInterceptor('profile'))
   @ApiConsumes('multipart/form-data')
-  create(@UploadedFile() file: Express.Multer.File, @Body() createUserDto) {
-    createUserDto.avatar = file ? file.filename : null;
-    return this.usersService.create(createUserDto);
-  }*/
+  async createUser(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+    @Body() userDto,
+    @Req() request: Request,
+  ) {
+    userDto.profile = file ? file.filename : null;
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    if (userDto.role == 'RESPONDENT') {
+      const userConnected = await this.usersService.findOne(parseInt(data.sub));
+      userDto.userConnected = userConnected.email;
+    }
+    const user = await this.usersService.create(userDto);
+    if (user.role == 'RESPONDENT') {
+      const token = await this.authService.generateAccessTokenRespondant(
+        user.id,
+        user.email,
+      );
+     /* await this.mailService.sendMailRespondent(
+        user.email,
+        token,
+        process.env.SERVER_FRONT_URL,
+      ); */
+      await this.mailService.sendMailAcceptToAnswer(
+        user.email,
+        token,
+        process.env.SERVER_FRONT_URL_ANSWER_FORM
+      );
+    }
+    return user;
+  }
 
   @Post(':userId/formulaires')
   @UseInterceptors(NoFilesInterceptor())
@@ -66,6 +94,13 @@ export class UsersController {
     return formulaireData;
 
     //return this.formulaireInvestigatorService.create(userId, formulaireInvestigatorDto);
+  }
+
+  @Put('/accept-answer')
+  async acceptResponse(@Req() request: Request, @Body() userResponse) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
 
   @Get(':userId/formulaires')

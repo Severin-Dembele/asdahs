@@ -8,7 +8,7 @@ const argon2 = require('argon2');
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
-  async create(idChurch: number, createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
       data: {
         password: await argon2.hash(createUserDto.password),
@@ -18,7 +18,6 @@ export class UsersService {
         telephone: createUserDto.telephone,
         role: createUserDto.role,
         status: 'NOT_STARTED',
-        churchId: idChurch,
         userCreated: createUserDto.userConnected,
         churchName: createUserDto.churchName,
         typeChurch: createUserDto.typeChurch,
@@ -26,6 +25,21 @@ export class UsersService {
           createUserDto.conferenceId == null
             ? null
             : parseInt(createUserDto.conferenceId),
+        selfResponse:
+          createUserDto.selfResponse == null
+            ? null
+            : createUserDto.selfResponse == 'true',
+      },
+    });
+  }
+
+  acceptToAnswer(userId: string, userResponse) {
+    return this.prisma.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data: {
+        acceptResponse: userResponse.acceptToAnswer,
       },
     });
   }

@@ -64,15 +64,17 @@ model User {
   typeChurch             String?
   churchName             String?
   conference             Conference?              @relation(fields: [conferenceId], references: [id])
-  church                 Church                   @relation(fields: [churchId], references: [id])
+  church                 Church ?                  @relation(fields: [churchId], references: [id])
   isActive               Boolean                  @default(true)
   createAt               DateTime                 @default(now())
   updateAt               DateTime                 @updatedAt
   userCreated            String?
   formulaireInvestigator formulaireInvestigator[]
-  churchId               Int
+  churchId               Int?
   reponseRepondu         ReponseRepondu[]
   conferenceId           Int?
+  acceptResponse         Boolean? 
+  selfResponse  Boolean?
 }
 
 enum Status {

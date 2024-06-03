@@ -98,4 +98,17 @@ export class MailsService {
       }
     });
   }
+
+  sendMailAcceptToAnswer(email: string, token, url){
+    this.mailerService.sendMail({
+      to: email,
+      from: 'bienvenueudes96@gmail.com',
+      subject: 'Accept To answer form',
+      template: 'respondent',
+      context: {
+        url: url,
+        token: token,
+      }
+    });
+  }
 }
