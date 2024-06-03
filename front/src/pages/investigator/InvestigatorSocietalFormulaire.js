@@ -300,7 +300,11 @@ function AdminStatistique() {
             <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
               <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white pe-1 m-3">Form completions</h5>
 
-              <div class="grid grid-cols-3 gap-3 mb-2">
+              <div class="grid lg:grid-cols-4 gap-3 mb-2 md:grid-cols-2">
+                <dl class="bg-blue-300 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
+                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-blue-900 dark:text-blue-800 text-sm font-medium flex items-center justify-center mb-1">12</dt>
+                  <dd class="text-blue-900 dark:text-blue-800 text-sm font-medium">Total</dd>
+                </dl>
                 <dl class="bg-orange-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
                   <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-orange-600 dark:text-orange-300 text-sm font-medium flex items-center justify-center mb-1">12</dt>
                   <dd class="text-orange-600 dark:text-orange-300 text-sm font-medium">Not Started</dd>
@@ -402,7 +406,7 @@ function AdminStatistique() {
 
                           <td class="px-4 py-3 flex items-center justify-end">
                             <div className="flex justify-center">
-                            <button
+                              <button
                                 onClick={() => {
                                   navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
                                 }}
@@ -422,7 +426,7 @@ function AdminStatistique() {
                                 View
                               </button>
 
-                              
+
 
                               {/*
                               <button
