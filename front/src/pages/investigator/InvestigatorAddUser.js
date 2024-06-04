@@ -79,11 +79,11 @@ function InvestigatorAddUser() {
 
             <section class="bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 lg:px-4 p-4 mx-auto max-w-screen-md">
-                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Adding respondent</h2>
-                   
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">New  Respondent</h2>
+
                     <div class="space-y-8">
                         <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Name</label>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Full Name <span className='font-bold text-xl text-red-800'> *</span> </label>
                             <input
                                 name="name"
                                 value={formData.name}
@@ -94,7 +94,7 @@ function InvestigatorAddUser() {
                         <div>
                             <label
                                 for="telephone"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">telephone/WhatsApp</label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Phone  <span className='font-bold text-xl text-red-800'> *</span></label>
                             <input type="tel"
                                 id="telephone"
                                 name="telephone"
@@ -103,7 +103,7 @@ function InvestigatorAddUser() {
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email adress</label>
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email  </label>
                             <input type="email"
 
                                 id="email"
@@ -114,7 +114,7 @@ function InvestigatorAddUser() {
                         </div>
                         <div>
                             <div className="block mb-2">
-                                <Label htmlFor="conferenceId" value="Conference" />
+                                <label for="conferenceId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Conference <span className='font-bold text-xl text-red-800'> *</span> </label>
                             </div>
                             <Select
                                 id="conferenceId"
@@ -150,6 +150,9 @@ function InvestigatorAddUser() {
                         </div>
 
                         <div>
+                            <div className="block ">
+                                <label for="typeChurch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Type of Church <span className='font-bold text-xl text-red-800'> *</span> </label>
+                            </div>
                             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                     <div class="flex items-center ps-3">
@@ -193,6 +196,68 @@ function InvestigatorAddUser() {
                             </ul>
 
                         </div>
+
+                        <div>
+                            <div className="block ">
+                                <label for="typeChurch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Language <span className='font-bold text-xl text-red-800'> *</span> </label>
+                            </div>
+                            <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="typeChurch"
+                                            name="typeChurch"
+                                            onChange={handleChange}
+                                            value="English"
+                                            checked={formData?.typeChurch === 'English'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">English</label>
+                                    </div>
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input type="radio"
+                                            id="typeChurch"
+                                            name="typeChurch"
+                                            value="French"
+                                            checked={formData?.typeChurch === 'French'}
+                                            onChange={handleChange}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">French</label>
+                                    </div>
+                                </li>
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="typeChurch"
+                                            onChange={handleChange}
+                                            name="typeChurch"
+                                            value="Spanish"
+                                            checked={formData?.typeChurch === 'Spanish'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Spanish</label>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                        <div>
+
+                            <div class="flex">
+                                <div class="flex items-center h-5">
+                                    <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                </div>
+                                <div class="ms-2 text-sm">
+                                    <label for="helper-checkbox" class="font-medium text-gray-900 dark:text-gray-300">Respondent wishes </label>
+                                    <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 dark:text-gray-300">The respondent wishes to fill out the form themselves</p>
+                                </div>
+                            </div>
+
+                        </div>
+
 
                         <button
                             onClick={() => { navigate(-1) }}

@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { FrameEror404 } from "./frame";
 import { Authentification, AdminAuthGuard, AdminRoutes, ResetPassWord } from "./routes/admin";
-import { VisitoWelcomePage, VisitorAbout, VisitorHome } from "./pages/visitor";
+import { VisitoWelcomePage, VisitorAbout, VisitorAcceptAnswerConsent, VisitorHome } from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
-import { InvestigatorSocietalFormulaire ,InvestigatorAddUser} from "./pages/investigator";
+import { InvestigatorSocietalFormulaire, InvestigatorAddUser } from "./pages/investigator";
+import { LayoutInvestigator } from "./components/Layout";
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +45,7 @@ function App() {
         <Router>
           <Routes>
             <Route index element={<VisitoWelcomePage />} />
-
+            <Route path="concent" element={<VisitorAcceptAnswerConsent />} />
             <Route
               path="africanhealthstudy/*"
               element={
@@ -59,32 +60,35 @@ function App() {
               path="africanhealthstudy/panel-administration/authentification"
               element={<Authentification />}
             />
-             <Route
+            <Route
               path="africanhealthstudy/panel-administration/reset_password"
-              element={<ResetPassWord/>}
+              element={<ResetPassWord />}
             />
             <Route
               path="about"
               element={<VisitorAbout />}
             />
-            <Route
-              path="investigator/*"
-              element={
-                <InvestigatorAuthGuard>
-                  <Routes>
-                    <Route index element={<InvestigatorSocietalFormulaire />} />
-                    <Route
-                      path="/investigator"
-                      element={<InvestigatorSocietalFormulaire />}
-                    />
-                     <Route
-                      path="/useradd"
-                      element={<InvestigatorAddUser />}
-                    />
-                  </Routes>
-                </InvestigatorAuthGuard>
-              }
-            />
+            <Route element={<LayoutInvestigator />}>
+              <Route
+                path="investigator/*"
+                element={
+                  <InvestigatorAuthGuard>
+                    <Routes >
+                      <Route index element={<InvestigatorSocietalFormulaire />} />
+                      <Route
+                        path="/investigator"
+                        element={<InvestigatorSocietalFormulaire />}
+                      />
+                      <Route
+                        path="/useradd"
+                        element={<InvestigatorAddUser />}
+                      />
+                    </Routes>
+                  </InvestigatorAuthGuard>
+                }
+              />
+            </Route>
+
             <Route path="*" element={<FrameEror404 />} />
           </Routes>
         </Router>
