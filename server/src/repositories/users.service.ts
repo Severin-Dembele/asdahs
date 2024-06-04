@@ -45,14 +45,21 @@ export class UsersService {
   }
 
   findAllUniqueNameUser() {
-    return this.prisma.user.findMany({
+    return this.prisma.$queryRaw`
+    select u.id, u.name, u.email, u.telephone, u.churchName, CAST(count(f.userId) AS CHAR) as nb_formulaire 
+        from User u 
+    left join formulaireinvestigator f on f.userId = u.id 
+    where u.role = "ADMIN" or u.role = "INVESTIGATOR"
+     group by u.id, u.name, u.email, u.telephone, u.churchName
+  `;
+    /*  return this.prisma.user.findMany({
       where: {
         OR: [{ role: 'ADMIN' }, { role: 'INVESTIGATOR' }],
       },
       orderBy: {
         createAt: 'desc',
       },
-    });
+    });*/
   }
 
   findAll(username: string) {
@@ -85,6 +92,17 @@ export class UsersService {
     return this.prisma.user.findUnique({
       where: {
         id: id,
+      },
+    });
+  }
+
+  async updateStatus(userId: number) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        status: 'PROGRESS',
       },
     });
   }

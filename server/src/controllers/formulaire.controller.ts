@@ -242,6 +242,10 @@ export class FormulaireController {
             formulaireId: idFormulaire,
           });
         }
+      } else {
+        if (user.role == 'RESPONDENT') {
+          await this.userService.updateStatus(user.id);
+        }
       }
     }
     for (let i = 0; i < reponseRepondu.length; i++) {
