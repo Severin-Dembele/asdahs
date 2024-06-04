@@ -75,6 +75,7 @@ model User {
   conferenceId           Int?
   acceptResponse         Boolean? 
   selfResponse  Boolean?
+  langage String?
 }
 
 enum Status {
