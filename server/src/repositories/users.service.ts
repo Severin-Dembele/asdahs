@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../domain/dto/users/create-user.dto';
 import { UpdateUserDto } from '../domain/dto/users/update-user.dto';
 import { PrismaService } from './prisma/prisma.service';
+import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const argon2 = require('argon2');
 
@@ -13,7 +14,7 @@ export class UsersService {
       data: {
         password: await argon2.hash(createUserDto.password),
         profile: createUserDto.profile,
-        email: createUserDto.email,
+        email: createUserDto.email == null ? uuidv4() : createUserDto.email,
         name: createUserDto.name,
         telephone: createUserDto.telephone,
         role: createUserDto.role,
@@ -29,6 +30,7 @@ export class UsersService {
           createUserDto.selfResponse == null
             ? null
             : createUserDto.selfResponse == 'true',
+        langage: createUserDto.langage == null ? null : createUserDto.langage,
       },
     });
   }
@@ -129,6 +131,11 @@ export class UsersService {
           updateUserDto.conferenceId == null
             ? null
             : parseInt(updateUserDto.conferenceId),
+        selfResponse:
+          updateUserDto.selfResponse == null
+            ? null
+            : updateUserDto.selfResponse == 'true',
+        langage: updateUserDto.langage == null ? null : updateUserDto.langage,
       },
     });
   }

@@ -49,12 +49,12 @@ export class UsersController {
       userDto.userConnected = userConnected.email;
     }
     const user = await this.usersService.create(userDto);
-    if (user.role == 'RESPONDENT') {
+    if (user.role == 'RESPONDENT' && userDto.email != null) {
       const token = await this.authService.generateAccessTokenRespondant(
         user.id,
         user.email,
       );
-     /* await this.mailService.sendMailRespondent(
+      /* await this.mailService.sendMailRespondent(
         user.email,
         token,
         process.env.SERVER_FRONT_URL,
@@ -62,7 +62,7 @@ export class UsersController {
       await this.mailService.sendMailAcceptToAnswer(
         user.email,
         token,
-        process.env.SERVER_FRONT_URL_ANSWER_FORM
+        process.env.SERVER_FRONT_URL_ANSWER_FORM,
       );
     }
     return user;
