@@ -17,7 +17,9 @@ function InvestigatorAddUser() {
         email: "",
         churchName: "",
         role: "RESPONDENT",
-        password: "7Q$GV1TI#KOALLA#2023"
+        password: "7Q$GV1TI#KOALLA#2023",
+        selfResponse: true,
+        langage: ""
     });
     const [listConference, setListConference] = useState([]);
 
@@ -54,7 +56,7 @@ function InvestigatorAddUser() {
 
         try {
             let response;
-            response = await postData(`${ENDPOINT.churches}/1/${ENDPOINT.users}`, formData);
+            response = await postData(`${ENDPOINT.users}`, formData);
 
 
             const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
@@ -206,11 +208,11 @@ function InvestigatorAddUser() {
                                     <div class="flex items-center ps-3">
                                         <input
                                             type="radio"
-                                            id="typeChurch"
-                                            name="typeChurch"
+                                            id="langage"
+                                            name="langage"
                                             onChange={handleChange}
                                             value="English"
-                                            checked={formData?.typeChurch === 'English'}
+                                            checked={formData?.langage === 'English'}
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                         <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">English</label>
                                     </div>
@@ -218,10 +220,10 @@ function InvestigatorAddUser() {
                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                     <div class="flex items-center ps-3">
                                         <input type="radio"
-                                            id="typeChurch"
-                                            name="typeChurch"
+                                            id="langage"
+                                            name="langage"
                                             value="French"
-                                            checked={formData?.typeChurch === 'French'}
+                                            checked={formData?.langage === 'French'}
                                             onChange={handleChange}
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                         <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">French</label>
@@ -231,11 +233,11 @@ function InvestigatorAddUser() {
                                     <div class="flex items-center ps-3">
                                         <input
                                             type="radio"
-                                            id="typeChurch"
+                                            id="langage"
+                                            name="langage"
                                             onChange={handleChange}
-                                            name="typeChurch"
                                             value="Spanish"
-                                            checked={formData?.typeChurch === 'Spanish'}
+                                            checked={formData?.langage === 'Spanish'}
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
                                         <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Spanish</label>
                                     </div>
@@ -248,10 +250,18 @@ function InvestigatorAddUser() {
 
                             <div class="flex">
                                 <div class="flex items-center h-5">
-                                    <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                    <input
+                                        id="selfResponse"
+                                        name="selfResponse"
+                                        aria-describedby="selfResponse"
+                                        type="checkbox"
+                                        // onChange={handleChange}
+                                        checked={true}
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+
                                 </div>
                                 <div class="ms-2 text-sm">
-                                    <label for="helper-checkbox" class="font-medium text-gray-900 dark:text-gray-300">Respondent wishes </label>
+                                    <label for="selfResponse" class="font-medium text-gray-900 dark:text-gray-300">Respondent wishes </label>
                                     <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 dark:text-gray-300">The respondent wishes to fill out the form themselves</p>
                                 </div>
                             </div>

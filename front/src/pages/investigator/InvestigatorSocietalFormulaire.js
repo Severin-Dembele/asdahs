@@ -293,6 +293,9 @@ function AdminStatistique() {
 
         </div> */}
         <div className='w-full'>
+          <div>
+            {JSON.stringify(list)}
+          </div>
 
           <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
 
@@ -372,8 +375,9 @@ function AdminStatistique() {
                   <tr>
                     <th scope="col" class="px-4 py-3">Full Name</th>
                     {/* <th scope="col" class="px-4 py-3">Conference</th> */}
-                    <th scope="col" class="px-4 py-3">Consent</th>
                     <th scope="col" class="px-4 py-3">Church</th>
+                    <th scope="col" class="px-4 py-3">Consent</th>
+
                     <th scope="col" class="px-4 py-3">Status</th>
                     <th scope="col" class="px-4 py-3">
                       {/* <span class="sr-only">Actions</span> */}
@@ -385,12 +389,28 @@ function AdminStatistique() {
                     <>
                       {getPaginatedData()?.map((item, index) => (
                         <tr key={index} class="border-b dark:border-gray-700">
-                          <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}</th>
-                          <td>Yes /  No</td>
+                          <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}
+                            <br />
+                            {item?.telephone}
+                          </th>
+
                           {/* <td class="px-4 py-3">{item?.church?.conference?.name}</td> */}
                           <td class="px-4 py-3">
-                            {item?.church?.name} <br />
-                            {item?.church?.city},{item?.church?.country}
+                            {item?.typeChurch} <br />
+                            {item?.churchName}
+                          </td>
+                          <td>
+                            {item?.acceptResponse ? (
+                              <svg class="w-6.5 h-5  me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                              </svg>
+                            ) : (
+                              <svg class="w-6 h-6 text-red-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                              </svg>
+
+                            )}
+
                           </td>
                           <td class="px-4 py-3">
                             <div class="flex items-center">
@@ -406,14 +426,16 @@ function AdminStatistique() {
 
                           <td class="px-4 py-3 flex items-center justify-end">
                             <div className="flex justify-center">
-                              <button
-                                onClick={() => {
-                                  navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
-                                }}
-                                className="px-4 py-1 m-1 text-center text-white bg-green-500 border rounded-md"
-                              >
-                                Enroll
-                              </button>
+                              {!item?.selfResponse && (
+                                <button
+                                  onClick={() => {
+                                    navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
+                                  }}
+                                  className="px-4 py-1 m-1 text-center text-white bg-green-500 border rounded-md"
+                                >
+                                  Enroll
+                                </button>
+                              )}
                               <button
                                 onClick={() => {
                                   setFormData({
