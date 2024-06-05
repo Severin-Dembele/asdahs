@@ -21,6 +21,7 @@ import { AuthGuard } from '../repositories/auth/auth.guard';
 import { FormulaireInvestigatorService } from '../repositories/formulaireInvestigator.service';
 import { AuthService } from '../repositories/auth/auth.service';
 import { MailsService } from '../mails/mails.service';
+import generator from 'generate-password-ts';
 
 @Controller('users')
 @ApiTags('users')
@@ -44,6 +45,14 @@ export class UsersController {
     userDto.profile = file ? file.filename : null;
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
+
+    const password = generator.generate({
+      length: 8,
+      lowercase: true,
+      uppercase: true,
+      numbers: true,
+    });
+    userDto.password = password;
     if (userDto.role == 'RESPONDENT') {
       const userConnected = await this.usersService.findOne(parseInt(data.sub));
       userDto.userConnected = userConnected.email;
@@ -63,6 +72,11 @@ export class UsersController {
         user.email,
         token,
         process.env.SERVER_FRONT_URL_ANSWER_FORM,
+      );
+    } else if (user.role == 'INVESTIGATOR') {
+      await this.mailService.sendMailPasswordToUser(
+        user.email,
+        userDto.password,
       );
     }
     return user;

@@ -95,11 +95,11 @@ export class MailsService {
       context: {
         url: url,
         token: token,
-      }
+      },
     });
   }
 
-  sendMailAcceptToAnswer(email: string, token, url){
+  sendMailAcceptToAnswer(email: string, token, url) {
     this.mailerService.sendMail({
       to: email,
       from: 'bienvenueudes96@gmail.com',
@@ -108,7 +108,19 @@ export class MailsService {
       context: {
         url: url,
         token: token,
-      }
+      },
+    });
+  }
+
+  sendMailPasswordToUser(email: string, password: string) {
+    this.mailerService.sendMail({
+      to: email,
+      from: 'bienvenueudes96@gmail.com',
+      subject: 'User password',
+      template: 'password',
+      context: {
+        password: password,
+      },
     });
   }
 }
