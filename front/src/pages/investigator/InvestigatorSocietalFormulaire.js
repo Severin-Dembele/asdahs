@@ -294,7 +294,7 @@ function AdminStatistique() {
         </div> */}
         <div className='w-full'>
           <div>
-            {JSON.stringify(list)}
+
           </div>
 
           <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
@@ -391,7 +391,7 @@ function AdminStatistique() {
                         <tr key={index} class="border-b dark:border-gray-700">
                           <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}
                             <br />
-                            {item?.telephone}
+                            {item?.telephone}, {item?.email}
                           </th>
 
                           {/* <td class="px-4 py-3">{item?.church?.conference?.name}</td> */}

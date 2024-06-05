@@ -23,7 +23,8 @@ const ENDPOINT = {
   divisions: "divisions",
   unions: "unions",
   conferences: "conferences",
-  churches: "churches"
+  churches: "churches",
+  accept:"users/accept-answer"
 };
 
 export { default as PaginatedTable } from "./PaginatedTable";

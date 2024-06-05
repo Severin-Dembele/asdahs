@@ -1,51 +1,53 @@
 import React, { useState } from "react";
-import { postDataWithNoToken, setItem, postData } from "../../services";
+import { postDataWithNoToken, setItem, postData, putDataToken } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 function VisitorAcceptAnswerConsent() {
     const navigation = useNavigate();
+
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const token = params.get("token");
 
     const [alertModal, setAlertModal] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
         password: "",
+        acceptToAnswer: false,
     });
     const [message, setMessage] = useState("Information");
 
     const handleSubmit = async (event) => {
         setAlertModal(true);
 
+        if(!formData?.acc)
+
         try {
-            let endpoint = ENDPOINT.security;
+            let endpoint = ENDPOINT.accept;
             let response;
-            response = await postDataWithNoToken(endpoint, formData, false);
-            const successMessage =
-                response?.data?.message || "Informations enregistrées avec succès.";
+            response = await putDataToken(endpoint, formData, false, token);
+            const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
             setMessage(successMessage);
-            setItem(response?.data);
+
             console.log(response);
-            setFormData({ username: "", password: "" });
-            if (response?.data?.role === "ADMIN") {
-                navigation("/africanhealthstudy/panel-administration");
-            } else if (response?.data?.role === "INVESTIGATOR") {
-                navigation("/investigator");
-            } else {
-                navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
-            }
+
         } catch (error) {
             console.log(error?.response);
 
-            const errorMessage =
-                error?.response?.data?.message ||
-                "Une erreur est survenue, réessayez plus tard !";
+            const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
             setMessage(errorMessage);
         }
     };
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prevState) => ({ ...prevState, [name]: value }));
+    const handleChangeChecked = (event) => {
+        const { name, checked } = event.target;
+        setFormData({
+            ...formData,
+            [name]: checked,
+        });
     };
 
 
@@ -129,8 +131,17 @@ function VisitorAcceptAnswerConsent() {
                             </p>
 
                             <div class="flex items-center mb-4">
-                                <input id="default-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="default-checkbox" class="ms-2 font-medium text-xl font-bold text-red-800 dark:text-gray-300">By clicking here, you agree to participate in our study *.</label>
+                                <input
+                                    id="acceptToAnswer"
+                                    name="acceptToAnswer"
+                                    aria-describedby="acceptToAnswer"
+                                    type="checkbox"
+                                    checked={formData?.acceptToAnswer}
+                                    onChange={(e) => handleChangeChecked(e)}
+
+
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                <label for="acceptToAnswer" class="ms-2 font-medium text-xl font-bold text-red-800 dark:text-gray-300">By clicking here, you agree to participate in our study *.</label>
                             </div>
                             <div class="flex flex-col  space-x-5 items-center  lg:justify-start space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
 

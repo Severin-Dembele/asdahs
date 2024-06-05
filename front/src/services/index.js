@@ -44,6 +44,16 @@ export function postData(endpoint, data, multipart = true) {
   });
 }
 
+export function putDataToken(endpoint, data, multipart = true,tokenData) {
+  return axios.put(`${SERVERURLS}${endpoint}`, data, {
+    headers: {
+      authorization: `Bearer ${tokenData}`,
+      "content-type": multipart ? "multipart/form-data" : "application/json",
+    },
+  });
+}
+
+
 export function postDataWithNoToken1(endpoint, data) {
   return axios.post(`${SERVERURLS}${endpoint}`, data, {
     headers: {

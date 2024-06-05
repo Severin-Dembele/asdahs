@@ -18,7 +18,7 @@ function InvestigatorAddUser() {
         churchName: "",
         role: "RESPONDENT",
         password: "7Q$GV1TI#KOALLA#2023",
-        selfResponse: true,
+        selfResponse: false,
         langage: ""
     });
     const [listConference, setListConference] = useState([]);
@@ -27,6 +27,14 @@ function InvestigatorAddUser() {
         setFormData({
             ...formData,
             [event.target.name]: event.target.value
+        });
+    };
+
+    const handleChangeChecked = (event) => {
+        const { name, checked } = event.target;
+        setFormData({
+            ...formData,
+            [name]: checked,
         });
     };
 
@@ -50,9 +58,9 @@ function InvestigatorAddUser() {
 
 
     const [message, setMessage] = useState('Information');
-
+    const [alertModal, setAlertModal] = useState(false);
     const handleSubmit = async () => {
-
+        setAlertModal(true)
 
         try {
             let response;
@@ -62,7 +70,11 @@ function InvestigatorAddUser() {
             const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
             setMessage(successMessage);
             setFormData({});
-            console.log(response);
+            setTimeout(() => {
+                navigate(-1);
+            }, 500);
+
+
         } catch (error) {
             console.log("Error", error?.response);
             const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
@@ -255,14 +267,16 @@ function InvestigatorAddUser() {
                                         name="selfResponse"
                                         aria-describedby="selfResponse"
                                         type="checkbox"
-                                        // onChange={handleChange}
-                                        checked={true}
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                        checked={formData?.selfResponse}
+                                        onChange={(e) => handleChangeChecked(e)}
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                    />
+
 
                                 </div>
                                 <div class="ms-2 text-sm">
-                                    <label for="selfResponse" class="font-medium text-gray-900 dark:text-gray-300">Respondent wishes </label>
-                                    <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 dark:text-gray-300">The respondent wishes to fill out the form themselves</p>
+                                    <label for="selfResponse" class="font-medium text-gray-900 dark:text-gray-300">The respondent wishes to fill out the form themselves</label>
+                                    <p id="helper-checkbox-text" class="text-xs font-normal underline text-blue-500 dark:text-gray-300">Read the consent form for the participant</p>
                                 </div>
                             </div>
 
@@ -284,6 +298,17 @@ function InvestigatorAddUser() {
                     </div>
                 </div>
             </section>
+
+
+            <Modal show={alertModal} onClose={() => setAlertModal(false)}>
+                <Modal.Header>Information</Modal.Header>
+                <Modal.Body>{message}</Modal.Body>
+                <Modal.Footer>
+                    <Button color="red" onClick={() => setAlertModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
 
     )
