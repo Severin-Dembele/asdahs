@@ -25,9 +25,9 @@ export function clear() {
   localStorage.clear();
 }
 
-export const SERVERURLS =  'http://localhost:5000/';
+// export const SERVERURLS =  'http://localhost:5000/';
 
-// export const SERVERURLS = `https://backend.asdahs.online/`
+export const SERVERURLS = `https://backend.asdahs.online/`
 
 const storedData = localStorage.getItem(
   "africanhealthstudy"
@@ -43,6 +43,16 @@ export function postData(endpoint, data, multipart = true) {
     },
   });
 }
+
+export function putDataToken(endpoint, data, multipart = true,tokenData) {
+  return axios.put(`${SERVERURLS}${endpoint}`, data, {
+    headers: {
+      authorization: `Bearer ${tokenData}`,
+      "content-type": multipart ? "multipart/form-data" : "application/json",
+    },
+  });
+}
+
 
 export function postDataWithNoToken1(endpoint, data) {
   return axios.post(`${SERVERURLS}${endpoint}`, data, {
