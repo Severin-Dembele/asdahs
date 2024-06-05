@@ -67,19 +67,15 @@ export class UsersService {
   findAll(){
     return this.prisma.user.findMany({
       include: {
-        church: {
-          include: {
-            conference: {
-              include: {
-                union: {
-                  include: {
-                    division: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        conference:{
+          include:{
+            union:{
+              include:{
+                division: true,
+              }
+            }
+          }
+        }
       },
       orderBy: {
         createAt: 'desc',
@@ -93,19 +89,15 @@ export class UsersService {
         userCreated: username,
       },
       include: {
-        church: {
-          include: {
-            conference: {
-              include: {
-                union: {
-                  include: {
-                    division: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        conference:{
+          include:{
+            union:{
+              include:{
+                division: true,
+              }
+            }
+          }
+        }
       },
       orderBy: {
         createAt: 'desc',
