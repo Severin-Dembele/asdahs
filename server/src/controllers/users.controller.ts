@@ -148,7 +148,8 @@ export class UsersController {
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
     const userConnected = await this.usersService.findOne(parseInt(data.sub));
-    return this.usersService.findAll(userConnected.email);
+    if (userConnected.role == 'ADMIN') return this.usersService.findAll();
+    return this.usersService.findByUserCreated(userConnected.email);
   }
 
   @Get(':id')
