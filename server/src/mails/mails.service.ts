@@ -89,7 +89,7 @@ export class MailsService {
   sendMailRespondent(email: string, token, url) {
     this.mailerService.sendMail({
       to: email,
-      from: 'bienvenueudes96@gmail.com',
+      from: process.env.EMAIL,
       subject: 'Formulaire',
       template: 'respondent',
       context: {
@@ -102,7 +102,7 @@ export class MailsService {
   sendMailAcceptToAnswer(email: string, token, url) {
     this.mailerService.sendMail({
       to: email,
-      from: 'bienvenueudes96@gmail.com',
+      from: process.env.EMAIL,
       subject: 'Accept To answer form',
       template: 'respondent',
       context: {
@@ -115,7 +115,7 @@ export class MailsService {
   sendMailPasswordToUser(email: string, password: string) {
     this.mailerService.sendMail({
       to: email,
-      from: 'bienvenueudes96@gmail.com',
+      from: process.env.EMAIL,
       subject: 'User password',
       template: 'password',
       context: {

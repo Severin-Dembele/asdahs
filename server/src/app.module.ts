@@ -54,12 +54,12 @@ import { ConferenceModule } from './modules/conference.module';
           service: 'gmail',
           secure: false,
           auth: {
-            user: 'bienvenueudes96@gmail.com',
-            pass: 'nesu tziz oaow iohk',
+            user: process.env.EMAIL,
+            pass: 'L162Pv#23',
           },
         },
         defaults: {
-          from: 'bienvenueudes96@gmail.com',
+          from: process.env.EMAIL,
         },
         template: {
           dir: join(__dirname, 'mails/templates'),
