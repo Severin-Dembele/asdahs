@@ -111,7 +111,7 @@ function AdminSettingUnion() {
         endpoint = `${ENDPOINT.users}/${formData?.id}`;
         response = await putDataWithNoToken(endpoint, formData, true);
       } else {
-        response = await postDataWithNoToken(`${ENDPOINT.churches}/${formData?.churchId}/${ENDPOINT.users}`, formData, true);
+        response = await postDataWithNoToken(`${ENDPOINT.users}`, formData, true);
       }
 
 
