@@ -50,7 +50,7 @@ export class UsersService {
     return this.prisma.$queryRaw`
     select u.id, u.name, u.email, u.telephone, u.churchName, CAST(count(f.userId) AS CHAR) as nb_formulaire 
         from User u 
-    left join formulaireinvestigator f on f.userId = u.id 
+    left join formulaireInvestigator f on f.userId = u.id 
     where u.role = "ADMIN" or u.role = "INVESTIGATOR"
      group by u.id, u.name, u.email, u.telephone, u.churchName
   `;
