@@ -3,7 +3,7 @@ import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../.
 import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 
 function AdminStatistique() {
 
