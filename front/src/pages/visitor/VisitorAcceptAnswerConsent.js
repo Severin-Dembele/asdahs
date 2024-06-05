@@ -23,7 +23,10 @@ function VisitorAcceptAnswerConsent() {
     const handleSubmit = async (event) => {
         setAlertModal(true);
 
-        if(!formData?.acc)
+        if (!formData?.acceptToAnswer) {
+            setMessage('Thank you for consenting to participate in our study session.')
+            return null;
+        }
 
         try {
             let endpoint = ENDPOINT.accept;
@@ -33,9 +36,11 @@ function VisitorAcceptAnswerConsent() {
             setMessage(successMessage);
 
             console.log(response);
+            setTimeout(() => {
+                navigation('/')
+            }, 500);
 
         } catch (error) {
-            console.log(error?.response);
 
             const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
             setMessage(errorMessage);
