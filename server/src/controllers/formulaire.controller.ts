@@ -11,6 +11,7 @@ import {
   Put,
   Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -35,6 +36,7 @@ const fs = require('fs');
 const fastCsv = require('fast-csv');
 import * as xlsx from 'xlsx';
 import { UsersService } from 'src/repositories/users.service';
+import { AuthGuard } from 'src/repositories/auth/auth.guard';
 
 @Controller('formulaires')
 @ApiTags('formulaires')
@@ -262,6 +264,60 @@ export class FormulaireController {
     this.reponseReponduService
       .createMultiple(idFormulaire, createReponseRepondu)
       .then((r) => console.log(r));
+  }
+
+  @UseGuards(AuthGuard)
+  @Post(':idFormulaire/users/:userId/reponses')
+  async investigatorResponseFormulaire(
+    @Param('idFormulaire') idFormulaire: number,
+    @Param('userId') userId: number,
+    @Body() reponseRepondu: any[],
+    @Req() request: Request,
+  ) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const createReponseRepondu: CreateReponseReponduDto[] = [];
+    const user = await this.userService.findOne(data.sub);
+    if (user == null) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    } else {
+      if (user.role == 'INVESTIGATOR') {
+        const formulaireInvestigator =
+          await this.formulaireService.getFormulaireInvestigator(
+            user.id,
+            idFormulaire,
+          );
+        if (
+          formulaireInvestigator == null ||
+          formulaireInvestigator == undefined
+        ) {
+          this.formulaireService.createFormulaireInvestigator({
+            userId: user.id,
+            formulaireId: idFormulaire,
+          });
+        }
+      } else {
+        throw new HttpException(
+          'User must be an investigator',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+      await this.userService.updateStatus(userId);
+      for (let i = 0; i < reponseRepondu.length; i++) {
+        const item: any[] = reponseRepondu[i].reponses;
+        for (let j = 0; j < item.length; j++) {
+          createReponseRepondu.push({
+            formulaireId: idFormulaire,
+            title: item[j],
+            questionId: parseInt(reponseRepondu[i].id),
+            userId: userId,
+          });
+        }
+      }
+      this.reponseReponduService
+        .createMultiple(idFormulaire, createReponseRepondu)
+        .then((r) => console.log(r));
+    }
   }
 
   @Post('/token/:idFormulaire')
