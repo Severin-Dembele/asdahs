@@ -80,7 +80,7 @@ function App() {
                         element={<InvestigatorSocietalFormulaire />}
                       />
                        <Route
-                        path="/investigator/formulaire/:id"
+                        path="/formulaire/:id"
                         element={<InvestigatorResponseToform/>}
                       />
                       <Route

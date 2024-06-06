@@ -26,6 +26,7 @@ function InvestigatorResponseToform() {
                 const [adminRes] = await Promise.all([
                     getData(`${ENDPOINT.formulaires}/token/${token}`),
                 ]);
+                console.log(adminRes);
 
                 setFormulaire(adminRes?.data || {});
             } catch (error) {
