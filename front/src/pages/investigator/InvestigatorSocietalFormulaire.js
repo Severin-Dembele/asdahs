@@ -3,7 +3,7 @@ import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../.
 import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 
 function AdminStatistique() {
 
@@ -429,7 +429,7 @@ function AdminStatistique() {
                               {!item?.selfResponse && (
                                 <button
                                   onClick={() => {
-                                    navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
+                                    navigation(`/investigator/formulaire/${item?.id}`)
                                   }}
                                   className="px-4 py-1 m-1 text-center text-white bg-green-500 border rounded-md"
                                 >
