@@ -18,7 +18,7 @@ import { FormulairesService } from '../repositories/formulaires.service';
 import { CreateFormulaireDto } from '../domain/dto/formulaires/create-formulaire.dto';
 import { UpdateFormulaireDto } from '../domain/dto/formulaires/update-formulaire.dto';
 import { FileInterceptor, NoFilesInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
+import { Express,Request } from 'express';
 import * as path from 'path';
 import { QuestionService } from '../question/question.service';
 import { CreateQuestionDto } from '../question/dto/create-question.dto';

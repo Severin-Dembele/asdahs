@@ -16,7 +16,7 @@ import {
 import { UsersService } from '../repositories/users.service';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, NoFilesInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
+import { Express ,Request} from 'express';
 import { AuthGuard } from '../repositories/auth/auth.guard';
 import { FormulaireInvestigatorService } from '../repositories/formulaireInvestigator.service';
 import { AuthService } from '../repositories/auth/auth.service';
