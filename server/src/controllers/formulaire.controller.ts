@@ -299,7 +299,7 @@ export class FormulaireController {
       } else {
         throw new HttpException(
           'User must be an investigator',
-          HttpStatus.NOT_FOUND,
+          HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
       await this.userService.updateStatus(userId);
