@@ -21,6 +21,7 @@ import {
   AdminAccounSetting,
 } from "../../pages/admin";
 import { FrameEror404 } from "../../frame";
+import { InvestigatorDetailsRespondent } from "../../pages/investigator";
 
 function AdminRoutes() {
   return (
@@ -66,13 +67,16 @@ function AdminRoutes() {
               element={<AdminImpactSocietalResponseDowload />}
             />
           </Route>
-
+          <Route
+            path="detail/:id"
+            element={<InvestigatorDetailsRespondent />}
+          />
 
           <Route element={<LayoutSetting />}>
             <Route path="settings" element={<AdminSetting />} />
-            <Route path="churchs" element={<AdminSettingChurch/>} />
-            <Route path="conferences" element={<AdminSettingConference/>} />
-            <Route path="unions" element={<AdminSettingUnion/>} />
+            <Route path="churchs" element={<AdminSettingChurch />} />
+            <Route path="conferences" element={<AdminSettingConference />} />
+            <Route path="unions" element={<AdminSettingUnion />} />
 
 
           </Route>
