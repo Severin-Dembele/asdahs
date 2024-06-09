@@ -197,4 +197,15 @@ export class UsersController {
   findReponsesUsers(@Param('id') id: string) {
     return this.usersService.findAllReponseUsers(id);
   }
+
+  @Put('/change-password')
+  async updatePassword(@Body() data) {
+    const email = data.email;
+    const password = data.password;
+    const user = await this.usersService.findByUsername(email);
+    if (user == null) {
+      throw new HttpException("Email does'nt exist ", HttpStatus.NOT_FOUND);
+    }
+    return this.usersService.updatePassword(user.id, password);
+  }
 }
