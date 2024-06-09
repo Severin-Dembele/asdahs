@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
+import { getData, postDataWithNoToken, putDataWithNoToken, postData, putData } from '../../services';
 import {
   ENDPOINT,
   PaginatedTable,
@@ -15,7 +15,7 @@ function AdminSettingUnion() {
 
   const navigation = useNavigate();
   const [list, setList] = useState([]);
-  const [listChurch, setListChurch] = useState([]);
+  const [listConference, setlistConference] = useState([]);
 
   const [listInitial, setListInitial] = useState([]);
 
@@ -25,12 +25,12 @@ function AdminSettingUnion() {
   const reloadData = () => {
     Promise.all([
       getData(ENDPOINT.users),
-      getData(ENDPOINT.churches)
+      getData(ENDPOINT.conferences)
     ])
       .then(([adminRes, divisionRes]) => {
         setList(adminRes?.data || []);
         setListInitial(adminRes?.data || []);
-        setListChurch(divisionRes?.data || []);
+        setlistConference(divisionRes?.data || []);
       })
       .catch(error => {
         // Gérer les erreurs ici
@@ -66,7 +66,7 @@ function AdminSettingUnion() {
     setAlertModal(true);
 
     try {
-      const response = await deleteDta(`${ENDPOINT.unions}/${id}`);
+      const response = await deleteDta(`${ENDPOINT.users}/${id}`);
       const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
       setMessage(successMessage);
       reloadData();
@@ -85,9 +85,18 @@ function AdminSettingUnion() {
   const [importFile, setImportFile] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: '',
     id: null,
-    divisionId: ""
+    divisionId: "",
+    typeChurch: '',
+    name: null,
+    conferenceId: "",
+    telephone: "",
+    email: "",
+    churchName: "",
+    role: "RESPONDENT",
+    password: "7Q$GV1TI#KOALLA#2023",
+    selfResponse: false,
+    langage: ""
   });
 
   const handleChange = (event) => {
@@ -109,9 +118,9 @@ function AdminSettingUnion() {
 
       if (formData?.id) {
         endpoint = `${ENDPOINT.users}/${formData?.id}`;
-        response = await putDataWithNoToken(endpoint, formData, true);
+        response = await putData(endpoint, formData, true);
       } else {
-        response = await postDataWithNoToken(`${ENDPOINT.users}`, formData, true);
+        response = await postData(`${ENDPOINT.users}`, formData, true);
       }
 
 
@@ -184,7 +193,7 @@ function AdminSettingUnion() {
     };
 
 
-    const propertiesToFilter1 = ['name', 'login', 'email', 'role', 'telephone'];
+    const propertiesToFilter1 = ['name', 'email', 'role', 'telephone'];
     const resultatsRecherche1 = filterList(listInitial, propertiesToFilter1);
     setList(resultatsRecherche1);
   };
@@ -328,56 +337,7 @@ function AdminSettingUnion() {
 
         <Modal.Header>Adding an administrator </Modal.Header>
         <Modal.Body>
-          {/* <form className="flex items-center justify-center">
-            {!selectedImage ? (
-              <img
-                src={`${IMAGES_URLS}${IMAGES_LINKS.users}${formData?.profile}`}
-                alt="Select"
-                className="w-24 h-24 max-w-sm border max-h-24"
-              />
-            ) : (
-              <img
-                src={
-                  selectedImage
-                    ? selectedImage
-                    : `${IMAGES_URLS}${IMAGES_LINKS.users}${formData?.profile}`
-                }
-                alt="Select une photo"
-                className=" max-w-sm border "
-              />
-            )}
-          </form> */}
-          {/* <div className="flex items-center justify-center">
-            <label htmlFor="fileInput" className="cursor-pointer">
-              <input
-                id="fileInput"
-                className="hidden"
-                type="file"
-                name="profile"
-                onChange={onImageChange}
-                multiple
-                accept="image/*"
-              />
-              <svg
-                className="w-10 h-10 text-teal-500"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {" "}
-                <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                <circle cx="12" cy="13" r="3" />{" "}
-                <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h2m9 7v7a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />{" "}
-                <line x1="15" y1="6" x2="21" y2="6" />{" "}
-                <line x1="18" y1="3" x2="18" y2="9" />
-              </svg>
-            </label>
-          </div> */}
+
 
           <div className="flex flex-col gap-1">
             <div>
@@ -395,30 +355,9 @@ function AdminSettingUnion() {
                     </span>
                   ) : null
                 }
-                value={formData.name}
+                value={formData?.name}
                 onChange={handleChange}
                 label={`Nom  & Prénom `}
-                type="text"
-              />
-            </div>
-            <div>
-              <div className="block mb-2">
-                <Label htmlFor="login" value="Login" />
-              </div>
-              <TextInput
-                id="login"
-                sizing="md"
-                name="login"
-                helperText={
-                  !formData?.login ? (
-                    <span className="font-normal text-red-500">
-                      Thank you for specifying the login for the connection.
-                    </span>
-                  ) : null
-                }
-                value={formData.login}
-                onChange={handleChange}
-                label={`Login`}
                 type="text"
               />
             </div>
@@ -433,20 +372,19 @@ function AdminSettingUnion() {
                 helperText={
                   !formData?.telephone ? (
                     <span className="font-normal text-red-500">
-                      Please specify the phone number.
+                      Thank you for specifying the phone for the connection.
                     </span>
                   ) : null
                 }
                 value={formData.telephone}
                 onChange={handleChange}
-                label={"Telpehone"}
+                label={`Phone`}
                 type="text"
               />
             </div>
-
             <div>
               <div className="block mb-2">
-                <Label htmlFor="email" value="Adresse Email" />
+                <Label htmlFor="email" value="Email" />
               </div>
               <TextInput
                 id="email"
@@ -455,15 +393,41 @@ function AdminSettingUnion() {
                 helperText={
                   !formData?.email ? (
                     <span className="font-normal text-red-500">
-                      Veuillez préciser l'email
+                      Please specify the email.
                     </span>
                   ) : null
                 }
-                value={formData.email}
+                value={formData?.email}
                 onChange={handleChange}
                 label={"Email"}
                 type="text"
               />
+            </div>
+
+
+            <div>
+              <label
+                htmlFor="type"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Select  Conference.
+              </label>
+              <select
+                name="conferenceId"
+                value={formData?.conferenceId}
+                onChange={handleChange}
+                id="conferenceId"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-950 focus:border-blue-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-950 dark:focus:border-blue-950"
+              >
+                <option disabled selected>
+                  Select Conference.
+                </option>
+                {listConference.map((option, index) => (
+                  <option key={index} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -475,7 +439,7 @@ function AdminSettingUnion() {
               </label>
               <select
                 name="role"
-                value={formData.role}
+                value={formData?.role}
                 onChange={handleChange}
                 id="role"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-950 focus:border-blue-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-950 dark:focus:border-blue-950"
@@ -491,52 +455,109 @@ function AdminSettingUnion() {
               </select>
             </div>
 
-
             <div>
-              <label
-                htmlFor="type"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Select a church.
-              </label>
-              <select
-                name="churchId"
-                value={formData.churchId}
+              <label for="churchName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Church</label>
+              <input type="text"
+                id="churchName"
+                name="churchName"
                 onChange={handleChange}
-                id="churchId"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-950 focus:border-blue-950 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-950 dark:focus:border-blue-950"
-              >
-                <option disabled selected>
-                  Select church.
-                </option>
-                {listChurch.map((option, index) => (
-                  <option key={index} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
+                value={formData.churchName}
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
+            </div>
+            <div>
+              <div className="block ">
+                <label for="typeChurch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Type of Church <span className='font-bold text-xl text-red-800'> *</span> </label>
+              </div>
+              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input
+                      type="radio"
+                      id="typeChurch"
+                      name="typeChurch"
+                      onChange={handleChange}
+                      value="Small"
+                      checked={formData?.typeChurch === 'Small'}
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Small</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input type="radio"
+                      id="typeChurch"
+                      name="typeChurch"
+                      value="Medium"
+                      checked={formData?.typeChurch === 'Medium'}
+                      onChange={handleChange}
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Medium</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input
+                      type="radio"
+                      id="typeChurch"
+                      onChange={handleChange}
+                      name="typeChurch"
+                      value="Large"
+                      checked={formData?.typeChurch === 'Large'}
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Large</label>
+                  </div>
+                </li>
+
+              </ul>
+
             </div>
 
             <div>
-              <div className="block mb-2">
-                <Label htmlFor="password" value="Password" />
+              <div className="block ">
+                <label for="typeChurch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Language <span className='font-bold text-xl text-red-800'> *</span> </label>
               </div>
-              <TextInput
-                id="password"
-                sizing="md"
-                name="password"
-                helperText={
-                  !formData?.password ? (
-                    <span className="font-normal text-red-500">
-                      Please specify the password.
-                    </span>
-                  ) : null
-                }
-                value={formData.password}
-                onChange={handleChange}
-                label={"Password"}
-                type="password"
-              />
+              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input
+                      type="radio"
+                      id="langage"
+                      name="langage"
+                      onChange={handleChange}
+                      value="English"
+                      checked={formData?.langage === 'English'}
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">English</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input type="radio"
+                      id="langage"
+                      name="langage"
+                      value="French"
+                      checked={formData?.langage === 'French'}
+                      onChange={handleChange}
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">French</label>
+                  </div>
+                </li>
+                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                  <div class="flex items-center ps-3">
+                    <input
+                      type="radio"
+                      id="langage"
+                      name="langage"
+                      onChange={handleChange}
+                      value="Spanish"
+                      checked={formData?.langage === 'Spanish'}
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                    <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Spanish</label>
+                  </div>
+                </li>
+
+              </ul>
+
             </div>
           </div>
         </Modal.Body>

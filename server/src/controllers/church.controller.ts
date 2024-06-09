@@ -16,7 +16,7 @@ import { MailsService } from 'src/mails/mails.service';
 import { AuthService } from 'src/repositories/auth/auth.service';
 import { ChurchService } from 'src/repositories/church.service';
 import { UsersService } from 'src/repositories/users.service';
-
+import { Request } from 'express';
 @Controller()
 export class ChurchController {
   constructor(

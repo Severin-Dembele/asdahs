@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
-import { ENDPOINT, PaginatedTable } from '../../utils';
+import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
@@ -91,8 +91,14 @@ function AdminStatistique() {
   const [formData, setFormData] = useState({
     name: '',
     id: null,
+    typeChurch: '',
   });
-
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    });
+  };
 
 
   const [message, setMessage] = useState('Information');
@@ -112,7 +118,7 @@ function AdminStatistique() {
     };
 
 
-    const propertiesToFilter1 = ['email', 'name', 'status', 'telephone', 'church.name'];
+    const propertiesToFilter1 = ['name', 'email', 'role', 'status', 'telephone', 'churchName', 'typeChurch', 'langage'];
     const resultatsRecherche1 = filterList(listInitial, propertiesToFilter1);
     setList(resultatsRecherche1);
   };
@@ -126,10 +132,10 @@ function AdminStatistique() {
   // const handleFilter = (conferenceId, churchId, divisionId, unionId) => {
   //   const filterListById = (list, conferenceId, churchId, divisionId, unionId) => {
   //     return list.filter(item => {
-  //       const matchesConference = conferenceId ? item.church?.conference?.id === parseInt(conferenceId, 10) : true;
+  //       const matchesConference = conferenceId ? item.conference?.id === parseInt(conferenceId, 10) : true;
   //       const matchesChurch = churchId ? item.church?.id === parseInt(churchId, 10) : true;
-  //       const matchesDivision = divisionId ? item.church?.conference?.union?.division?.id === parseInt(divisionId, 10) : true;
-  //       const matchesUnion = unionId ? item.church?.conference?.union?.id === parseInt(unionId, 10) : true;
+  //       const matchesDivision = divisionId ? item.conference?.union?.division?.id === parseInt(divisionId, 10) : true;
+  //       const matchesUnion = unionId ? item.conference?.union?.id === parseInt(unionId, 10) : true;
 
   //       return matchesConference && matchesChurch && matchesDivision && matchesUnion;
   //     });
@@ -146,7 +152,7 @@ function AdminStatistique() {
     setListUnion(filteredUnions);
 
 
-    const matchesDivision = divisionId ? listInitial.filter(item => item.church?.conference?.union?.division?.id === parseInt(divisionId, 10)) : listInitial;
+    const matchesDivision = divisionId ? listInitial.filter(item => item.conference?.union?.division?.id === parseInt(divisionId, 10)) : listInitial;
     setList(matchesDivision)
   };
 
@@ -158,7 +164,7 @@ function AdminStatistique() {
     setListConference(filteredConferences);
 
 
-    const matchesUnion = unionId ? listInitial.filter(item =>item.church?.conference?.union?.id === parseInt(unionId, 10)) : listInitial;
+    const matchesUnion = unionId ? listInitial.filter(item => item.conference?.union?.id === parseInt(unionId, 10)) : listInitial;
     setList(matchesUnion)
   };
 
@@ -168,9 +174,9 @@ function AdminStatistique() {
 
     // Mettre à jour la liste des églises avec les églises filtrées
     setListChurch(filteredChurches);
-    const matchesConference = conferenceId ? listInitial.filter(item => item.church?.conference?.id === parseInt(conferenceId, 10)) : listInitial;
+    const matchesConference = conferenceId ? listInitial.filter(item => item.conference?.id === parseInt(conferenceId, 10)) : listInitial;
     setList(matchesConference);
-    
+
   };
 
 
@@ -182,8 +188,8 @@ function AdminStatistique() {
       return list.filter(item => {
         const matchesConference = selectedConference ? item.conferenceId === parseInt(selectedConference, 10) : true;
         const matchesChurch = selectedChurch ? item.churchId === parseInt(selectedChurch, 10) : true;
-        const matchesDivision = selectedDivision ? item.church?.conference?.union?.divisionId === parseInt(selectedDivision, 10) : true;
-        const matchesUnion = selectedUnion ? item.church?.conference?.unionId === parseInt(selectedUnion, 10) : true;
+        const matchesDivision = selectedDivision ? item.conference?.union?.divisionId === parseInt(selectedDivision, 10) : true;
+        const matchesUnion = selectedUnion ? item.conference?.unionId === parseInt(selectedUnion, 10) : true;
 
         return matchesConference && matchesChurch && matchesDivision && matchesUnion;
       });
@@ -270,23 +276,55 @@ function AdminStatistique() {
                 </select>
               </div>
 
+
               <div>
-                <label htmlFor="select-church" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select church</label>
-                <select
-                  id="select-church"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedChurch(value);
-                    handleFilterConference(selectedConference, value, selectedDivision, selectedUnion);
-                  }}
-                >
-                  <option selected value={null}>Choose a church</option>
-                  {listChurch && listChurch.map((item, index) => (
-                    <option key={index} value={item.id}>{item.name}</option>
-                  ))}
-                </select>
+                <div className="block ">
+                  <label for="typeChurch" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Type of Church</label>
+                </div>
+                <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                      <input
+                        type="radio"
+                        id="typeChurch"
+                        name="typeChurch"
+                        onChange={handleChange}
+                        value="Small"
+                        checked={formData?.typeChurch === 'Small'}
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                      <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Small</label>
+                    </div>
+                  </li>
+                  <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                      <input type="radio"
+                        id="typeChurch"
+                        name="typeChurch"
+                        value="Medium"
+                        checked={formData?.typeChurch === 'Medium'}
+                        onChange={handleChange}
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                      <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Medium</label>
+                    </div>
+                  </li>
+                  <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                    <div class="flex items-center ps-3">
+                      <input
+                        type="radio"
+                        id="typeChurch"
+                        onChange={handleChange}
+                        name="typeChurch"
+                        value="Large"
+                        checked={formData?.typeChurch === 'Large'}
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                      <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Large</label>
+                    </div>
+                  </li>
+
+                </ul>
+
               </div>
+
             </div>
           </form>
 
@@ -378,11 +416,16 @@ function AdminStatistique() {
                     <>
                       {getPaginatedData()?.map((item, index) => (
                         <tr key={index} class="border-b dark:border-gray-700">
-                          <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}</th>
-                          <td class="px-4 py-3">{item?.church?.conference?.name}</td>
+                          <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}
+                            <br />{item?.email}<br />{item?.telephone}
+                          </th>
+                          <td class="px-4 py-3">{item?.conference?.name}
+
+
+                          </td>
                           <td class="px-4 py-3">
-                            {item?.church?.name} <br />
-                            {item?.church?.city},{item?.church?.country}
+                            {item?.churchName} <br />
+                            {item?.typeChurch}
                           </td>
                           <td class="px-4 py-3">
                             <div class="flex items-center">
@@ -391,20 +434,31 @@ function AdminStatistique() {
                                   item?.status === "CLOSED" ? "bg-green-500" :
                                     item?.status === "REOPENED" ? "bg-blue-500" : "bg-gray-500"
                                 }`}></div>
-                              {item?.status}
+                              {formatStatus(item?.status)}
                             </div>
+                            <span className='flex space-x-1'>
+                            {item?.acceptResponse ? (
+                              <svg class="w-3.5 h-4  me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                              </svg>
+                            ) : (
+                              <svg class="w-3.5 h-4 text-red-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                              </svg>
+
+                            )}  <span>
+                              Concent
+                            </span>
+                            </span>
                           </td>
 
 
                           <td class="px-4 py-3 flex items-center justify-end">
                             <div className="flex justify-center">
 
-                            <button
+                              <button
                                 onClick={() => {
-                                  setFormData({
-                                    ...item,
-                                  });
-                                  setIsModal(true);
+                                  navigation(`/africanhealthstudy/panel-administration/detail/${item?.id}`)
                                 }}
                                 className="px-4 py-1 m-1 text-center text-white bg-gray-500 border rounded-md"
                               >

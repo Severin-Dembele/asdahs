@@ -438,10 +438,7 @@ function AdminStatistique() {
                               )}
                               <button
                                 onClick={() => {
-                                  setFormData({
-                                    ...item,
-                                  });
-                                  setIsModal(true);
+                                 navigation(`/investigator/detail/${item?.id}`)
                                 }}
                                 className="px-4 py-1 m-1 text-center text-white bg-gray-500 border rounded-md"
                               >

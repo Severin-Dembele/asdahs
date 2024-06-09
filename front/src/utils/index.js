@@ -24,13 +24,13 @@ const ENDPOINT = {
   unions: "unions",
   conferences: "conferences",
   churches: "churches",
-  accept:"users/accept-answer"
+  accept: "users/accept-answer"
 };
 
 export { default as PaginatedTable } from "./PaginatedTable";
 
 // L'URL de base du serveur
-const SERVERURLS =  process.env.API_SERVER;
+const SERVERURLS = process.env.API_SERVER;
 
 // L'URL pour les images d'utilisateur
 const IMAGES_URLS = `${process.env.API_SERVER}uploads/`;
@@ -69,6 +69,9 @@ const ROLE_LIST = [
 ];
 
 function formatStatus(status) {
+  if (!status) {
+    return "---"
+  }
   // Convert the status to lowercase, split by underscore, capitalize each word, and join them back
   return status
     .toLowerCase()
