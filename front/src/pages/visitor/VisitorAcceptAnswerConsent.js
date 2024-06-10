@@ -26,7 +26,7 @@ function VisitorAcceptAnswerConsent() {
         setAlertModal(true);
 
         if (!formData?.acceptToAnswer) {
-            setMessage('Thank you for consenting to participate in our study session.')
+            setMessage( `${t("thankYouForConsenting")}`)
             return null;
         }
 
