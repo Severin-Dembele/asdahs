@@ -7,8 +7,11 @@ import { VisitoWelcomePage, VisitorAbout, VisitorAcceptAnswerConsent, VisitorHom
 import { InvestigatorAuthGuard } from "./routes/investigator";
 import { InvestigatorSocietalFormulaire, InvestigatorAddUser, InvestigatorResponseToform, InvestigatorDetailsRespondent } from "./pages/investigator";
 import { LayoutInvestigator } from "./components/Layout";
+import { useTranslation } from 'react-i18next';
+
 function App() {
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {
@@ -25,8 +28,7 @@ function App() {
           className="object-contain w-24 mx-auto mb-4"
         />
         <p className="text-lg text-center text-gray-600">
-          Please wait a moment...
-          <span className="text-indigo-500 animate-pulse">...</span>
+        {t("wait")}          <span className="text-indigo-500 animate-pulse">...</span>
         </p>{" "}
         <br />
         <div className="col-3">
