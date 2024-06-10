@@ -11,6 +11,17 @@ export class DashboardService {
        SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
        SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
        from User as u
+       where u.role = 'RESPONDENT'
+    `;
+  }
+
+  getNotStartedInProgressAndCompletedRespondent(userConnected: string) {
+    return this.prisma.$queryRaw`
+      select SUM(case when u.status = 'PROGRESS' then 1 else 0 end) as nb_progress,
+       SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
+       SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
+       from User as u
+       where u.userCreated = ${userConnected} AND u.role = 'RESPONDENT'
     `;
   }
 
@@ -21,6 +32,21 @@ export class DashboardService {
        SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
        SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
        from User as u
+       where u.role = 'RESPONDENT'
+       group by u.typeChurch
+    `;
+  }
+
+  getNotStartedInProgressAndCompletedGroupByTypeChurchRespondent(
+    userConnected: string,
+  ) {
+    return this.prisma.$queryRaw`
+    select typeChurch,
+       SUM(case when u.status = 'PROGRESS' then 1 else 0 end) as nb_progress,
+       SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
+       SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
+       from User as u
+       where u.userCreated = ${userConnected} and where u.role = 'RESPONDENT'
        group by u.typeChurch
     `;
   }
@@ -32,8 +58,23 @@ export class DashboardService {
        SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
        SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
        from User as u
+       where u.role = 'RESPONDENT'
        group by u.conferenceId
     `;
+  }
+
+  getNotStartedInProgressAndCompletedGroupByConferenceRespondent(
+    userCreated: string,
+  ) {
+    return this.prisma.$queryRaw`
+      select conferenceId,
+       SUM(case when u.status = 'PROGRESS' then 1 else 0 end) as nb_progress,
+       SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
+       SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
+       from User as u
+       where u.userCreated = ${userCreated} AND u.role = 'RESPONDENT'
+       group by u.conferenceId
+    `
   }
 
   getNotStartedInProgressAndCompletedGroupByUnion() {
