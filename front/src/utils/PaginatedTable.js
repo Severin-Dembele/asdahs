@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Pagination } from 'flowbite-react';
 
+import { useTranslation } from 'react-i18next';
 
 function PaginatedTable({ data, itemsPerPage, onPageChange }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,15 +12,16 @@ function PaginatedTable({ data, itemsPerPage, onPageChange }) {
     onPageChange(page);
   };
 
+  const { t } = useTranslation();
 
   return (
     <div className='flex items-center justify-center text-center'>
       <Pagination
         currentPage={currentPage}
         layout="pagination"
-        nextLabel="Previous"
+        nextLabel={`${t("next")}`}
         onPageChange={page => { handlePageChange(page) }}
-        previousLabel="Next"
+        previousLabel={`${t("previous")}`}
         showIcons
         totalPages={totalPages}
       />

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+  <g fill-rule="evenodd">
+    <path fill="#009B3A" d="M0 0h640v480H0z"/>
+    <path fill="#FFDF00" d="M320 0l320 240L320 480 0 240z"/>
+    <circle cx="320" cy="240" r="96" fill="#002B7F"/>
+    <circle cx="320" cy="240" r="80" fill="#FFF"/>
+    <circle cx="320" cy="240" r="64" fill="#FFDF00"/>
+  </g>
+</svg>

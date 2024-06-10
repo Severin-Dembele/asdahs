@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+  <g fill-rule="evenodd">
+    <path fill="#012169" d="M0 0h640v480H0z"/>
+    <path fill="#FFF" d="M76.8 0v153.6H0V326.4h76.8V480h153.6V326.4H640V153.6H230.4V0H76.8z"/>
+    <path fill="#C8102E" d="M256 0h128v480H256z"/>
+    <path fill="#C8102E" d="M0 176.2h640v128H0z"/>
+    <path fill="#FFF" d="M76.8 76.8h486.4v326.4H76.8z"/>
+    <path fill="#C8102E" d="M0 0l256 176.2V0h128v176.2L640 0v480L384 303.8V480H256V303.8L0 480V0z"/>
+  </g>
+</svg>

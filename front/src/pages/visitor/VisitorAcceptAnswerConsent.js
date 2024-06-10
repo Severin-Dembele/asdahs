@@ -4,9 +4,11 @@ import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 function VisitorAcceptAnswerConsent() {
     const navigation = useNavigate();
+    const { t } = useTranslation();
 
     const { search } = useLocation();
     const params = new URLSearchParams(search);
@@ -32,7 +34,7 @@ function VisitorAcceptAnswerConsent() {
             let endpoint = ENDPOINT.accept;
             let response;
             response = await putDataToken(endpoint, formData, false, token);
-            const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
+            const successMessage = response?.data?.message || `${t("informationSaved")}`;
             setMessage(successMessage);
 
             console.log(response);
@@ -42,7 +44,7 @@ function VisitorAcceptAnswerConsent() {
 
         } catch (error) {
 
-            const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
+            const errorMessage = error?.response?.data?.message || `${t("error")}`;
             setMessage(errorMessage);
         }
     };
@@ -62,11 +64,11 @@ function VisitorAcceptAnswerConsent() {
 
             <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                 <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                    <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Adventist University of Africa</span>
+                    <a href="https://africanhealthstudy.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{t("africanSDAHealthStudy")}</span>
                     </a>
                     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get started</button>
+                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{t("getStarted")}</button>
 
                     </div>
                     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
@@ -86,55 +88,46 @@ function VisitorAcceptAnswerConsent() {
                                 className="h-24 mr-3"
                                 alt="ASDAHS"
                             />
-                            <h1 class="text-3xl font-bold mb-4 text-center">AFRICAN SEVENTH-DAY ADVENTIST HEALTH STUDY</h1>
-                            <h2 class="text-2xl font-semibold mb-6 text-center">Informed Consent</h2>
+                            <h1 class="text-3xl font-bold mb-4 text-center">{t("africanSDAHealthStudy")}</h1>
+                            <h2 class="text-2xl font-semibold mb-6 text-center">{t("informedConsent")}</h2>
 
-                            <div class="bg-whiterounded-lg text-left ">
-                                <h1 class="text-2xl font-bold mb-4">Dear Respondent,</h1>
+                            <div class="bg-white p-8 rounded-lg text-left ">
+                                <h1 class="text-2xl font-bold mb-4">{t("dearRespondent")}</h1>
                                 <p class="mb-4">
-                                    This letter invites you to participate in a research study entitled <span class="font-semibold">African Seventh-day Adventist Health Study</span>.
+                                    {t("invitationToParticipate")} <span class="font-semibold"> {t("africanSDAHealthStudy")}</span>.
                                 </p>
                                 <p class="mb-4">
-                                    We would be very grateful if you assist in this important research by taking some time to answer the research questionnaire that you will receive.
+                                {t("gratefulAssistance")}                                </p>
+                                <p class="mb-4">
+                                {t("confidentialInformation")}  
                                 </p>
                                 <p class="mb-4">
-                                    All information that you provide will be kept confidential.
-                                </p>
-                                <p class="mb-4">
-                                    Please know that your cooperation will greatly help us to accomplish this study.
-                                </p>
-                                <p class="mb-4">Thank you.</p>
-                                <p class="font-semibold">Yours faithfully,</p>
-                                <p class="font-semibold">The Research Team</p>
+                                {t("cooperation")}                                  </p>
+                                <p class="mb-4">   {t("thankYou")}</p>
+                                <p class="font-semibold"> {t("yoursFaithfully")}</p>
+                                <p class="font-semibold"> {t("researchTeam")}</p>
                             </div>
-
+                       
                             <p class="mb-4">
-                                You are being asked to participate in a study about health and health behaviors by answering a questionnaire. The information you give may help African Seventh-day Adventists be healthier and get better health education. There are no identifiable risks to you for participating. The questionnaire is anonymous, and your identity will not be revealed. Do not write your name on the questionnaire.
-                            </p>
+                            {t("participationStudy")}                            </p>
                             <p class="mb-4">
-                                You will not be paid to participate. Your participation is voluntary. Your answers cannot identify you, so please answer every question as honestly as possible. Finishing the questionnaire should take about an hour or a little more. After the completed questionnaires are returned, they will be kept in a locked office at the Adventist University of Africa in Nairobi, Kenya. When the research is completed, the questionnaires will be destroyed.
-                            </p>
+                            {t("participationVoluntary")}                               </p>
                             <p class="mb-4">
-                                If you do not want to participate, return the questionnaire to the Research Assistant. You will not be penalized in any way for not participating. If you begin the questionnaire and do not want to finish it, stop and give it to the research assistant.
-                            </p>
+                            {t("noParticipationReturn")}                            </p>
                             <p class="mb-4">
-                                If English is not your primary language, ask the Research Assistant to give you a copy of this Informed Consent in a language you read and understand. The questionnaire you receive will also be in the same language. If you cannot see, read, write, or understand this Informed Consent, tell the Research Assistant and he/she will assist you. The Research Assistant will also assist you in completing the questionnaire.
-                            </p>
+                            {t("languageAssistance")}                              </p>
                             <p class="mb-4">
-                                Signing this Informed Consent means agreeing to participate in the research study. If you have any questions, please ask them now. When you finish the questionnaire, your participation is over.
-                            </p>
+                            {t("signingConsent")}                               </p>
                             <p class="mb-4">
-                                The Research Principal Investigator is Prof. Daniel Ganu. You can contact him if you have comments or complaints about this process. His contact information is:
-                            </p>
+                            {t("researchPrincipalInvestigator")}                               </p>
                             <p class="mb-4 font-semibold">
                                 Email: <a href="mailto:ganud@aua.ac.ke" class="text-blue-500 underline">ganud@aua.ac.ke</a> <br />
-                                Cell phone: <a href="tel:+254736656843" class="text-blue-500 underline">+254736656843</a> <br />
-                                Faculty office: Adventist University of Africa, Library 1st floor, Office of the Dean, School of Postgraduate Studies
+                                {t("cellPhone")} <a href="tel:+254736656843" class="text-blue-500 underline">+254736656843</a> <br />
+                                {t("facultyOffice")} 
                             </p>
                             <p class="mb-4">
-                                The appropriate Ethics Review Committee has approved this study and is grant-funded.
+                            {t("ethicsReviewApproved")} 
                             </p>
-
                             <div class="flex items-center mb-4">
                                 <input
                                     id="acceptToAnswer"
@@ -146,7 +139,7 @@ function VisitorAcceptAnswerConsent() {
 
 
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="acceptToAnswer" class="ms-2 font-medium text-xl font-bold text-red-800 dark:text-gray-300">By clicking here, you agree to participate in our study *.</label>
+                                <label for="acceptToAnswer" class="ms-2 font-medium text-xl font-bold text-red-800 dark:text-gray-300">{t("clickToAgree")} *.</label>
                             </div>
                             <div class="flex flex-col  space-x-5 items-center  lg:justify-start space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
 
@@ -154,7 +147,7 @@ function VisitorAcceptAnswerConsent() {
                                     handleSubmit()
                                 }} class="inline-flex px-10 justify-center items-center py-3  text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
 
-                                    Send
+{t("send")}
 
                                 </button>
 
@@ -172,7 +165,7 @@ function VisitorAcceptAnswerConsent() {
             <footer class="bg-white rounded-lg shadow dark:bg-gray-900 m-4">
                 <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                     <div class="sm:flex sm:items-center sm:justify-between">
-                        <a href="https://flowbite.com/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                        <a href="https://africanhealthstudy.com/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
                             <img src={require("../../images/logo.png")} class="h-24" alt="African Seventh-day Adventist Health Study" />
                             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black">ASDAHS</span>
                         </a>
@@ -188,7 +181,7 @@ function VisitorAcceptAnswerConsent() {
                         </ul>
                     </div>
                     <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-                    <span class="block text-sm text-black sm:text-center dark:text-gray-400">© 2024 <a href="https://africanhealthstudy.com/" class="hover:underline">African Seventh-day Adventist Health Study</a>. All Rights Reserved.</span>
+                    <span class="block text-sm text-black sm:text-center dark:text-gray-400">© 2024 <a href="https://africanhealthstudy.com/" class="hover:underline"> {t("africanSDAHealthStudy")}</a>. {t("allRight")}</span>
                 </div>
             </footer>
 
@@ -196,11 +189,11 @@ function VisitorAcceptAnswerConsent() {
 
 
             <Modal show={alertModal} onClose={() => setAlertModal(false)}>
-                <Modal.Header>Information</Modal.Header>
+                <Modal.Header>{t("information")}</Modal.Header>
                 <Modal.Body>{message}</Modal.Body>
                 <Modal.Footer>
                     <Button color="red" onClick={() => setAlertModal(false)}>
-                        Close
+                    {t("close")}
                     </Button>
                 </Modal.Footer>
             </Modal>

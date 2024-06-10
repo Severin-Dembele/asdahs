@@ -3,9 +3,11 @@ import { postDataWithNoToken, setItem, postData } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function Authentification() {
   const navigation = useNavigate();
+  const { t } = useTranslation();
 
   const [alertModal, setAlertModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,7 +24,7 @@ export default function Authentification() {
       let response;
       response = await postDataWithNoToken(endpoint, formData, false);
       const successMessage =
-        response?.data?.message || "Informations enregistrées avec succès.";
+        response?.data?.message || `${t("informationSaved")}`;
       setMessage(successMessage);
       setItem(response?.data);
       console.log(response);
@@ -35,11 +37,9 @@ export default function Authentification() {
         navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
       }
     } catch (error) {
-      console.log(error?.response);
 
       const errorMessage =
-        error?.response?.data?.message ||
-        "Une erreur est survenue, réessayez plus tard !";
+        error?.response?.data?.message ||`${t("error")}`;
       setMessage(errorMessage);
     }
   };
@@ -58,7 +58,7 @@ export default function Authentification() {
             alt="Essitech"
           />
           <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
-            Sign in
+          {t("signIn")}
           </h2>
         </div>
 
@@ -92,7 +92,7 @@ export default function Authentification() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Password
+                   {t("password")}
                 </label>
                 <input
                   id="password"
@@ -113,7 +113,7 @@ export default function Authentification() {
                     to="/africanhealthstudy/panel-administration/reset_password"
                     className="font-semibold text-blue-950 hover:text-blue-950"
                   >
-                  Forgot your password ?{" "}
+                    {t("forgotPassword")}{" "}
                   </Link>
                 </div>
               </div>
@@ -124,7 +124,7 @@ export default function Authentification() {
                 onClick={() => handleSubmit()}
                 className="flex w-full justify-center rounded-md bg-blue-950 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-950"
               >
-                Send
+                {t("send")}
               </button>
             </div>
           </div>
@@ -132,11 +132,11 @@ export default function Authentification() {
       </div>
 
       <Modal show={alertModal} onClose={() => setAlertModal(false)}>
-        <Modal.Header>Information</Modal.Header>
+        <Modal.Header>  {t("information")}</Modal.Header>
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <Button color="red" onClick={() => setAlertModal(false)}>
-            Close
+          {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>
