@@ -4,8 +4,10 @@ import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
 import { useNavigate ,useParams} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function AdminStatistique() {
+  const { t } = useTranslation();
 
   const navigation = useNavigate();
   const [list, setList] = useState([]);
@@ -71,11 +73,11 @@ function AdminStatistique() {
 
     try {
       const response = await deleteDta(`${ENDPOINT.divisions}/${id}`);
-      const successMessage = response?.data?.message || "Informations enregistrées avec succès.";
+      const successMessage = response?.data?.message ||`${t("informationSaved")}`;
       setMessage(successMessage);
       reloadData();
     } catch (error) {
-      const errorMessage = error?.response?.data?.message || "Une erreur est survenue, réessayez plus tard !";
+      const errorMessage = error?.response?.data?.message || `${t("error")}`;
       setMessage(errorMessage);
     }
   };
@@ -301,7 +303,7 @@ function AdminStatistique() {
 
 
             <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-              <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white pe-1 m-3">Form completions</h5>
+              <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white pe-1 m-3">{t("formCompletions")}</h5>
 
               <div class="grid lg:grid-cols-4 gap-3 mb-2 md:grid-cols-2">
                 <dl class="bg-blue-300 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
@@ -310,15 +312,15 @@ function AdminStatistique() {
                 </dl>
                 <dl class="bg-orange-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
                   <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-orange-600 dark:text-orange-300 text-sm font-medium flex items-center justify-center mb-1">12</dt>
-                  <dd class="text-orange-600 dark:text-orange-300 text-sm font-medium">Not Started</dd>
+                  <dd class="text-orange-600 dark:text-orange-300 text-sm font-medium">{t("notStarted")}</dd>
                 </dl>
                 <dl class="bg-teal-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
                   <dt class="w-8 h-8 rounded-full bg-teal-100 dark:bg-gray-500 text-teal-600 dark:text-teal-300 text-sm font-medium flex items-center justify-center mb-1">23</dt>
-                  <dd class="text-teal-600 dark:text-teal-300 text-sm font-medium">In progress</dd>
+                  <dd class="text-teal-600 dark:text-teal-300 text-sm font-medium">{t("inProgress")}</dd>
                 </dl>
                 <dl class="bg-blue-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
                   <dt class="w-8 h-8 rounded-full bg-blue-100 dark:bg-gray-500 text-blue-600 dark:text-blue-300 text-sm font-medium flex items-center justify-center mb-1">64</dt>
-                  <dd class="text-blue-600 dark:text-blue-300 text-sm font-medium">Completed</dd>
+                  <dd class="text-blue-600 dark:text-blue-300 text-sm font-medium">{t("completed")}</dd>
                 </dl>
               </div>
 
@@ -339,7 +341,7 @@ function AdminStatistique() {
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
               <div class="w-full md:w-1/2">
                 <form class="flex items-center">
-                  <label for="simple-search" class="sr-only">Search</label>
+                  <label for="simple-search" class="sr-only">{t("search")}</label>
                   <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -348,7 +350,7 @@ function AdminStatistique() {
                     </div>
                     <input
                       onChange={onSearch}
-                      type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="" />
+                      type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder={`${t("search")} ...`} required="" />
                   </div>
                 </form>
               </div>
@@ -364,7 +366,7 @@ function AdminStatistique() {
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10V4a1 1 0 0 0-1-1H9.914a1 1 0 0 0-.707.293L5.293 7.207A1 1 0 0 0 5 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2M10 3v4a1 1 0 0 1-1 1H5m5 6h9m0 0-2-2m2 2-2 2" />
                   </svg>
 
-                  New respondent
+                  {t("newRespondent")}
                 </button>
 
               </div>
@@ -373,12 +375,12 @@ function AdminStatistique() {
               <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" class="px-4 py-3">Full Name</th>
+                    <th scope="col" class="px-4 py-3"> {t("fullName")}</th>
                     {/* <th scope="col" class="px-4 py-3">Conference</th> */}
-                    <th scope="col" class="px-4 py-3">Church</th>
-                    <th scope="col" class="px-4 py-3">Consent</th>
+                    <th scope="col" class="px-4 py-3">{t("church")}</th>
+                    <th scope="col" class="px-4 py-3">{t("consent")}</th>
 
-                    <th scope="col" class="px-4 py-3">Status</th>
+                    <th scope="col" class="px-4 py-3">{t("status")}</th>
                     <th scope="col" class="px-4 py-3">
                       {/* <span class="sr-only">Actions</span> */}
                     </th>
@@ -433,7 +435,7 @@ function AdminStatistique() {
                                   }}
                                   className="px-4 py-1 m-1 text-center text-white bg-green-500 border rounded-md"
                                 >
-                                  Enroll
+                                  {t("enrollPerson")}
                                 </button>
                               )}
                               <button
@@ -442,7 +444,7 @@ function AdminStatistique() {
                                 }}
                                 className="px-4 py-1 m-1 text-center text-white bg-gray-500 border rounded-md"
                               >
-                                View
+                                 {t("view")}
                               </button>
 
 
@@ -483,11 +485,11 @@ function AdminStatistique() {
 
 
       <Modal show={alertModal} onClose={() => setAlertModal(false)}>
-        <Modal.Header>Information</Modal.Header>
+        <Modal.Header> {t("information")}</Modal.Header>
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <Button color="red" onClick={() => setAlertModal(false)}>
-            Close
+          {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>

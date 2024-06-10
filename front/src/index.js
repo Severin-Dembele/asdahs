@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 // import dotenv from 'dotenv';
 
 // dotenv.config();
+import './i18n'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

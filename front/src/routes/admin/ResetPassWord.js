@@ -3,9 +3,11 @@ import { postDataWithNoToken, setItem, postData } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function ResetPassWord() {
     const navigation = useNavigate();
+    const { t } = useTranslation();
 
     const [alertModal, setAlertModal] = useState(false);
     const [formData, setFormData] = useState({
@@ -22,24 +24,21 @@ export default function ResetPassWord() {
             let response;
             response = await postDataWithNoToken(endpoint, formData, false);
             const successMessage =
-                response?.data?.message || "Informations enregistrées avec succès.";
+                response?.data?.message || `${t("informationSaved")}`;
             setMessage(successMessage);
             setItem(response?.data);
             console.log(response);
             setFormData({ username: "", password: "" });
-            if (response?.data?.role === "ADMIN") {
-                navigation("/africanhealthstudy/panel-administration");
-            } else if (response?.data?.role === "INVESTIGATOR") {
-                navigation("/investigator");
-            } else {
-                navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
-            }
+            setTimeout(() => {
+                navigation("/")
+
+            }, 500);
         } catch (error) {
             console.log(error?.response);
 
             const errorMessage =
                 error?.response?.data?.message ||
-                "Une erreur est survenue, réessayez plus tard !";
+                `${t("error")}`;
             setMessage(errorMessage);
         }
     };
@@ -58,32 +57,12 @@ export default function ResetPassWord() {
                         alt="Essitech"
                     />
                     <h2 className="mt-10  font-bold  tracking-tight text-center text-gray-900">
-                    Please provide your email address to receive the procedure for recovering your password.
+                        {t("provideEmailForPasswordRecovery")}
                     </h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <div className="space-y-6">
-                        {/* <div>
-                            <label
-                                htmlFor="username"
-                                className="block text-sm font-medium leading-6 text-gray-900"
-                            >
-                                Email
-                            </label>
-                            <div className="mt-2">
-                                <input
-                                    id="username"
-                                    name="username"
-                                    type="username"
-                                    value={formData.username}
-                                    onChange={handleChange}
-                                    autoComplete="username"
-                                    required
-                                    className="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6"
-                                />
-                            </div>
-                        </div> */}
 
 
                         <div class="max-w-md mx-auto">
@@ -95,34 +74,18 @@ export default function ResetPassWord() {
                                     </svg>
 
                                 </div>
-                                <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-900 focus:border-blue-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-900 dark:focus:border-blue-500" placeholder="Email..." required />
+                                <input
+                                    onChange={handleChange}
+                                    type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-900 focus:border-blue-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-900 dark:focus:border-blue-500" placeholder="Email..." required />
                                 <button
                                     onClick={() => handleSubmit()}
-                                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-900 dark:hover:bg-blue-900 dark:focus:ring-blue-900">Send</button>
+                                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-900 dark:hover:bg-blue-900 dark:focus:ring-blue-900">{t("send")}</button>
                             </div>
                         </div>
 
 
                         <div>
 
-                            {/* <div className="mt-2">
-                                <label
-                                    htmlFor="password"
-                                    className="block text-sm font-medium leading-6 text-gray-900"
-                                >
-                                    Password
-                                </label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    autoComplete="current-password"
-                                    required
-                                    className=" mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-950 sm:text-sm sm:leading-6"
-                                />
-                            </div> */}
 
                             <div className="flex items-center justify-between">
 
@@ -131,7 +94,8 @@ export default function ResetPassWord() {
                                         to="/africanhealthstudy/panel-administration/authentification"
                                         className="font-semibold text-blue-950 hover:text-blue-950"
                                     >
-                                        Do you have an account ?{" "}
+                                        {t("haveAccount")}
+                                        {" "}
                                     </Link>
                                 </div>
                             </div>
@@ -150,11 +114,11 @@ export default function ResetPassWord() {
             </div>
 
             <Modal show={alertModal} onClose={() => setAlertModal(false)}>
-                <Modal.Header>Information</Modal.Header>
+                <Modal.Header>    {t("haveAcinformationcount")}</Modal.Header>
                 <Modal.Body>{message}</Modal.Body>
                 <Modal.Footer>
                     <Button color="red" onClick={() => setAlertModal(false)}>
-                        Close
+                        {t("close")}
                     </Button>
                 </Modal.Footer>
             </Modal>
