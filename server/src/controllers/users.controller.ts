@@ -18,7 +18,7 @@ import {
 import { UsersService } from '../repositories/users.service';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor, NoFilesInterceptor } from '@nestjs/platform-express';
-import { Express ,Request} from 'express';
+import { Express, Request } from 'express';
 import { AuthGuard } from '../repositories/auth/auth.guard';
 import { FormulaireInvestigatorService } from '../repositories/formulaireInvestigator.service';
 import { AuthService } from '../repositories/auth/auth.service';
@@ -198,7 +198,7 @@ export class UsersController {
     return this.usersService.findAllReponseUsers(id);
   }
 
-  @Put('/change-password')
+  @Put('/reset-password')
   async updatePassword(@Body() data) {
     const email = data.email;
     const password = data.password;
@@ -207,5 +207,22 @@ export class UsersController {
       throw new HttpException("Email does'nt exist ", HttpStatus.NOT_FOUND);
     }
     return this.usersService.updatePassword(user.id, password);
+  }
+
+  @Put(':userId/status')
+  async updateStatus(@Param('userId') userId: number) {
+    return this.usersService.updateStatusInProgress(userId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('/status')
+  async updateStatusUserConnected(@Req() request: Request) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const user = await this.usersService.findOne(parseInt(data.sub));
+    if (user == null) {
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    }
+    await this.usersService.updateStatusInProgress(user.id);
   }
 }

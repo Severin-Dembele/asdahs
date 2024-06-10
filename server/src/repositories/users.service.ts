@@ -124,7 +124,7 @@ export class UsersService {
     });
   }
 
-  async updateStatus(userId: number) {
+  async updateStatusInProgress(userId: number) {
     return this.prisma.user.update({
       where: {
         id: userId,
@@ -133,6 +133,17 @@ export class UsersService {
         status: 'PROGRESS',
       },
     });
+  }
+
+  async updateStatusInCompleted(userId: number){
+    return this.prisma.user.update({
+      where:{
+        id: userId,
+      },
+      data:{
+        status: 'CLOSED'
+      }
+    })
   }
 
   findByUsername(username: string) {

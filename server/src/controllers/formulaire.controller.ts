@@ -19,7 +19,7 @@ import { FormulairesService } from '../repositories/formulaires.service';
 import { CreateFormulaireDto } from '../domain/dto/formulaires/create-formulaire.dto';
 import { UpdateFormulaireDto } from '../domain/dto/formulaires/update-formulaire.dto';
 import { FileInterceptor, NoFilesInterceptor } from '@nestjs/platform-express';
-import { Express,Request } from 'express';
+import { Express, Request } from 'express';
 import * as path from 'path';
 import { QuestionService } from '../question/question.service';
 import { CreateQuestionDto } from '../question/dto/create-question.dto';
@@ -55,6 +55,8 @@ export class FormulaireController {
   create(@Body() createFormulaireDto: CreateFormulaireDto) {
     return this.formulaireService.create(createFormulaireDto);
   }
+
+
 
   @Post(':formulaireId/sections')
   @UseInterceptors(NoFilesInterceptor())
@@ -246,7 +248,7 @@ export class FormulaireController {
         }
       } else {
         if (user.role == 'RESPONDENT') {
-          await this.userService.updateStatus(user.id);
+          await this.userService.updateStatusInProgress(user.id);
         }
       }
     }
@@ -302,7 +304,7 @@ export class FormulaireController {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
-      await this.userService.updateStatus(userId);
+      await this.userService.updateStatusInProgress(userId);
       for (let i = 0; i < reponseRepondu.length; i++) {
         const item: any[] = reponseRepondu[i].reponses;
         for (let j = 0; j < item.length; j++) {
@@ -333,4 +335,6 @@ export class FormulaireController {
       return formulaire;
     }
   }
+
+
 }
