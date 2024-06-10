@@ -12,6 +12,8 @@ import {
   NotFoundException,
   UseGuards,
   Req,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from '../repositories/users.service';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -114,6 +116,19 @@ export class UsersController {
   async acceptResponse(@Req() request: Request, @Body() userResponse) {
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
+    const user = await this.usersService.findOne(parseInt(data.sub));
+    if (user == null) {
+      throw new NotFoundException('User not found');
+    }
+    const token = await this.authService.generateAccessTokenRespondant(
+      user.id,
+      user.email,
+    );
+    await this.mailService.sendMailRespondent(
+      user.email,
+      token,
+      process.env.SERVER_FRONT_URL,
+    );
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
 
@@ -181,5 +196,16 @@ export class UsersController {
   @Get(':id/reponses')
   findReponsesUsers(@Param('id') id: string) {
     return this.usersService.findAllReponseUsers(id);
+  }
+
+  @Put('/change-password')
+  async updatePassword(@Body() data) {
+    const email = data.email;
+    const password = data.password;
+    const user = await this.usersService.findByUsername(email);
+    if (user == null) {
+      throw new HttpException("Email does'nt exist ", HttpStatus.NOT_FOUND);
+    }
+    return this.usersService.updatePassword(user.id, password);
   }
 }

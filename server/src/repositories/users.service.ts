@@ -35,6 +35,17 @@ export class UsersService {
     });
   }
 
+  async updatePassword(userId, password) {
+    return this.prisma.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data: {
+        password: await argon2.hash(password),
+      },
+    });
+  }
+
   acceptToAnswer(userId: string, userResponse) {
     return this.prisma.user.update({
       where: {
@@ -64,18 +75,18 @@ export class UsersService {
     });*/
   }
 
-  findAll(){
+  findAll() {
     return this.prisma.user.findMany({
       include: {
-        conference:{
-          include:{
-            union:{
-              include:{
+        conference: {
+          include: {
+            union: {
+              include: {
                 division: true,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createAt: 'desc',
@@ -89,15 +100,15 @@ export class UsersService {
         userCreated: username,
       },
       include: {
-        conference:{
-          include:{
-            union:{
-              include:{
+        conference: {
+          include: {
+            union: {
+              include: {
                 division: true,
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createAt: 'desc',
