@@ -14,9 +14,17 @@ export class DashboardController {
   ) {}
 
   @Get('statistiques')
-  getNotStartedInProgressAndCompleted() {
-    console.log('not started in progress and completed');
-    return this.dashboardService.getNotStartedInProgressAndCompleted();
+  async getNotStartedInProgressAndCompleted(@Req() request: Request) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const user = await this.usersService.findOne(parseInt(data.sub));
+    if (user.role == 'INVESTIGATOR') {
+      return this.dashboardService.getNotStartedInProgressAndCompletedRespondent(
+        user.email,
+      );
+    } else {
+      return this.dashboardService.getNotStartedInProgressAndCompleted();
+    }
   }
 
   @Get('respondents/statistiques')
@@ -30,41 +38,50 @@ export class DashboardController {
   }
 
   @Get('statistiques/group-by-church')
-  getNotStartedInProgressAndCompletedGroupByTypeChurch() {
-    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByTypeChurch();
-  }
-
-  @Get('respondents/statistiques/group-by-church')
-  async getNotStartedInProgressAndCompletedGroupByTypeChurchRespondent(
+  async getNotStartedInProgressAndCompletedGroupByTypeChurch(
     @Req() request: Request,
   ) {
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
     const user = await this.usersService.findOne(parseInt(data.sub));
-    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByTypeChurchRespondent(
-      user.email,
-    );
+    if (user.role == 'INVESTIGATOR') {
+      return this.dashboardService.getNotStartedInProgressAndCompletedGroupByTypeChurchRespondent(
+        user.email,
+      );
+    } else {
+      return this.dashboardService.getNotStartedInProgressAndCompletedGroupByTypeChurch();
+    }
   }
 
   @Get('statistiques/group-by-conference')
-  getNotStartedInProgressAndCompletedGroupByConference() {
-    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByConference();
-  }
-
-  @Get('respondents/group-by-conference')
-  async getNotStartedInProgressAndCompletedGroupByConferenceRespondent(
+  async getNotStartedInProgressAndCompletedGroupByConference(
     @Req() request: Request,
   ) {
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
     const user = await this.usersService.findOne(parseInt(data.sub));
-    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByConferenceRespondent(
-      user.email,
-    );
+    if (user.role == 'INVESTIGATOR') {
+      return this.dashboardService.getNotStartedInProgressAndCompletedGroupByConferenceRespondent(
+        user.email,
+      );
+    } else {
+      return this.dashboardService.getNotStartedInProgressAndCompletedGroupByConference();
+    }
   }
 
   @Get('statistiques/group-by-union')
-  getNotStartedInProgressAndCompletedGroupByUnion() {
-    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByUnion();
+  async getNotStartedInProgressAndCompletedGroupByUnion(
+    @Req() request: Request,
+  ) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const user = await this.usersService.findOne(parseInt(data.sub));
+    if (user.role == 'INVESTIGATOR') {
+      return this.dashboardService.getNotStartedInProgressAndCompletedGroupByUnionRespondent(
+        user.email,
+      );
+    } else {
+      return this.dashboardService.getNotStartedInProgressAndCompletedGroupByUnion();
+    }
   }
 }
