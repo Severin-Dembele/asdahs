@@ -24,7 +24,8 @@ const ENDPOINT = {
   unions: "unions",
   conferences: "conferences",
   churches: "churches",
-  accept: "users/accept-answer"
+  accept: "users/accept-answer",
+  statistiques:"dashboard/statistiques"
 };
 
 export { default as PaginatedTable } from "./PaginatedTable";
