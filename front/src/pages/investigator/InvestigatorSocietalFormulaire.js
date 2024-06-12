@@ -310,7 +310,10 @@ function AdminStatistique() {
 
               <div class="grid lg:grid-cols-4 gap-3 mb-2 md:grid-cols-2">
                 <dl class="bg-blue-300 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-blue-900 dark:text-blue-800 text-sm font-medium flex items-center justify-center mb-1">{listStatistique[0]?.nb_no_started ?? "0"}</dt>
+                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-blue-900 dark:text-blue-800 text-sm font-medium flex items-center justify-center mb-1">
+                  {listStatistique.reduce((total, item) => total + ((item?.nb_no_started != null) ? parseInt(item.nb_no_started) : 0) + ((item?.nb_progress != null) ? parseInt(item.nb_progress) : 0) + ((item?.nb_completed != null) ? parseInt(item.nb_completed) : 0), 0)}
+
+                  </dt>
                   <dd class="text-blue-900 dark:text-blue-800 text-sm font-medium">Total</dd>
                 </dl>
                 <dl class="bg-orange-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
