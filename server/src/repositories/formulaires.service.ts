@@ -113,10 +113,12 @@ export class FormulairesService {
   }
 
   getFormulaireInvestigator(userId, formulaireId) {
-    this.prisma.formulaireInvestigator.findMany({
+    return this.prisma.formulaireInvestigator.findMany({
       where: {
         AND: [{ userId: userId }, { formulaireId: formulaireId }],
       },
     });
   }
+
+ 
 }

@@ -26,6 +26,7 @@ import { DivisionModule } from './modules/division.module';
 import { UnionModule } from './modules/union.module';
 import { ChurchModule } from './modules/church.module';
 import { ConferenceModule } from './modules/conference.module';
+import { DashboardModule } from './dashboards/dashboard.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ConferenceModule } from './modules/conference.module';
     UnionModule,
     ChurchModule,
     ConferenceModule,
+    DashboardModule,
     MailerModule.forRootAsync({
       useFactory: async () => ({
         transport: {
