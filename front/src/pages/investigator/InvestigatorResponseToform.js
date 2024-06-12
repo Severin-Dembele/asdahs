@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
-import { useLocation,useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 function InvestigatorResponseToform() {
     const [formData, setFormData] = useState([]);
@@ -227,7 +227,7 @@ function InvestigatorResponseToform() {
                 </div>
 
                 <div className="flex flex-col items-center">
-                    <span className="text-sm text-gray-700 dark:text-gray-400">
+                    {/* <span className="text-sm text-gray-700 dark:text-gray-400">
                         Showing{" "}
                         <span className="font-semibold text-gray-900 dark:text-white">
                             {currentPage * sectionsPerPage + 1}
@@ -244,7 +244,22 @@ function InvestigatorResponseToform() {
                             {formulaire?.section?.length}
                         </span>{" "}
                         Entries
+                    </span> */}
+
+                    <span className="text-sm text-gray-700 dark:text-gray-400">
+                        Page{" "}
+                        <span className="font-semibold text-gray-900 dark:text-white">
+                            {currentPage * sectionsPerPage + 1}
+                        </span>{" "}
+                       
+                        of{" "}
+                        <span className="font-semibold text-gray-900 dark:text-white">
+                            {formulaire?.section?.length}
+                        </span>{" "}
+                        Entries
                     </span>
+
+
                     <div className="inline-flex mt-2 xs:mt-0">
                         <button
                             onClick={handlePrevPage}
