@@ -3,6 +3,7 @@ import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData } from
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { useLocation, useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 function InvestigatorResponseToform() {
     const [formData, setFormData] = useState([]);
@@ -10,6 +11,7 @@ function InvestigatorResponseToform() {
     // const params = new URLSearchParams(search);
     // const token = params.get("token");
     let { id } = useParams();
+    const { t } = useTranslation();
 
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY";
     const [alertModal, setAlertModal] = useState(false);
@@ -247,16 +249,15 @@ function InvestigatorResponseToform() {
                     </span> */}
 
                     <span className="text-sm text-gray-700 dark:text-gray-400">
-                        Page{" "}
+                    {t("page")}{" "}
                         <span className="font-semibold text-gray-900 dark:text-white">
                             {currentPage * sectionsPerPage + 1}
                         </span>{" "}
                        
-                        of{" "}
+                        {t("of")}{" "}
                         <span className="font-semibold text-gray-900 dark:text-white">
                             {formulaire?.section?.length}
                         </span>{" "}
-                        Entries
                     </span>
 
 
@@ -281,14 +282,14 @@ function InvestigatorResponseToform() {
                                     d="M13 5H1m0 0 4 4M1 5l4-4"
                                 />
                             </svg>
-                            Prev
+                            {t("previous")}
                         </button>
                         <button
                             onClick={handleNextPage}
                             disabled={currentPage === totalPages - 1}
                             className="flex items-center justify-center h-8 px-3 text-sm font-medium text-white bg-blue-800 border-0 border-blue-700 border-s rounded-e hover:bg-blue-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                         >
-                            Next
+                            {t("next")}
                             <svg
                                 class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
                                 aria-hidden="true"
@@ -317,7 +318,7 @@ function InvestigatorResponseToform() {
                                         onClick={handleSubmit}
                                         className="block w-full rounded-md bg-blue-950 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-950"
                                     >
-                                        Send
+                                        {t("send")}
                                     </button>
                                 </div>
                             </div>
@@ -330,11 +331,11 @@ function InvestigatorResponseToform() {
                 {/* ... (votre code existant) ... */}
 
                 <Modal show={alertModal} onClose={() => setAlertModal(false)}>
-                    <Modal.Header>Information</Modal.Header>
+                    <Modal.Header>  {t("information")}</Modal.Header>
                     <Modal.Body>{message}</Modal.Body>
                     <Modal.Footer>
                         <Button color="red" onClick={() => setAlertModal(false)}>
-                            Close
+                        {t("close")}
                         </Button>
                     </Modal.Footer>
                 </Modal>

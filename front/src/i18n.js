@@ -85,8 +85,9 @@ i18n
           "thankYouForConsenting": "Thank you for consenting to participate in our study.",
           "provideEmailForPasswordRecovery": "Please provide your email address to receive the procedure for recovering your password.",
           "haveAccount": "Do you have an account?",
-          "wait":"Please wait a moment..."
-
+          "wait":"Please wait a moment...",
+          page: "Page",
+          of: "of",
         }
       },
       fr: {
@@ -161,7 +162,9 @@ i18n
           "thankYouForConsenting": "Merci de consentir à participer à notre étude.",
           "provideEmailForPasswordRecovery": "Veuillez fournir votre adresse e-mail pour recevoir la procédure de récupération de votre mot de passe.",
           "haveAccount": "Avez-vous un compte ?",
-          "wait": "Veuillez patienter un instant..."
+          "wait": "Veuillez patienter un instant...",
+          page: "Page",
+          of: "sur",
 
         }
       },
@@ -241,7 +244,9 @@ i18n
           "thankYouForConsenting": "Obrigado por consentir em participar de nossa pesquisa.",
           "provideEmailForPasswordRecovery": "Por favor, forneça seu endereço de e-mail para receber o procedimento de recuperação de senha.",
           "haveAccount": "Você tem uma conta?",
-          "wait":  "Por favor, aguarde um momento..."
+          "wait":  "Por favor, aguarde um momento...",
+          page: "Página",
+          of: "de",
 
         }
       },
@@ -320,7 +325,9 @@ i18n
           thankYouForConsenting: "Misaotra anao nanaiky handray anjara amin'ny fandinihanay.",
           provideEmailForPasswordRecovery: "Azafady omeo ny adiresy mailakao mba hahazoana ny torolalana amin'ny famerenana ny tenimiafinao.",
           haveAccount: "Manana kaonty ve ianao?",
-          wait: "Miandry kely azafady..."
+          wait: "Miandry kely azafady...",
+          page: "Pejy",
+          of: "amin'ny",
         }
       }
       
