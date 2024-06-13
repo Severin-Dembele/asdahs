@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getData, postDataWithNoToken, putDataWithNoToken } from '../../services';
-import { ENDPOINT, PaginatedTable, IMAGES_URLS, IMAGES_LINKS } from '../../utils';
+import { ENDPOINT, PaginatedTable, IMAGES_URLS, IMAGES_LINKS, checkForAtSymbol } from '../../utils';
 
 import { Table, Modal, Label, Button, TextInput } from 'flowbite-react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -174,7 +174,7 @@ function AminDetailDevis() {
                         <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt className="text-sm font-medium leading-6 text-gray-900">Contacts</dt>
                             <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                {formData?.phone ?? "--"}  <br /> {formData?.email ?? "--"}
+                                {formData?.phone ?? "--"}  <br /> {checkForAtSymbol(formData?.email) ?? "--"}
                             </dd>
                         </div>
                         <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -283,7 +283,7 @@ function AminDetailDevis() {
                                         {item?.firstname} {item?.lastname}
                                     </Table.Cell>
                                     <Table.Cell>{item?.poste} <br /> {item?.profession} <br /> {item?.niveau}</Table.Cell>
-                                    <Table.Cell>{item?.phoneNumber} <br /> {item?.email}</Table.Cell>
+                                    <Table.Cell>{item?.phoneNumber} <br /> {checkForAtSymbol(item?.email)}</Table.Cell>
                                     <Table.Cell>{item?.attente}</Table.Cell>
 
                                 </Table.Row>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { FrameNew, FramePartener, FrameRequest } from '../../frame'
 import { ENDPOINT } from '../../utils';
+import { removeItem } from '../../services';
 
 function LayoutVisitor() {
   const [formData, setFormData] = useState({});
@@ -21,7 +22,7 @@ function LayoutVisitor() {
   // }, []);
 
   const location = useLocation();
-
+  const navigation = useNavigate()
   // Le chemin actuel de l'emplacement
   const currentPath = location.pathname;
 
@@ -64,9 +65,20 @@ function LayoutVisitor() {
             <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <Link to={'/africanhealthstudy/panel-administration/account'} type="button" className="flex text-sm " >
+                  {/* <Link to={'/africanhealthstudy/panel-administration/account'} type="button" className="flex text-sm " >
                     <p>Severin connecter</p>
-                  </Link>
+                  </Link> */}
+                  <div>
+                    <button
+                      onClick={() => {
+                        removeItem();
+                        navigation("/")
+                      }}
+                      className='bg-red-800 p-2  border rounded-xl'><svg class="w-8 h-8 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,7 +104,7 @@ function LayoutVisitor() {
                   : "hover:bg-blue-600"
                   }`}
               >
-                
+
 
                 <svg className={`flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 
                 ${currentPath ===
@@ -200,6 +212,9 @@ function LayoutVisitor() {
               </a>
             </li> */}
           </ul>
+
+
+
         </div>
       </aside>
 

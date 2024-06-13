@@ -6,6 +6,7 @@ import {
   IMAGES_URLS,
   IMAGES_LINKS,
   ROLE_LIST,
+  checkForAtSymbol,
 } from "../../utils";
 
 import { Table, Modal, Label, Button, TextInput } from "flowbite-react";
@@ -283,7 +284,7 @@ function AdminSettingUnion() {
                           </th> */}
                           <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}</th>
                           <td class="px-4 py-3">{item?.telephone}</td>
-                          <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.email}</th>
+                          <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{checkForAtSymbol(item?.email)}</th>
                           <td class="px-4 py-3">{item?.role}</td>
 
                           <td class="px-4 py-3 flex items-center justify-end">

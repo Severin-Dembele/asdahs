@@ -5,6 +5,7 @@ const ENDPOINT = {
   usersList: "users/list",
   formations: "formations",
   formulaires: "formulaires",
+  researcheAssistantFillForm:"formulaires/langage-user-connected",
   importFile: "importFile",
   questions: "questions",
   reponses: "reponses",
@@ -81,6 +82,14 @@ function formatStatus(status) {
     .join(' ');
 }
 
+function checkForAtSymbol(str) {
+  if (typeof str === 'string' && str.includes('@')) {
+      return str;
+  } else {
+      return null;
+  }
+}
+
 // Exportation des constantes ENDPOINT
 export {
   ENDPOINT,
@@ -90,5 +99,6 @@ export {
   IMAGES_LINKS,
   OPTIONS_SELCT,
   ROLE_LIST,
-  formatStatus
+  formatStatus,
+  checkForAtSymbol
 };

@@ -13,7 +13,7 @@ function InvestigatorResponseToform() {
     let { id } = useParams();
     const { t } = useTranslation();
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY";
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY";
     const [alertModal, setAlertModal] = useState(false);
     const [message, setMessage] = useState("Information");
 
@@ -26,7 +26,9 @@ function InvestigatorResponseToform() {
         const reloadData = async () => {
             try {
                 const [adminRes] = await Promise.all([
-                    getData(`${ENDPOINT.formulaires}/token/${token}`),
+                    // getData(`${ENDPOINT.formulaires}/token/${token}`),
+                    getData(`${ENDPOINT.researcheAssistantFillForm}`),
+
                 ]);
                 console.log(adminRes);
 

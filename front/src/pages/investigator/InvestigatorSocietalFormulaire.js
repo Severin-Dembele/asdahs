@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
-import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
+import { ENDPOINT, PaginatedTable, checkForAtSymbol, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
 import { useNavigate ,useParams} from 'react-router-dom';
@@ -399,7 +399,7 @@ function AdminStatistique() {
                         <tr key={index} class="border-b dark:border-gray-700">
                           <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{item?.name}
                             <br />
-                            {item?.telephone}, {item?.email}
+                            {item?.telephone}, {checkForAtSymbol(item?.email)}
                           </th>
 
                           {/* <td class="px-4 py-3">{item?.church?.conference?.name}</td> */}
@@ -407,7 +407,7 @@ function AdminStatistique() {
                             {item?.typeChurch} <br />
                             {item?.churchName}
                           </td>
-                          <td>
+                          <td className='px-4 '>
                             {item?.acceptResponse ? (
                               <svg class="w-6.5 h-5  me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
@@ -420,7 +420,7 @@ function AdminStatistique() {
                             )}
 
                           </td>
-                          <td class="px-4 py-3">
+                          <td class="px-4 py-3 ">
                             <div class="flex items-center">
                               <div class={`h-2.5 w-2.5 rounded-full me-2 ${item?.status === "NOT_STARTED" ? "bg-red-500" :
                                 item?.status === "PROGRESS" ? "bg-yellow-500" :
