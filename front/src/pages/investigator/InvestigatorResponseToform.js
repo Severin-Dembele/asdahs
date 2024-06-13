@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
 function InvestigatorResponseToform() {
     const [formData, setFormData] = useState([]);
+    const navigation = useNavigate();
     // const { search } = useLocation();
     // const params = new URLSearchParams(search);
     // const token = params.get("token");
@@ -88,7 +89,7 @@ function InvestigatorResponseToform() {
             setMessage(successMessage);
 
             setTimeout(() => {
-                // window.open('https://www.essitechgroup.com/')
+                 navigation(-1)
             }, 600);
         } catch (error) {
             const errorMessage =

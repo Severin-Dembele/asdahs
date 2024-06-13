@@ -18,8 +18,12 @@ Click to fill the form
 numerotation des sections
 
 Reload les infos deja renseigner 
-
-
 Update  Form avec les donnees 
 
+Apres send quitter 
 
+
+
+
+Reload  le daat 
+Quand on revient sur le formualire presenter les infos deja renseigner
