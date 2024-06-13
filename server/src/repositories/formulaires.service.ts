@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { Question } from '../question/entities/question.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { CreateFormationDto } from 'src/domain/dto/formations/create-formation.dto';
+import { CreateFormulaireDto } from 'src/domain/dto/formulaires/create-formulaire.dto';
 
 @Injectable()
 export class FormulairesService {
   constructor(private prisma: PrismaService) {}
 
-  create(createFormulaireDto) {
+  create(createFormulaireDto: CreateFormulaireDto) {
     return this.prisma.formulaire.create({
       data: {
         title: createFormulaireDto.title,
@@ -154,7 +156,27 @@ export class FormulairesService {
     return this.prisma.formulaire.findFirst({
       where:{
         langage: langage
-      }
+      },
+      include: {
+        section: {
+          include: {
+            sous_sections: {
+              include: {
+                question: {
+                  include: {
+                    option: true,
+                  },
+                },
+              },
+            },
+            question: {
+              include: {
+                option: true,
+              },
+            },
+          },
+        },
+      },
     })
   }
 }

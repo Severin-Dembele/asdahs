@@ -50,7 +50,6 @@ export class UsersController {
     userDto.email = userDto.email ? userDto.email : null;
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
-    console.log(userDto);
     const password = generator.generate({
       length: 8,
       lowercase: true,

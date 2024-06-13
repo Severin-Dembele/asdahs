@@ -21,4 +21,6 @@ export class CreateFormationDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  langage: string
 }

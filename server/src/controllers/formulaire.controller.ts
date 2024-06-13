@@ -56,7 +56,13 @@ export class FormulaireController {
     return this.formulaireService.create(createFormulaireDto);
   }
 
-
+  @Get('/langage-user-connected')
+  async getFormulaireInvestigator(@Req() request: Request) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const user = await this.userService.findOne(data.sub);
+    return this.formulaireService.getFormulaireByLangage(user.langage);
+  }
 
   @Post(':formulaireId/sections')
   @UseInterceptors(NoFilesInterceptor())
@@ -101,7 +107,7 @@ export class FormulaireController {
   }
 
   @Get('uuid/:uuid')
-  async findFormulaireByUuid(@Param('uuid') uuid: string){
+  async findFormulaireByUuid(@Param('uuid') uuid: string) {
     return this.formulaireService.findByUuid(uuid);
   }
 
@@ -340,6 +346,5 @@ export class FormulaireController {
       return formulaire;
     }
   }
-
 
 }
