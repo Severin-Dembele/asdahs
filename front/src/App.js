@@ -47,7 +47,7 @@ function App() {
         <Router>
           <Routes>
             <Route index element={<VisitoWelcomePage />} />
-            <Route path="concent" element={<VisitorAcceptAnswerConsent />} />
+            <Route path="Consent" element={<VisitorAcceptAnswerConsent />} />
             <Route
               path="africanhealthstudy/*"
               element={

@@ -409,7 +409,7 @@ function AdminStatistique() {
                     <th scope="col" class="px-4 py-3">Full Name</th>
                     <th scope="col" class="px-4 py-3">Conference</th>
                     <th scope="col" class="px-4 py-3">Church type</th>
-                    <th scope="col" class="px-4 py-3">Concent</th>
+                    <th scope="col" class="px-4 py-3">Consent</th>
                     <th scope="col" class="px-4 py-3">Status</th>
                     <th scope="col" class="px-4 py-3">
                       <span class="sr-only">Actions</span>
@@ -442,7 +442,7 @@ function AdminStatistique() {
                               </svg>
 
                             )}  <span>
-                              Concent
+                              Consent
                             </span>
                             </span>
                           </td>

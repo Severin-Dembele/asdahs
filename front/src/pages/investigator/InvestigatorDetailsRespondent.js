@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
-import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
+import { ENDPOINT, PaginatedTable, checkForAtSymbol, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -50,7 +50,7 @@ function InvestigatorDetailsRespondent() {
           </div>
           <h3 class="text-base font-semibold leading-7 text-gray-900">{formData?.name}</h3>
           <p class="max-w-4xl text-sm  text-blue-500 ">
-            Email: <a href={`mailto:${formData.email ?? '--'}`} className='underline mr-4'>{formData.email ?? '--'},</a>
+            Email: <a href={`mailto:${formData.email ?? '--'}`} className='underline mr-4'>{checkForAtSymbol(formData.email)?? '--'},</a>
             Phone: <a href={`tel:${formData.telephone ?? '--'}`} className='underline'>{formData.telephone ?? '--'}</a>
 
           </p>
