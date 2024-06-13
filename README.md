@@ -5,9 +5,13 @@ VALUES (1, 'New User', 'newuser@example.com', 'user_image.png', 'NOT_STARTED', '
 
 
 
+
+Center concent 
+Concent is wiht s 
+
+remove the get started
+
 Click to access the Consent form
-
-
 Click to fill the form
 
 
