@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { FrameEror404 } from "./frame";
 import { Authentification, AdminAuthGuard, AdminRoutes, ResetPassWord } from "./routes/admin";
-import { VisitoWelcomePage, VisitorAbout, VisitorAcceptAnswerConsent, VisitorHome } from "./pages/visitor";
+import { VisitoWelcomePage, VisitorAbout, VisitorAcceptAnswerConsent, VisitorHome ,RespondentFillForms} from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
 import { InvestigatorSocietalFormulaire, InvestigatorAddUser, InvestigatorResponseToform, InvestigatorDetailsRespondent } from "./pages/investigator";
 import { LayoutInvestigator } from "./components/Layout";
@@ -58,6 +58,7 @@ function App() {
             />
 
             <Route path="formulaire" element={<VisitorHome />} />
+            <Route path="fillForm" element={<RespondentFillForms />} />
             <Route
               path="africanhealthstudy/panel-administration/authentification"
               element={<Authentification />}
