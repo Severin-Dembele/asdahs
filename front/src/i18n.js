@@ -85,8 +85,9 @@ i18n
           "thankYouForConsenting": "Thank you for consenting to participate in our study.",
           "provideEmailForPasswordRecovery": "Please provide your email address to receive the procedure for recovering your password.",
           "haveAccount": "Do you have an account?",
-          "wait":"Please wait a moment..."
-
+          "wait":"Please wait a moment...",
+          page: "Page",
+          of: "of",
         }
       },
       fr: {
@@ -161,7 +162,9 @@ i18n
           "thankYouForConsenting": "Merci de consentir à participer à notre étude.",
           "provideEmailForPasswordRecovery": "Veuillez fournir votre adresse e-mail pour recevoir la procédure de récupération de votre mot de passe.",
           "haveAccount": "Avez-vous un compte ?",
-          "wait": "Veuillez patienter un instant..."
+          "wait": "Veuillez patienter un instant...",
+          page: "Page",
+          of: "sur",
 
         }
       },
@@ -241,10 +244,93 @@ i18n
           "thankYouForConsenting": "Obrigado por consentir em participar de nossa pesquisa.",
           "provideEmailForPasswordRecovery": "Por favor, forneça seu endereço de e-mail para receber o procedimento de recuperação de senha.",
           "haveAccount": "Você tem uma conta?",
-          "wait":  "Por favor, aguarde um momento..."
+          "wait":  "Por favor, aguarde um momento...",
+          page: "Página",
+          of: "de",
 
         }
+      },
+      mg: {
+        translation: {
+          welcometxt: "Ity tranokala ity dia natokana amin'ny fanangonana angona momba ny fandinihana ny fahasalamana ny Advantista Andro Fahafito.",
+          learnMore: "Hianatra misimisy kokoa",
+          getStarted: "Atombohy",
+          africanSDAHealthStudy: "Fandinihana ny Fahasalamana ny Advantista Andro Fahafito Afrikana",
+          allRight: "Zo rehetra voatokana.",
+          africanSDA: "Advantista Andro Fahafito Afrikana",
+          healthStudy: "Fandinihana ny Fahasalamana",
+          signIn: "Hiditra",
+          password: "Teny miafina",
+          forgotPassword: "Adino ve ny tenimiafina?",
+          send: "Alefaso",
+          information: "Fampahalalana",
+          close: "Akato",
+          informationSaved: "Voavonjy soa aman-tsara ny fampahalalana.",
+          error: "Nisy fahadisoana, azafady andramo indray aoriana!",
+          formCompletions: "Famenoana taratasy",
+          notStarted: "Tsy nanomboka",
+          inProgress: "Mandeha",
+          completed: "Vita",
+      
+          search: "Karoka",
+      
+          newRespondent: "Mpamaly vaovao",
+          fullName: "Anarana feno",
+          church: "Fiangonana",
+          consent: "Fekem-pinoana",
+          status: "Toetr'andro",
+          enrollPerson: "Ampidiro",
+          view: "Jereo",
+      
+          previous: "Teo aloha",
+          next: "Manaraka",
+          phone: "Telefaonina",
+          conference: "Fihaonambe",
+          typeOfChurch: "Karazana Fiangonana",
+      
+          small: "Kely",
+          medium: "Antsasa-dalana",
+          large: "Lehibe",
+          language: "Fiteny",
+      
+          english: "Anglisy",
+          french: "Frantsay",
+          portuguese: "Portogey",
+          respondentWishesToFillForm: "Ny mpamaly dia maniry ny hameno ny taratasy izy irery",
+          readConsentForm: "Vakio ny taratasy fifanekena ho an'ny mpandray anjara",
+          cancel: "Foano",
+          save: "Vonjeo",
+          informedConsent: "Fifanarahana Voalazan'ny Lalàna",
+          dearRespondent: "Ry Mpamaly Hajaina,",
+          invitationToParticipate: "Ity taratasy ity dia manasa anao handray anjara amin'ny fandinihana antsoina hoe",
+          confidentialInformation: "Ny fampahalalana rehetra omenao dia hotazonina ho tsiambaratelo.",
+          gratefulAssistance: "Misaotra indrindra izahay raha hanampy amin'ity fikarohana manan-danja ity amin'ny famenoana ny fanontaniana momba ny fikarohana.",
+          cooperation: "Mariho fa ny fiaraha-miasa ataonao dia hanampy betsaka amin'ny fanatanterahana ity fandinihana ity.",
+      
+          thankYou: "Misaotra anao.",
+          yoursFaithfully: "Misaotra indrindra,",
+      
+          researchTeam: "Ny Ekipan'ny Fikarohana",
+          participationStudy: "Voafantina handray anjara amin'ny fandinihana momba ny fahasalamana sy ny fitondran-tena momba ny fahasalamana ianao amin'ny alalan'ny famaliana fanontaniana. Ny fampahalalana omenao dia mety hanampy ny Advantista Andro Fahafito Afrikana ho salama kokoa sy hahazo fanabeazana tsara kokoa momba ny fahasalamana. Tsy misy loza mety hitranga aminao noho ny fandraisanao anjara. Tsy ho fantatra ny anaranao amin'ny taratasy fanontaniana.",
+          participationVoluntary: "Tsy hahazo vola ianao noho ny fandraisana anjara. An-tsitrapo ny fandraisanao anjara. Tsy misy fomba hahafantarana anao amin'ny valiny omenanao, koa valio ny fanontaniana rehetra amim-pahamarinana. Tokony ho ora iray eo ho eo na mihoatra kely ny fahavitan'ny fanontaniana. Aorian'ny famerenana ny taratasy fanontaniana vita, dia hotazonina ao amin'ny birao voahidy ao amin'ny Oniversite Advantista Afrikana any Nairobi, Kenya izy ireo. Rehefa vita ny fikarohana, dia hodorana ny taratasy fanontaniana.",
+          noParticipationReturn: "Raha tsy te handray anjara ianao, avereno ny taratasy fanontaniana any amin'ny Mpanampy Fikarohana. Tsy hisy sazy ho anao noho ny tsy fandraisana anjara. Raha manomboka mamaly ny fanontaniana ianao ary tsy te hanohy azy, ajanony ary omeo ny mpanampy fikarohana.",
+          languageAssistance: "Raha tsy anglisy ny fiteny fototrao, angataho ny Mpanampy Fikarohana mba hanome anao dika mitovy amin'ity Taratasy Fifanekena ity amin'ny fiteny azonao vakiana sy takarina. Ny taratasy fanontaniana ho azonao dia ho amin'ny fiteny mitovy ihany koa. Raha tsy afaka mahita, mamaky, manoratra, na mahafantatra ity Taratasy Fifanekena ity ianao, lazao amin'ny Mpanampy Fikarohana ary hanampy anao izy. Ny Mpanampy Fikarohana koa dia hanampy anao amin'ny famenoana ny taratasy fanontaniana.",
+          signingConsent: "Ny sonia ity Taratasy Fifanekena ity dia midika ho fanekena handray anjara amin'ny fandinihana fikarohana. Raha manana fanontaniana ianao, azafady anontanio izy ireo ankehitriny. Rehefa vitanao ny taratasy fanontaniana, dia tapitra ny fandraisana anjaranao.",
+          researchPrincipalInvestigator: "Ny Mpitari-draharahan'ny Fikarohana dia Profesora Daniel Ganu. Afaka mifandray aminy ianao raha manana fanehoan-kevitra na fitarainana momba ity dingana ity. Ny fampahalalana momba ny fifandraisana aminy dia:",
+          facultyOffice: "Birao mpampianatra: Oniversite Advantista Afrikana, Trano famakiam-boky rihana voalohany, Biraon'ny Dekana, Sekolin'ny Fianarana ambony",
+          cellPhone: "Laharana finday:",
+      
+          ethicsReviewApproved: "Ny Komity Mpandinika ny Etika sahaza dia nankato ity fandinihana ity ary manana famatsiam-bola.",
+          clickToAgree: "Amin'ny alalan'ny fanindriana eto, manaiky handray anjara amin'ny fandinihanay ianao",
+          thankYouForConsenting: "Misaotra anao nanaiky handray anjara amin'ny fandinihanay.",
+          provideEmailForPasswordRecovery: "Azafady omeo ny adiresy mailakao mba hahazoana ny torolalana amin'ny famerenana ny tenimiafinao.",
+          haveAccount: "Manana kaonty ve ianao?",
+          wait: "Miandry kely azafady...",
+          page: "Pejy",
+          of: "amin'ny",
+        }
       }
+      
     },
     interpolation: {
       escapeValue: false // React already escapes values to prevent XSS

@@ -20,6 +20,7 @@ function AdminStatistique() {
 
   const [listChurch, setListChurch] = useState([]);
   const [listChurchInitial, setListChurchInitial] = useState([]);
+  const [listStatistique, setListStatistique] = useState([]);
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,12 +28,13 @@ function AdminStatistique() {
 
   const reloadData = async () => {
     try {
-      const [divisionRes, unionRes, confRes, churchRes, userRes] = await Promise.all([
+      const [divisionRes, unionRes, confRes, churchRes, userRes,statRes] = await Promise.all([
         getData(ENDPOINT.divisions),
         getData(ENDPOINT.unions),
         getData(ENDPOINT.conferences),
         getData(ENDPOINT.churches),
-        getData(ENDPOINT.usersList)
+        getData(ENDPOINT.usersList),
+        getData(ENDPOINT.statistiques)
       ]);
 
       setListDivision(divisionRes?.data || []);
@@ -44,6 +46,7 @@ function AdminStatistique() {
       setListChurchInitial(churchRes?.data || []);
       setList(userRes?.data || []);
       setListInitial(userRes?.data || []);
+      setListStatistique(statRes?.data || [])
     } catch (error) {
       // Gérer les erreurs ici si nécessaire
     }
@@ -307,19 +310,22 @@ function AdminStatistique() {
 
               <div class="grid lg:grid-cols-4 gap-3 mb-2 md:grid-cols-2">
                 <dl class="bg-blue-300 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-blue-900 dark:text-blue-800 text-sm font-medium flex items-center justify-center mb-1">12</dt>
+                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-blue-900 dark:text-blue-800 text-sm font-medium flex items-center justify-center mb-1">
+                  {listStatistique.reduce((total, item) => total + ((item?.nb_no_started != null) ? parseInt(item.nb_no_started) : 0) + ((item?.nb_progress != null) ? parseInt(item.nb_progress) : 0) + ((item?.nb_completed != null) ? parseInt(item.nb_completed) : 0), 0)}
+
+                  </dt>
                   <dd class="text-blue-900 dark:text-blue-800 text-sm font-medium">Total</dd>
                 </dl>
                 <dl class="bg-orange-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-orange-600 dark:text-orange-300 text-sm font-medium flex items-center justify-center mb-1">12</dt>
+                  <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-orange-600 dark:text-orange-300 text-sm font-medium flex items-center justify-center mb-1">{listStatistique[0]?.nb_no_started ?? "0"}</dt>
                   <dd class="text-orange-600 dark:text-orange-300 text-sm font-medium">{t("notStarted")}</dd>
                 </dl>
                 <dl class="bg-teal-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                  <dt class="w-8 h-8 rounded-full bg-teal-100 dark:bg-gray-500 text-teal-600 dark:text-teal-300 text-sm font-medium flex items-center justify-center mb-1">23</dt>
+                  <dt class="w-8 h-8 rounded-full bg-teal-100 dark:bg-gray-500 text-teal-600 dark:text-teal-300 text-sm font-medium flex items-center justify-center mb-1">{listStatistique[0]?.nb_progress ?? "0"}</dt>
                   <dd class="text-teal-600 dark:text-teal-300 text-sm font-medium">{t("inProgress")}</dd>
                 </dl>
                 <dl class="bg-blue-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                  <dt class="w-8 h-8 rounded-full bg-blue-100 dark:bg-gray-500 text-blue-600 dark:text-blue-300 text-sm font-medium flex items-center justify-center mb-1">64</dt>
+                  <dt class="w-8 h-8 rounded-full bg-blue-100 dark:bg-gray-500 text-blue-600 dark:text-blue-300 text-sm font-medium flex items-center justify-center mb-1">{listStatistique[0]?.nb_completed ?? "0"}</dt>
                   <dd class="text-blue-600 dark:text-blue-300 text-sm font-medium">{t("completed")}</dd>
                 </dl>
               </div>
