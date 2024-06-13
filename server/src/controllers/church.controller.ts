@@ -53,11 +53,11 @@ export class ChurchController {
         user.id,
         user.email,
       );
-      await this.mailService.sendMailRespondent(
+      await this.mailService.sendMailFormulaireRespondent(
         user.email,
         token,
         process.env.SERVER_FRONT_URL,
-        ""
+        '',
       );
     }
     return user;

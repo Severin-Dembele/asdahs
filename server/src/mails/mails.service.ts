@@ -86,12 +86,12 @@ export class MailsService {
     });
   }
 
-  sendMailRespondent(email: string, token, url, formulaire) {
+  sendMailFormulaireRespondent(email: string, token, url, formulaire) {
     this.mailerService.sendMail({
       to: email,
       from: process.env.EMAIL,
       subject: 'Formulaire',
-      template: 'respondent',
+      template: 'formulaire',
       context: {
         url: url,
         token: token,
