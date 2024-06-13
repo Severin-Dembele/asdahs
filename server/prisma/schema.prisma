@@ -107,6 +107,8 @@ model Section {
 model Formulaire {
   id                     Int                      @id @default(autoincrement())
   title                  String
+  langage String?
+  uuid String?
   description            String?                  @db.Text
   dateDebut              DateTime?
   dateFin                DateTime?

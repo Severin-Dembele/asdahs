@@ -24,6 +24,7 @@ import { FormulaireInvestigatorService } from '../repositories/formulaireInvesti
 import { AuthService } from '../repositories/auth/auth.service';
 import { MailsService } from '../mails/mails.service';
 import generator from 'generate-password-ts';
+import { FormulairesService } from 'src/repositories/formulaires.service';
 
 @Controller('users')
 @ApiTags('users')
@@ -33,6 +34,7 @@ export class UsersController {
     private readonly formulaireInvestigatorService: FormulaireInvestigatorService,
     private readonly authService: AuthService,
     private readonly mailService: MailsService,
+    private readonly formulaireService: FormulairesService,
   ) {}
 
   @Post()
@@ -45,9 +47,10 @@ export class UsersController {
     @Req() request: Request,
   ) {
     userDto.profile = file ? file.filename : null;
+    userDto.email = userDto.email ? userDto.email : null;
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
-
+    console.log(userDto);
     const password = generator.generate({
       length: 8,
       lowercase: true,
@@ -65,11 +68,6 @@ export class UsersController {
         user.id,
         user.email,
       );
-      /* await this.mailService.sendMailRespondent(
-        user.email,
-        token,
-        process.env.SERVER_FRONT_URL,
-      ); */
       await this.mailService.sendMailAcceptToAnswer(
         user.email,
         token,
@@ -117,6 +115,9 @@ export class UsersController {
     const authToken = request.headers['authorization'].split(' ')[1];
     const data = await this.authService.decodeToken(authToken);
     const user = await this.usersService.findOne(parseInt(data.sub));
+    const formulaire = await this.formulaireService.getFormulaireByLangage(
+      user.langage,
+    );
     if (user == null) {
       throw new NotFoundException('User not found');
     }
@@ -128,6 +129,7 @@ export class UsersController {
       user.email,
       token,
       process.env.SERVER_FRONT_URL,
+      formulaire.uuid
     );
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }

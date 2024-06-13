@@ -100,6 +100,11 @@ export class FormulaireController {
     return this.formulaireService.findAll();
   }
 
+  @Get('uuid/:uuid')
+  async findFormulaireByUuid(@Param('uuid') uuid: string){
+    return this.formulaireService.findByUuid(uuid);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number) {
     const formulaire = await this.formulaireService.findOne(id);

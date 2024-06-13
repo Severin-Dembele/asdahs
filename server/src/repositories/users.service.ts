@@ -135,15 +135,15 @@ export class UsersService {
     });
   }
 
-  async updateStatusInCompleted(userId: number){
+  async updateStatusInCompleted(userId: number) {
     return this.prisma.user.update({
-      where:{
+      where: {
         id: userId,
       },
-      data:{
-        status: 'CLOSED'
-      }
-    })
+      data: {
+        status: 'CLOSED',
+      },
+    });
   }
 
   findByUsername(username: string) {

@@ -8,6 +8,7 @@ import * as path from 'path';
 import { AuthService } from '../repositories/auth/auth.service';
 import { FormulaireInvestigatorService } from '../repositories/formulaireInvestigator.service';
 import { MailsService } from 'src/mails/mails.service';
+import { FormulairesService } from 'src/repositories/formulaires.service';
 
 @Module({
   controllers: [UsersController],
@@ -15,6 +16,7 @@ import { MailsService } from 'src/mails/mails.service';
     UsersService,
     AuthService,
     FormulaireInvestigatorService,
+    FormulairesService,
     MailsService,
   ],
   imports: [

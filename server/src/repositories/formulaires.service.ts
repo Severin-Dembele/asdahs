@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { Question } from '../question/entities/question.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class FormulairesService {
@@ -10,7 +11,9 @@ export class FormulairesService {
     return this.prisma.formulaire.create({
       data: {
         title: createFormulaireDto.title,
+        uuid: uuidv4(),
         description: createFormulaireDto.description,
+        langage: createFormulaireDto.langage,
       },
     });
   }
@@ -44,6 +47,33 @@ export class FormulairesService {
       },
     });
   }
+
+  findByUuid(uuid: string) {
+    return this.prisma.formulaire.findFirst({
+      where: { uuid: uuid },
+      include: {
+        section: {
+          include: {
+            sous_sections: {
+              include: {
+                question: {
+                  include: {
+                    option: true,
+                  },
+                },
+              },
+            },
+            question: {
+              include: {
+                option: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
 
   update(id: number, updateFormulaire) {
     return this.prisma.formulaire.update({
@@ -120,5 +150,11 @@ export class FormulairesService {
     });
   }
 
- 
+  getFormulaireByLangage(langage: string){
+    return this.prisma.formulaire.findFirst({
+      where:{
+        langage: langage
+      }
+    })
+  }
 }

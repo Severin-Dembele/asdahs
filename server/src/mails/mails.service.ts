@@ -86,7 +86,7 @@ export class MailsService {
     });
   }
 
-  sendMailRespondent(email: string, token, url) {
+  sendMailRespondent(email: string, token, url, formulaire) {
     this.mailerService.sendMail({
       to: email,
       from: process.env.EMAIL,
@@ -95,6 +95,7 @@ export class MailsService {
       context: {
         url: url,
         token: token,
+        formulaire: formulaire
       },
     });
   }

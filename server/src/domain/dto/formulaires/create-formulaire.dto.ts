@@ -9,4 +9,5 @@ export class CreateFormulaireDto {
   @ApiProperty()
   @IsString()
   description: string;
+  langage: string;
 }
