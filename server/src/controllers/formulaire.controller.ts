@@ -229,6 +229,7 @@ export class FormulaireController {
     return this.formulaireService.remove(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post(':idFormulaire/reponses')
   async reponseFormulaire(
     @Param('idFormulaire') idFormulaire: number,
@@ -242,6 +243,12 @@ export class FormulaireController {
     if (user == null) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     } else {
+      const numberQuestion =
+        await this.formulaireService.getNumberQuestionToAnswer(idFormulaire);
+      await this.reponseReponduService.removeReponseReponduUser(
+        idFormulaire,
+        user.id,
+      );
       if (user.role == 'INVESTIGATOR') {
         const formulaireInvestigator =
           await this.formulaireService.getFormulaireInvestigator(
@@ -252,14 +259,18 @@ export class FormulaireController {
           formulaireInvestigator == null ||
           formulaireInvestigator == undefined
         ) {
-          this.formulaireService.createFormulaireInvestigator({
+          await this.formulaireService.createFormulaireInvestigator({
             userId: user.id,
             formulaireId: idFormulaire,
           });
         }
       } else {
         if (user.role == 'RESPONDENT') {
-          await this.userService.updateStatusInProgress(user.id);
+          if (parseInt(numberQuestion as string) > reponseRepondu.length) {
+            await this.userService.updateStatusInProgress(user.id);
+          } else {
+            await this.userService.updateStatusInCompleted(user.id);
+          }
         }
       }
     }
@@ -294,6 +305,12 @@ export class FormulaireController {
     if (user == null) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     } else {
+      const numberQuestion =
+        await this.formulaireService.getNumberQuestionToAnswer(idFormulaire);
+      await this.reponseReponduService.removeReponseReponduUser(
+        idFormulaire,
+        user.id,
+      );
       if (user.role == 'INVESTIGATOR') {
         const formulaireInvestigator =
           await this.formulaireService.getFormulaireInvestigator(
@@ -315,7 +332,16 @@ export class FormulaireController {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
-      await this.userService.updateStatusInProgress(userId);
+      if (parseInt(numberQuestion as string) > reponseRepondu.length) {
+        await this.userService.updateStatusInProgress(user.id);
+      } else if (parseInt(numberQuestion as string) === reponseRepondu.length) {
+        await this.userService.updateStatusInCompleted(user.id);
+      } else {
+        throw new HttpException(
+          'response are too long ',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
       for (let i = 0; i < reponseRepondu.length; i++) {
         const item: any[] = reponseRepondu[i].reponses;
         for (let j = 0; j < item.length; j++) {
@@ -346,5 +372,4 @@ export class FormulaireController {
       return formulaire;
     }
   }
-
 }
