@@ -78,7 +78,7 @@ function InvestigatorAddUser() {
 
 
         } catch (error) {
-            const errorMessage = error?.response?.data?.message ||`${t("error")}`;
+            const errorMessage = error?.response?.data?.message || `${t("error")}`;
             setMessage(errorMessage);
         }
     };
@@ -256,6 +256,20 @@ function InvestigatorAddUser() {
                                     </div>
                                 </li>
 
+                                <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                    <div class="flex items-center ps-3">
+                                        <input
+                                            type="radio"
+                                            id="langage"
+                                            name="langage"
+                                            onChange={handleChange}
+                                            value="Malagasy"
+                                            checked={formData?.langage === 'Malagasy'}
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                        <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("malagasy")}</label>
+                                    </div>
+                                </li>
+
                             </ul>
 
                         </div>
@@ -277,8 +291,8 @@ function InvestigatorAddUser() {
                                 </div>
                                 <div class="ms-2 text-sm">
                                     <label for="selfResponse" class="font-medium text-gray-900 dark:text-gray-300">{t("respondentWishesToFillForm")}</label>
-                                    <Link to="/about">
-                                    <p id="helper-checkbox-text" class="text-xs font-normal underline text-blue-500 dark:text-gray-300">{t("readConsentForm")}</p>
+                                    <Link to="/about" target="_blank" rel="noopener noreferrer">
+                                        <p id="helper-checkbox-text" class="text-xs font-normal underline text-blue-500 dark:text-gray-300">{t("readConsentForm")}</p>
                                     </Link>
                                 </div>
                             </div>
@@ -295,7 +309,7 @@ function InvestigatorAddUser() {
                         <button
                             onClick={() => { handleSubmit() }}
                             class="py-3 m-2 text-sm font-medium text-center text-white rounded-lg bg-blue-900 w-full lg:w-20 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                              {t("save")}
+                            {t("save")}
                         </button>
 
                     </div>
@@ -308,8 +322,8 @@ function InvestigatorAddUser() {
                 <Modal.Body>{message}</Modal.Body>
                 <Modal.Footer>
                     <Button color="red" onClick={() => setAlertModal(false)}>
-                    {t("information")}
-                                    </Button>
+                        {t("information")}
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>

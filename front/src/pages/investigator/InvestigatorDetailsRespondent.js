@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
-import { ENDPOINT, PaginatedTable, formatStatus } from '../../utils';
+import { ENDPOINT, PaginatedTable, checkForAtSymbol, formatStatus } from '../../utils';
 
 import { Modal, Label, Button, TextInput, Textarea } from 'flowbite-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function InvestigatorDetailsRespondent() {
   const navigation = useNavigate();
   const [formData, setFormData] = useState({});
-
+  const { t } = useTranslation();
   let { id } = useParams()
   const reloadData = async () => {
     try {
@@ -32,9 +33,24 @@ function InvestigatorDetailsRespondent() {
     <div className='w-full flex justify-center '>
       <div className='w-full p-4'>
         <div class="px-4 sm:px-0">
+
+
+          <div class="flex flex-col space-y-4 sm:flex-row sm:justify-start sm:space-y-0 m-3">
+            <button
+              onClick={() => { navigation(-1) }}
+              class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+              <svg class="mx-1 w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
+              </svg>
+              {t("goBack")}
+
+
+            </button>
+
+          </div>
           <h3 class="text-base font-semibold leading-7 text-gray-900">{formData?.name}</h3>
           <p class="max-w-4xl text-sm  text-blue-500 ">
-            Email: <a href={`mailto:${formData.email ?? '--'}`} className='underline mr-4'>{formData.email ?? '--'},</a>
+            Email: <a href={`mailto:${formData.email ?? '--'}`} className='underline mr-4'>{checkForAtSymbol(formData.email)?? '--'},</a>
             Phone: <a href={`tel:${formData.telephone ?? '--'}`} className='underline'>{formData.telephone ?? '--'}</a>
 
           </p>

@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData } from "../../services";
+import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData, postDataToken, getDataToken } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
-function InvestigatorResponseToform() {
+function RespondentFillForms() {
     const [formData, setFormData] = useState([]);
-    const navigation = useNavigate();
+    const navigation =useNavigate();
     // const { search } = useLocation();
     // const params = new URLSearchParams(search);
     // const token = params.get("token");
     let { id } = useParams();
     const { t } = useTranslation();
+
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const token = params.get("token");
 
     // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY";
     const [alertModal, setAlertModal] = useState(false);
@@ -28,10 +32,9 @@ function InvestigatorResponseToform() {
             try {
                 const [adminRes] = await Promise.all([
                     // getData(`${ENDPOINT.formulaires}/token/${token}`),
-                    getData(`${ENDPOINT.researcheAssistantFillForm}`),
+                    getDataToken(`${ENDPOINT.researcheAssistantFillForm}`, token),
 
                 ]);
-                console.log(adminRes);
 
                 setFormulaire(adminRes?.data || {});
             } catch (error) {
@@ -76,12 +79,15 @@ function InvestigatorResponseToform() {
     };
 
     const handleSubmit = async () => {
+        id = 1;
+
         setAlertModal(true);
         try {
-            const response = await postData(
+            const response = await postDataToken(
                 `${ENDPOINT.formulaires}/${formulaire?.id}/${ENDPOINT.users}/${id}/reponses`,
                 formData,
-                false
+                false,
+                token
             );
             const successMessage =
                 response?.data?.message ||
@@ -89,7 +95,7 @@ function InvestigatorResponseToform() {
             setMessage(successMessage);
 
             setTimeout(() => {
-                 navigation(-1)
+                navigation('/')
             }, 600);
         } catch (error) {
             const errorMessage =
@@ -252,11 +258,11 @@ function InvestigatorResponseToform() {
                     </span> */}
 
                     <span className="text-sm text-gray-700 dark:text-gray-400">
-                    {t("page")}{" "}
+                        {t("page")}{" "}
                         <span className="font-semibold text-gray-900 dark:text-white">
                             {currentPage * sectionsPerPage + 1}
                         </span>{" "}
-                       
+
                         {t("of")}{" "}
                         <span className="font-semibold text-gray-900 dark:text-white">
                             {formulaire?.section?.length}
@@ -338,7 +344,7 @@ function InvestigatorResponseToform() {
                     <Modal.Body>{message}</Modal.Body>
                     <Modal.Footer>
                         <Button color="red" onClick={() => setAlertModal(false)}>
-                        {t("close")}
+                            {t("close")}
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -469,4 +475,4 @@ function InvestigatorResponseToform() {
     }
 }
 
-export default InvestigatorResponseToform;
+export default RespondentFillForms;

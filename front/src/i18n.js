@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
@@ -39,7 +40,7 @@ i18n
           "church": "Church",
           "consent": "Consent",
           "status": "Status",
-          "enrollPerson": "Enroll",
+          "enrollPerson": "Fill Form",
           "view": "View",
 
           "previous": "Previous",
@@ -55,8 +56,10 @@ i18n
 
           "english": "English",
           "french": "French",
+          malagasy:"Malagasy",
+
           "portuguese": "Portuguese",
-          "respondentWishesToFillForm": "The respondent wishes to fill out the form themselves",
+          "respondentWishesToFillForm": "The respondent chooses to fill the form",
           "readConsentForm": "Read the consent form for the participant",
           "cancel": "Cancel",
           "save": "Save",
@@ -88,6 +91,7 @@ i18n
           "wait":"Please wait a moment...",
           page: "Page",
           of: "of",
+          goBack:"Go Back"
         }
       },
       fr: {
@@ -119,7 +123,7 @@ i18n
           "church": "Église",
           "consent": "Consentement",
           "status": "Statut",
-          "enrollPerson": "Enrôler",
+          "enrollPerson": "Remplir le formulaire",
           "view": "Voir",
           "previous": "Précédent",
           "next": "Suivant",
@@ -132,8 +136,10 @@ i18n
           "language": "Langue",
           "english": "Anglais",
           "french": "Français",
+          malagasy:"Malagache",
+
           "portuguese": "Portugais",
-          "respondentWishesToFillForm": "Le répondant souhaite remplir le formulaire eux-mêmes",
+          "respondentWishesToFillForm": " Le répondant choisit de remplir le formulaire",
           "readConsentForm": "Lire le formulaire de consentement pour le participant",
           "cancel": "Annuler",
           "save": "Enregistrer",
@@ -165,6 +171,7 @@ i18n
           "wait": "Veuillez patienter un instant...",
           page: "Page",
           of: "sur",
+           goBack:"Retour"
 
         }
       },
@@ -200,7 +207,7 @@ i18n
           "consent": "Consentimento",
           "status": "Status",
 
-          "enrollPerson": "Matricular",
+          "enrollPerson": "Preencher o formulário",
           "view": "Visualizar",
           "previous": "Anterior",
           "next": "Próximo",
@@ -215,8 +222,9 @@ i18n
           "language": "Idioma",
           "english": "Inglês",
           "french": "Francês",
+          malagasy:"Malagasy",
           "portuguese": "Português",
-          "respondentWishesToFillForm": "O respondente deseja preencher o formulário por si mesmo",
+          "respondentWishesToFillForm": "O respondente escolhe preencher o formulário",
           "readConsentForm": "Ler o formulário de consentimento para o participante",
           "cancel": "Cancelar",
           "save": "Salvar",
@@ -247,6 +255,7 @@ i18n
           "wait":  "Por favor, aguarde um momento...",
           page: "Página",
           of: "de",
+           goBack:"Voltar"
 
         }
       },
@@ -279,7 +288,7 @@ i18n
           church: "Fiangonana",
           consent: "Fekem-pinoana",
           status: "Toetr'andro",
-          enrollPerson: "Ampidiro",
+          enrollPerson: "Fenoy ny taratasy",
           view: "Jereo",
       
           previous: "Teo aloha",
@@ -296,7 +305,8 @@ i18n
           english: "Anglisy",
           french: "Frantsay",
           portuguese: "Portogey",
-          respondentWishesToFillForm: "Ny mpamaly dia maniry ny hameno ny taratasy izy irery",
+          malagasy:"Malagasy",
+          respondentWishesToFillForm: " Ny mpamaly dia misafidy ny hameno ny taratasy",
           readConsentForm: "Vakio ny taratasy fifanekena ho an'ny mpandray anjara",
           cancel: "Foano",
           save: "Vonjeo",
@@ -328,6 +338,8 @@ i18n
           wait: "Miandry kely azafady...",
           page: "Pejy",
           of: "amin'ny",
+          goBack:"Miverina"
+
         }
       }
       

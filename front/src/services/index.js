@@ -53,6 +53,15 @@ export function putDataToken(endpoint, data, multipart = true,tokenData) {
   });
 }
 
+export function postDataToken(endpoint, data, multipart = true,tokenData) {
+  return axios.post(`${SERVERURLS}${endpoint}`, data, {
+    headers: {
+      authorization: `Bearer ${tokenData}`,
+      "content-type": multipart ? "multipart/form-data" : "application/json",
+    },
+  });
+}
+
 
 export function postDataWithNoToken1(endpoint, data) {
   return axios.post(`${SERVERURLS}${endpoint}`, data, {
@@ -116,6 +125,17 @@ export function getData(endpoint) {
   });
 }
 
+
+
+export function getDataToken(endpoint,tokenData) {
+
+  return axios.get(`${SERVERURLS}${endpoint}`, {
+    headers: {
+      authorization: `Bearer ${tokenData}`,
+      "content-type": "application/json",
+    },
+  });
+}
 export function deleteData(endpoint) {
   return axios.delete(`${SERVERURLS}${endpoint}`, {
     headers: {

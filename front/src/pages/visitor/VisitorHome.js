@@ -113,7 +113,7 @@ function VisitorHome() {
               className="object-contain w-64 mx-auto"
             />
             <h1 className="mb-4 text-xl font-extrabold leading-none tracking-tight text-center md:text-2xl lg:text-3xl typewriter">
-              Response to the form.
+             
             </h1>
 
             <div className="flex justify-center">
@@ -138,7 +138,7 @@ function VisitorHome() {
         </section>
 
         <h1 className="mb-4 text-xl font-extrabold leading-none tracking-tight text-center md:text-2xl lg:text-3xl">
-          Response to the form.{" "}
+         {" "}
         </h1>
 
         <h1 className="mb-4 text-xs font-extrabold leading-none tracking-tight text-center md:text-xs lg:text-xl">
