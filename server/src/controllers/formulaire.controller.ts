@@ -268,8 +268,15 @@ export class FormulaireController {
         if (user.role == 'RESPONDENT') {
           if (parseInt(numberQuestion as string) > reponseRepondu.length) {
             await this.userService.updateStatusInProgress(user.id);
-          } else {
+          } else if (
+            parseInt(numberQuestion as string) === reponseRepondu.length
+          ) {
             await this.userService.updateStatusInCompleted(user.id);
+          } else {
+            throw new HttpException(
+              'response are too long',
+              HttpStatus.INTERNAL_SERVER_ERROR,
+            );
           }
         }
       }
@@ -337,6 +344,7 @@ export class FormulaireController {
       } else if (parseInt(numberQuestion as string) === reponseRepondu.length) {
         await this.userService.updateStatusInCompleted(user.id);
       } else {
+        console.log(numberQuestion);
         throw new HttpException(
           'response are too long ',
           HttpStatus.INTERNAL_SERVER_ERROR,

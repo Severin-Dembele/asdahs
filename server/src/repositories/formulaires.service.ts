@@ -151,12 +151,14 @@ export class FormulairesService {
     });
   }
 
-  getNumberQuestionToAnswer(formulaireId) {
-    return this.prisma.$queryRaw`
-      select CAST(count(q.id) AS CHAR) from Question as q
+  async getNumberQuestionToAnswer(formulaireId) {
+    const data: any = await this.prisma.$queryRaw`
+      select CAST(count(q.id) AS CHAR) as questionNumber from Question as q
       inner join Section s on s.id = q.sectionId
       where s.formulaireId = ${formulaireId}
     `;
+    console.log(data[0].questionNumber);
+    return data[0].questionNumber;
   }
 
   getFormulaireByLangage(langage: string) {
