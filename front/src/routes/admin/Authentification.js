@@ -18,11 +18,17 @@ export default function Authentification() {
 
   const handleSubmit = async (event) => {
     setAlertModal(true);
+    const trimmedUsername = formData?.username?.trim(); // Trim leading and trailing spaces
+
+    const postData = {
+        ...formData,
+        username: trimmedUsername // Update formData with trimmed username
+    };
 
     try {
       let endpoint = ENDPOINT.security;
       let response;
-      response = await postDataWithNoToken(endpoint, formData, false);
+      response = await postDataWithNoToken(endpoint, postData, false);
       const successMessage =
         response?.data?.message || `${t("informationSaved")}`;
       setMessage(successMessage);

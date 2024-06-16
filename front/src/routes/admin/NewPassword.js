@@ -2,39 +2,52 @@ import React, { useState } from "react";
 import { postDataWithNoToken, setItem, postData } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
-export default function ResetPassWord() {
+export default function NewPassword() {
     const navigation = useNavigate();
     const { t } = useTranslation();
-
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const otp = params.get("otp");
     const [alertModal, setAlertModal] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
         password: "",
-        isRest: false
+        isRest: false,
+        otp: otp,
+        newPassword: "",
     });
     const [message, setMessage] = useState("Information");
 
+    const isPasswordValid = (password) => {
+        // Check if the password has at least 4 characters, one uppercase letter, one lowercase letter, one number, and one special character
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{4,}$/;
+        return passwordRegex.test(password);
+    };
+
+
     const handleSubmit = async (event) => {
         setAlertModal(true);
-
-        const trimmedUsername = formData?.email?.trim(); // Trim leading and trailing spaces
-        const postData = {
-            ...formData,
-            email: trimmedUsername // Update formData with trimmed username
-        };
+        if (formData?.newPassword != formData?.password) {
+            setMessage("The passwords do not match.");
+            return null;
+        }
+        if (formData?.newPassword?.length < 4) {
+            setMessage("The password must be at least 4 characters long, include uppercase and lowercase letters, a number, and a special character.");
+            return null;
+        }
         try {
-            let endpoint = ENDPOINT.forgotPassword;
+            let endpoint = ENDPOINT.resetpassword;
             let response;
-            response = await postDataWithNoToken(endpoint, postData, false);
+            response = await postDataWithNoToken(endpoint, formData, false);
             const successMessage =
                 response?.data?.message || `${t("informationSaved")}`;
             setMessage(successMessage);
             setTimeout(() => {
                 navigation('/');
-            }, 500);
+            }, 100);
         } catch (error) {
             console.log(error?.response);
 
@@ -72,29 +85,36 @@ export default function ResetPassWord() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <div className="space-y-6">
 
-
                         <div class="max-w-md mx-auto">
-                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Send</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z" />
-                                    </svg>
+                            <label for="password" class="mb-2 text-sm font-medium text-gray-900  dark:text-white">New password</label>
 
-                                </div>
+                            <div class="relative">
+
                                 <input
                                     onChange={handleChange}
-                                    type="email"
-                                    name="email"
+                                    type="text"
+                                    name="password"
 
-                                    id="email" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-900 focus:border-blue-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-900 dark:focus:border-blue-500" placeholder="Email..." required />
+                                    id="password" class="block w-full  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-900 focus:border-blue-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-900 dark:focus:border-blue-500" placeholder="New password..." required />
+                            </div>
+                        </div>
+
+
+                        <div class="max-w-md mx-auto">
+                            <label for="newPassword" class="mb-2 text-sm font-medium text-gray-900  dark:text-white">Confirm new password</label>
+                            <div class="relative">
+
+                                <input
+                                    onChange={handleChange}
+                                    type="text"
+                                    name="newPassword"
+
+                                    id="newPassword" class="block w-full p-4  text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-900 focus:border-blue-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-900 dark:focus:border-blue-500" placeholder="Confirm new password..." required />
                                 <button
                                     onClick={() => handleSubmit()}
                                     class="text-white absolute end-2.5 bottom-2.5 bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-900 dark:hover:bg-blue-900 dark:focus:ring-blue-900">{t("send")}</button>
                             </div>
                         </div>
-
-
                         <div>
 
 
@@ -126,7 +146,7 @@ export default function ResetPassWord() {
 
 
             <Modal show={alertModal} onClose={() => setAlertModal(false)}>
-                <Modal.Header>    {t("haveAcinformationcount")}</Modal.Header>
+                <Modal.Header>    {t("informations")}</Modal.Header>
                 <Modal.Body>{message}</Modal.Body>
                 <Modal.Footer>
                     <Button color="red" onClick={() => setAlertModal(false)}>
