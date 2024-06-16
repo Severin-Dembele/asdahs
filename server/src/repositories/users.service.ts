@@ -42,6 +42,35 @@ export class UsersService {
       },
       data: {
         password: await argon2.hash(password),
+        otp: null,
+        otpExpire: null,
+      },
+    });
+  }
+
+  async updateOtpAndOtpExpire(otp, otpExpire, email) {
+    return this.prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        otp: otp,
+        otpExpire: otpExpire,
+      },
+    });
+  }
+
+  async findUserByOtp(otp: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        AND: [
+          { otp: parseInt(otp) },
+          {
+            otpExpire: {
+              gte: new Date(),
+            },
+          },
+        ],
       },
     });
   }

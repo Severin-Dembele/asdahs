@@ -128,7 +128,7 @@ export class UsersController {
       user.email,
       token,
       process.env.SERVER_FRONT_URL,
-      formulaire.uuid
+      formulaire.uuid,
     );
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
@@ -199,13 +199,28 @@ export class UsersController {
     return this.usersService.findAllReponseUsers(id);
   }
 
-  @Put('/reset-password')
-  async updatePassword(@Body() data) {
+  @Post('/forget-password')
+  async forgetPassword(@Body() data) {
     const email = data.email;
-    const password = data.password;
+
     const user = await this.usersService.findByUsername(email);
     if (user == null) {
-      throw new HttpException("Email does'nt exist ", HttpStatus.NOT_FOUND);
+      throw new HttpException('User not exist ', HttpStatus.NOT_FOUND);
+    }
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    const otpExpire = new Date();
+    otpExpire.setHours(otpExpire.getHours() + 23);
+    await this.usersService.updateOtpAndOtpExpire(otp, otpExpire, email);
+    return this.mailService.sendMailForResetPassword(email, otp);
+  }
+
+  @Post('/reset-password')
+  async resetPassword(@Body() data) {
+    const password = data.password;
+    const otp = data.otp;
+    const user = await this.usersService.findUserByOtp(otp);
+    if (user == null) {
+      throw new HttpException('Invalid or expired OTP', 400);
     }
     return this.usersService.updatePassword(user.id, password);
   }

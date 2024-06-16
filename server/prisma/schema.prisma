@@ -61,6 +61,8 @@ model User {
   status                 Status                   @default(NOT_STARTED)
   telephone              String
   password               String
+  otp Int?
+  otpExpire DateTime?
   typeChurch             String?
   churchName             String?
   conference             Conference?              @relation(fields: [conferenceId], references: [id])
