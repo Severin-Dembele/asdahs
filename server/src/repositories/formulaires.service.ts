@@ -76,7 +76,6 @@ export class FormulairesService {
     });
   }
 
-
   update(id: number, updateFormulaire) {
     return this.prisma.formulaire.update({
       data: {
@@ -152,10 +151,18 @@ export class FormulairesService {
     });
   }
 
-  getFormulaireByLangage(langage: string){
+  getNumberQuestionToAnswer(formulaireId) {
+    return this.prisma.$queryRaw`
+      select CAST(count(q.id) AS CHAR) from Question as q
+      inner join Section s on s.id = q.sectionId
+      where s.formulaireId = ${formulaireId}
+    `;
+  }
+
+  getFormulaireByLangage(langage: string) {
     return this.prisma.formulaire.findFirst({
-      where:{
-        langage: langage
+      where: {
+        langage: langage,
       },
       include: {
         section: {
@@ -177,6 +184,6 @@ export class FormulairesService {
           },
         },
       },
-    })
+    });
   }
 }

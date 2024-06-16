@@ -28,12 +28,11 @@ export class ReponseReponduService {
     try {
       console.log(reponses);
       await this.prisma.reponseRepondu.createMany({
-        data: reponses
+        data: reponses,
       });
-    }catch(e){
-       console.log(e);
+    } catch (e) {
+      console.log(e);
     }
-   
   }
 
   findAll() {
@@ -57,5 +56,13 @@ export class ReponseReponduService {
 
   remove(id: number) {
     return `This action removes a #${id} reponseRepondu`;
+  }
+
+  removeReponseReponduUser(formulaireId, userId) {
+    return this.prisma.reponseRepondu.deleteMany({
+      where: {
+        AND: [{ formulaireId: formulaireId }, { userId: userId }],
+      },
+    });
   }
 }
