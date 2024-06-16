@@ -95,7 +95,7 @@ export class MailsService {
       context: {
         url: url,
         token: token,
-        formulaire: formulaire
+        formulaire: formulaire,
       },
     });
   }
@@ -122,6 +122,19 @@ export class MailsService {
       context: {
         password: password,
       },
+    });
+  }
+
+  sendMailForResetPassword(email: string, otp) {
+    this.mailerService.sendMail({
+      to: email,
+      from: process.env.EMAIL,
+      subject: 'Reset password instructions',
+      template: 'forgotpassword_en',
+      context: {
+        url: process.env.SERVER_FRONT_URL_RESET_PASSWORD,
+        otp: otp,
+      }
     });
   }
 }
