@@ -19,6 +19,8 @@ const ENDPOINT = {
   participants: "participants",
   validateDevis: "devis/validate-devis/",
   security: "auth/login",
+  forgotPassword:"users/forget-password ",
+  resetpassword:"users/reset-password",
   sections: "sections",
   subsections: "sub-sections",
   divisions: "divisions",

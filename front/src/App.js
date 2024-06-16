@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import { FrameEror404 } from "./frame";
-import { Authentification, AdminAuthGuard, AdminRoutes, ResetPassWord } from "./routes/admin";
+import { Authentification, AdminAuthGuard, AdminRoutes, ResetPassWord, NewPassword } from "./routes/admin";
 import { VisitoWelcomePage, VisitorAbout, VisitorAcceptAnswerConsent, VisitorHome ,RespondentFillForms} from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
 import { InvestigatorSocietalFormulaire, InvestigatorAddUser, InvestigatorResponseToform, InvestigatorDetailsRespondent } from "./pages/investigator";
@@ -59,6 +59,7 @@ function App() {
 
             <Route path="formulaire" element={<VisitorHome />} />
             <Route path="fillForm" element={<RespondentFillForms />} />
+            <Route path="password" element={<NewPassword />} />
             <Route
               path="africanhealthstudy/panel-administration/authentification"
               element={<Authentification />}
