@@ -20,7 +20,7 @@ export default function ResetPassWord() {
         setAlertModal(true);
 
         try {
-            let endpoint = ENDPOINT.security;
+            let endpoint = ENDPOINT.forgotPassword;
             let response;
             response = await postDataWithNoToken(endpoint, formData, false);
             const successMessage =

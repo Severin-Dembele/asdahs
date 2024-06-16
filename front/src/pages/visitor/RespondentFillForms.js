@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 function RespondentFillForms() {
     const [formData, setFormData] = useState([]);
-    const navigation =useNavigate();
+    const navigation = useNavigate();
     // const { search } = useLocation();
     // const params = new URLSearchParams(search);
     // const token = params.get("token");
@@ -84,7 +84,7 @@ function RespondentFillForms() {
         setAlertModal(true);
         try {
             const response = await postDataToken(
-                `${ENDPOINT.formulaires}/${formulaire?.id}/${ENDPOINT.users}/${id}/reponses`,
+                `${ENDPOINT.formulaires}/${formulaire?.id}/reponses`,
                 formData,
                 false,
                 token
@@ -128,7 +128,7 @@ function RespondentFillForms() {
                             className="object-contain w-64 mx-auto"
                         />
                         <h1 className="mb-4 text-xl font-extrabold leading-none tracking-tight text-center md:text-2xl lg:text-3xl typewriter">
-                           
+
                         </h1>
 
                         <div className="flex justify-center">
@@ -153,7 +153,7 @@ function RespondentFillForms() {
                 </section>
 
                 <h1 className="mb-4 text-xl font-extrabold leading-none tracking-tight text-center md:text-2xl lg:text-3xl">
-                   {" "}
+                    {" "}
                 </h1>
 
                 <h1 className="mb-4 text-xs font-extrabold leading-none tracking-tight text-center md:text-xs lg:text-xl">
