@@ -81,6 +81,15 @@ export class UsersController {
     return user;
   }
 
+  @UseGuards(AuthGuard)
+  @Get('/reponses')
+  async findReponsesUsersConnected(@Req() request: Request) {
+    const authToken = request.headers['authorization'].split(' ')[1];
+    const data = await this.authService.decodeToken(authToken);
+    const userConnected = await this.usersService.findOne(parseInt(data.sub));
+    return this.usersService.findAllReponseUsers('' + userConnected.id);
+  }
+
   @Post(':userId/formulaires')
   @UseInterceptors(NoFilesInterceptor())
   async assignFormToInvestigator(
