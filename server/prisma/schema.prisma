@@ -183,4 +183,5 @@ enum QuestionType {
   ECHELLE_LINEAIRE
   DATE
   HEURE
+  NUMERIC
 }
