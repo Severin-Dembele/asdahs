@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData, postDataToken, getDataToken } from "../../services";
+import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData, getDataToken, postDataToken } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -8,19 +8,17 @@ import { useTranslation } from 'react-i18next';
 function RespondentFillForms() {
     const [formData, setFormData] = useState([]);
     const navigation = useNavigate();
-    // const { search } = useLocation();
-    // const params = new URLSearchParams(search);
-    // const token = params.get("token");
     let { id } = useParams();
     const { t } = useTranslation();
 
     const { search } = useLocation();
     const params = new URLSearchParams(search);
     const token = params.get("token");
+    
 
-    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY";
     const [alertModal, setAlertModal] = useState(false);
     const [message, setMessage] = useState("Information");
+    const [listResponse, setListResponse] = useState([]);
 
     const [formulaire, setFormulaire] = useState({});
 
@@ -30,57 +28,74 @@ function RespondentFillForms() {
     useEffect(() => {
         const reloadData = async () => {
             try {
-                const [adminRes] = await Promise.all([
+                const [adminRes, repRes] = await Promise.all([
                     // getData(`${ENDPOINT.formulaires}/token/${token}`),
                     getDataToken(`${ENDPOINT.researcheAssistantFillForm}`, token),
-
+                    getDataToken(`${ENDPOINT.users}/reponses`,token)
                 ]);
-
+                setListResponse(repRes?.data || []);
                 setFormulaire(adminRes?.data || {});
             } catch (error) {
                 console.error("Error while fetching data:", error);
             }
+
         };
 
         reloadData();
     }, []);
+    useEffect(() => {
+        const userResponsesByQuestionId = listResponse?.reponseRepondu?.map((response) => ({
+            id: response?.questionId,
+            reponses: [response?.title],
+        }));
+
+        setFormData(userResponsesByQuestionId || []);
+    }, [listResponse]);
+
+  
+
+
 
     const handleInputChange = (event) => {
         const { name, value, checked, type } = event.target;
-        const questionId = name.split("-")[0];
-
+        const questionId = parseInt(name.split("-")[0], 10); // Convertir l'id en nombre entier
+    
         // Find the question index in formData array
         const questionIndex = formData.findIndex((item) => item.id === questionId);
-
-        // If the question is not in formData, add it
+    
+        // Prepare updated form data array
+        let updatedFormData = [];
+    
         if (questionIndex === -1) {
-            setFormData([
+            // If the question is not in formData, add it with the new response
+            updatedFormData = [
                 ...formData,
                 {
                     id: questionId,
-                    reponses: [value],
+                    reponses: checked && type === "checkbox" ? [value] : [value], // Adjust as needed based on your logic
                 },
-            ]);
+            ];
         } else {
             // If the question is already in formData, update its responses
-            const updatedFormData = [...formData];
-            const existingResponses = updatedFormData[questionIndex].reponses;
-
-            if (checked && type === "checkbox") {
-                // Add the response if checked and it's a CHOIX_MULTIPLE with checkbox
-                updatedFormData[questionIndex].reponses = [...existingResponses, value];
-            } else {
-                // Otherwise, update the responses as before
-                updatedFormData[questionIndex].reponses = [value];
-            }
-
-            setFormData(updatedFormData);
+            updatedFormData = formData.map((item) =>
+                item.id === questionId
+                    ? {
+                          ...item,
+                          reponses: checked && type === "checkbox"
+                              ? [...new Set([...item.reponses, value])]
+                              : [value], // Adjust as needed based on your logic
+                      }
+                    : item
+            );
         }
+    
+        // Update formData state with the updated form data
+        setFormData(updatedFormData);
     };
+    
+
 
     const handleSubmit = async () => {
-        id = 1;
-
         setAlertModal(true);
         try {
             const response = await postDataToken(
@@ -93,7 +108,7 @@ function RespondentFillForms() {
                 response?.data?.message ||
                 "Votre message a été envoyé avec succès à l'équipe ASDAHS.";
             setMessage(successMessage);
-
+      
             setTimeout(() => {
                 navigation('/')
             }, 600);
@@ -103,8 +118,7 @@ function RespondentFillForms() {
                 "Une erreur est survenue, réessayez plus tard !";
             setMessage(errorMessage);
         }
-    };
-
+      };
     const totalPages = Math.ceil(
         (formulaire?.section?.length || 0) / sectionsPerPage
     );
@@ -116,6 +130,7 @@ function RespondentFillForms() {
     const handleNextPage = () => {
         setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
     };
+
 
     if (!formulaire?.isValid) {
         return (
@@ -149,7 +164,9 @@ function RespondentFillForms() {
         <div className="min-h-[95vh] flex justify-center ">
             <div className="w-full max-w-3xl lg:p-8 bg-whiterounded-lg shadow-lg lg:max-w-5xl md:p-2">
                 <section className="bg-center bg-no-repeat bg-blend-multiply backgrougImage">
-                    <div className="max-w-screen-xl px-4 py-24 pt-10 mx-auto text-center lg:py-46 "></div>
+                    <div className="max-w-screen-xl px-4 py-24 pt-10 mx-auto text-center lg:py-46 ">
+                     
+                    </div>
                 </section>
 
                 <h1 className="mb-4 text-xl font-extrabold leading-none tracking-tight text-center md:text-2xl lg:text-3xl">
@@ -160,7 +177,7 @@ function RespondentFillForms() {
                     {formulaire?.title} <br />
                     <span className="font-light"> {formulaire?.description} </span>
                 </h1>
-                {/* <p>{JSON.stringify(formData)}</p> */}
+
                 <div className="m-9 sm:m-3">
                     <ol
                         style={{
@@ -238,24 +255,6 @@ function RespondentFillForms() {
                 </div>
 
                 <div className="flex flex-col items-center">
-                    {/* <span className="text-sm text-gray-700 dark:text-gray-400">
-                        Showing{" "}
-                        <span className="font-semibold text-gray-900 dark:text-white">
-                            {currentPage * sectionsPerPage + 1}
-                        </span>{" "}
-                        to{" "}
-                        <span className="font-semibold text-gray-900 dark:text-white">
-                            {Math.min(
-                                (currentPage + 1) * sectionsPerPage,
-                                formulaire?.section?.length
-                            )}
-                        </span>{" "}
-                        of{" "}
-                        <span className="font-semibold text-gray-900 dark:text-white">
-                            {formulaire?.section?.length}
-                        </span>{" "}
-                        Entries
-                    </span> */}
 
                     <span className="text-sm text-gray-700 dark:text-gray-400">
                         {t("page")}{" "}
@@ -359,10 +358,21 @@ function RespondentFillForms() {
                     <input
                         type="text"
                         name={question?.id}
+                        defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
                         onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                 );
+                case "NUMERIC":
+                    return (
+                      <input
+                        type="number"
+                        name={question?.id}
+                        defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+                        onChange={handleInputChange}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    );
             case "ECHELLE_LINEAIRE":
                 return (
                     <input
@@ -423,6 +433,15 @@ function RespondentFillForms() {
                             name={question?.id}
                             value={reponse?.title}
                             onChange={handleInputChange}
+                            checked={
+                                formData.find(
+                                    (item) =>
+                                        item.id === question?.id &&
+                                        item.reponses.includes(reponse?.title)
+                                )
+                                    ? true
+                                    : false
+                            }
                             className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
                         <label className="text-sm font-medium text-gray-800 ms-2 dark:text-gray-900">
@@ -443,6 +462,15 @@ function RespondentFillForms() {
                             type="radio"
                             name={question?.id}
                             value={reponse?.title}
+                            checked={
+                                formData.find(
+                                    (item) =>
+                                        item.id === question?.id &&
+                                        item.reponses.includes(reponse?.title)
+                                )
+                                    ? true
+                                    : false
+                            }
                             onChange={handleInputChange}
                             className="w-4 h-4 bg-gray-100 border-gray-300 text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
