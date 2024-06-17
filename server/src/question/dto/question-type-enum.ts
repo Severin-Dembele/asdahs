@@ -7,4 +7,5 @@ enum QuestionTypeEnum {
   ECHELLE_LINEAIRE = 'ECHELLE_LINEAIRE',
   DATE = 'DATE',
   HEURE = 'HEURE',
+  NUMERIC = 'NUMERIC'
 }

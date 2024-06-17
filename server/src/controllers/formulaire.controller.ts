@@ -316,7 +316,7 @@ export class FormulaireController {
         await this.formulaireService.getNumberQuestionToAnswer(idFormulaire);
       await this.reponseReponduService.removeReponseReponduUser(
         idFormulaire,
-        user.id,
+        userId,
       );
       if (user.role == 'INVESTIGATOR') {
         const formulaireInvestigator =
@@ -328,7 +328,7 @@ export class FormulaireController {
           formulaireInvestigator == null ||
           formulaireInvestigator == undefined
         ) {
-          this.formulaireService.createFormulaireInvestigator({
+          await this.formulaireService.createFormulaireInvestigator({
             userId: user.id,
             formulaireId: idFormulaire,
           });
@@ -340,13 +340,12 @@ export class FormulaireController {
         );
       }
       if (parseInt(numberQuestion as string) > reponseRepondu.length) {
-        await this.userService.updateStatusInProgress(user.id);
+        await this.userService.updateStatusInProgress(userId);
       } else if (parseInt(numberQuestion as string) === reponseRepondu.length) {
-        await this.userService.updateStatusInCompleted(user.id);
+        await this.userService.updateStatusInCompleted(userId);
       } else {
-        console.log(numberQuestion);
         throw new HttpException(
-          'response are too long ',
+          'response are too long',
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }

@@ -7,48 +7,48 @@ import { PrismaService } from '../repositories/prisma/prisma.service';
 export class QuestionService {
   constructor(private prisma: PrismaService) {}
 
-  create(createQuestionDto: CreateQuestionDto){
-    return "implemanted";
+  create(createQuestionDto: CreateQuestionDto) {
+    return 'implemanted';
   }
-  createQuestion(sectionId:number, createQuestionDto){
+  createQuestion(sectionId: number, createQuestionDto) {
     return this.prisma.question.create({
-      data:{
+      data: {
         title: createQuestionDto.title,
         type: createQuestionDto.type,
-        section:{
-          connect: {id: sectionId}
-        }
-      }
-    })
+        section: {
+          connect: { id: sectionId },
+        },
+      },
+    });
   }
-  createQuestionSousSection(sousSectionId: number, createQuestionDto: CreateQuestionDto){
+  createQuestionSousSection(
+    sousSectionId: number,
+    createQuestionDto: CreateQuestionDto,
+  ) {
     return this.prisma.question.create({
-      data:{
+      data: {
         title: createQuestionDto.title,
         type: createQuestionDto.type,
-        section:{
-          connect: {id: sousSectionId}
-        }
-      }
-    })
+        section: {
+          connect: { id: sousSectionId },
+        },
+      },
+    });
   }
 
-  findQuestionSectionSousSection(sectionSousSectionId: number){
+  findQuestionSectionSousSection(sectionSousSectionId: number) {
     return this.prisma.question.findMany({
-      where:{
-        AND:[
-          {deleteAt: null},
-          {sectionId: sectionSousSectionId}
-        ]
-      }
-    })
+      where: {
+        AND: [{ deleteAt: null }, { sectionId: sectionSousSectionId }],
+      },
+    });
   }
 
   createMultipleWithFormulaire(
     idFormulaire: number,
     createQuestionDtos: CreateQuestionDto[],
   ) {
-   /* for (let i = 0; i < createQuestionDtos.length; i++) {
+    /* for (let i = 0; i < createQuestionDtos.length; i++) {
       const createQuestionDto = createQuestionDtos[i];
       this.prisma.question.create({
         data: {
@@ -60,7 +60,7 @@ export class QuestionService {
         },
       });
     }*/
-    return "implemanted";
+    return 'implemanted';
   }
 
   async createWithFormulaire(
@@ -76,7 +76,7 @@ export class QuestionService {
         },
       },
     });*/
-    return "implemented";
+    return 'implemented';
   }
 
   findAll() {
