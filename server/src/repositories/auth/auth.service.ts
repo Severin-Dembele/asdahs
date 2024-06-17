@@ -24,9 +24,10 @@ export class AuthService {
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...result } = user;
+    const options = { expiresIn: '3600h' };
     const payload = { sub: user.id, username: user.email };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.signAsync(payload, options),
       role: user.role,
     };
   }
