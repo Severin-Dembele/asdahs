@@ -189,12 +189,23 @@ export class UsersController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('profile'))
   @ApiConsumes('multipart/form-data')
-  update(
-    @Param('id', ParseIntPipe) id: string,
+  async update(
+    @Param('id') id: number,
     @UploadedFile() file: Express.Multer.File,
     @Body() updateUserDto,
   ) {
-    updateUserDto.avatar = file ? file.filename : null;
+    updateUserDto.profile = file ? file.filename : null;
+    if (updateUserDto.role == 'RESPONDENT' && updateUserDto.email != null) {
+      const token = await this.authService.generateAccessTokenRespondant(
+        id,
+        updateUserDto.email,
+      );
+      await this.mailService.sendMailAcceptToAnswer(
+        updateUserDto.email,
+        token,
+        process.env.SERVER_FRONT_URL_ANSWER_FORM,
+      );
+    }
     return this.usersService.update(+id, updateUserDto);
   }
 
