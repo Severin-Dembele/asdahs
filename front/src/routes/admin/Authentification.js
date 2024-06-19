@@ -21,8 +21,8 @@ export default function Authentification() {
     const trimmedUsername = formData?.username?.trim(); // Trim leading and trailing spaces
 
     const postData = {
-        ...formData,
-        username: trimmedUsername // Update formData with trimmed username
+      ...formData,
+      username: trimmedUsername // Update formData with trimmed username
     };
 
     try {
@@ -39,13 +39,16 @@ export default function Authentification() {
         navigation("/africanhealthstudy/panel-administration");
       } else if (response?.data?.role === "INVESTIGATOR") {
         navigation("/investigator");
-      } else {
-        navigation("/formulaire?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxNjY2OTIyNywiZXhwIjoxNzE5MjYxMjI3fQ.3DECr5LKQB1XWGADjbOVMm9da9oQ4TaqaVVS0PMx7lY")
+      } else if (response?.data?.role === "RESPONDENT") {
+        navigation(`/fillForm?token=${response?.data?.access_token}`)
+      }
+      else {
+        navigation(`/`)
       }
     } catch (error) {
 
       const errorMessage =
-        error?.response?.data?.message ||`${t("error")}`;
+        error?.response?.data?.message || `${t("error")}`;
       setMessage(errorMessage);
     }
   };
@@ -64,7 +67,7 @@ export default function Authentification() {
             alt="Essitech"
           />
           <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
-          {t("signIn")}
+            {t("signIn")}
           </h2>
         </div>
 
@@ -98,7 +101,7 @@ export default function Authentification() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                   {t("password")}
+                  {t("password")}
                 </label>
                 <input
                   id="password"
@@ -142,7 +145,7 @@ export default function Authentification() {
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <Button color="red" onClick={() => setAlertModal(false)}>
-          {t("close")}
+            {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>
