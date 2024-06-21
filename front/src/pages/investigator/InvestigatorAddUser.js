@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ENDPOINT } from '../../utils';
-import { getData, postDataWithNoToken, putDataWithNoToken, postData } from '../../services';
-import { Link, useNavigate } from 'react-router-dom';
+import { getData, postDataWithNoToken, putDataWithNoToken, postData, putData } from '../../services';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Modal, Label, Button, TextInput, Textarea, Select } from 'flowbite-react';
@@ -10,6 +10,12 @@ function InvestigatorAddUser() {
     const navigate = useNavigate();
 
     const { t } = useTranslation();
+
+    const { search } = useLocation();
+    const params = new URLSearchParams(search);
+    const token = params.get("token");
+
+
 
     const [formData, setFormData] = useState({
         typeChurch: '',
@@ -43,11 +49,14 @@ function InvestigatorAddUser() {
 
     const reloadData = () => {
         Promise.all([
-            getData(ENDPOINT.conferences)
+            getData(ENDPOINT.conferences),
+            getData(`${ENDPOINT.users}/${token}`)
         ])
-            .then(([confRes]) => {
+            .then(([confRes, userRes]) => {
 
-                setListConference(confRes?.data || []);
+                setListConference(confRes?.data || [])
+                setFormData(userRes?.data || {})
+
             })
             .catch(error => {
                 // Gérer les erreurs ici
@@ -66,7 +75,12 @@ function InvestigatorAddUser() {
 
         try {
             let response;
-            response = await postData(`${ENDPOINT.users}`, formData);
+            if (token) {
+                response = await putData(`${ENDPOINT.users}/${token}`, formData);
+            }
+            else {
+                response = await postData(`${ENDPOINT.users}`, formData);
+            }
 
 
             const successMessage = response?.data?.message || `${t("informationSaved")}`;
@@ -94,7 +108,7 @@ function InvestigatorAddUser() {
 
             <section class="bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 lg:px-4 p-4 mx-auto max-w-screen-md">
-                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">{t("newRespondent")}</h2>
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">{t("newRespondent")} </h2>
 
                     <div class="space-y-8">
                         <div>
@@ -117,16 +131,18 @@ function InvestigatorAddUser() {
                                 value={formData.telephone}
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
-                        <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email  </label>
-                            <input type="email"
 
-                                id="email"
-                                name="email"
-                                onChange={handleChange}
-                                value={formData.email}
-                                class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
-                        </div>
+                        {!token && (
+                            <div>
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email  </label>
+                                <input type="email"
+                                    id="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    value={formData?.email}
+                                    class="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
+                            </div>
+                        )}
                         <div>
                             <div className="block mb-2">
                                 <label for="conferenceId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("conference")}  <span className='font-bold text-xl text-red-800'> *</span> </label>

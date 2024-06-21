@@ -137,12 +137,12 @@ function InvestigatorResponseToform() {
   return (
     <div className="min-h-[95vh] flex justify-center ">
 
-      <div className="w-full max-w-3xl lg:p-8 bg-whiterounded-lg shadow-lg lg:max-w-5xl md:p-2">
+      <div className="w-full max-w-3xl lg:p-8 bg-whiterounded-lg shadow-lg lg:max-w-5xl md:p-2 pt-20">
 
         <div class="px-4 sm:px-0">
 
 
-          <div class="flex flex-col space-y-4 sm:flex-row sm:justify-start sm:space-y-0 m-3">
+          <div class="flex flex-col space-y-4 sm:flex-row  justify-around sm:space-y-0 m-3">
             <button
               onClick={() => { navigation(-1) }}
               class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
@@ -150,8 +150,16 @@ function InvestigatorResponseToform() {
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
               </svg>
               {t("goBack")}
+            </button>
 
+            <button
+              onClick={() => { navigation(`/investigator/useradd?token=${id}`) }}
+              class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-green-900">
+              <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z" clip-rule="evenodd" />
+              </svg>
 
+              {t("edit")}
             </button>
 
           </div>
@@ -378,17 +386,17 @@ function InvestigatorResponseToform() {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         );
-        case "NUMERIC":
-          return (
-            <input
-              type="number"
-              name={question?.id}
-              disabled
-              defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
-              onChange={handleInputChange}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          );
+      case "NUMERIC":
+        return (
+          <input
+            type="number"
+            name={question?.id}
+            disabled
+            defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+            onChange={handleInputChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        );
       case "ECHELLE_LINEAIRE":
         return (
           <input
