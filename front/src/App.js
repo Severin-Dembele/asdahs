@@ -5,7 +5,7 @@ import { FrameEror404 } from "./frame";
 import { Authentification, AdminAuthGuard, AdminRoutes, ResetPassWord, NewPassword } from "./routes/admin";
 import { VisitoWelcomePage, VisitorAbout, VisitorAcceptAnswerConsent, VisitorHome ,RespondentFillForms} from "./pages/visitor";
 import { InvestigatorAuthGuard } from "./routes/investigator";
-import { InvestigatorSocietalFormulaire, InvestigatorAddUser, InvestigatorResponseToform, InvestigatorDetailsRespondent } from "./pages/investigator";
+import { InvestigatorSocietalFormulaire, InvestigatorAddUser, InvestigatorResponseToform, InvestigatorDetailsRespondent, InvestigatorEdit } from "./pages/investigator";
 import { LayoutInvestigator } from "./components/Layout";
 import { useTranslation } from 'react-i18next';
 
@@ -94,6 +94,10 @@ function App() {
                       <Route
                         path="/useradd"
                         element={<InvestigatorAddUser />}
+                      />
+                       <Route
+                        path="/userEdit"
+                        element={<InvestigatorEdit />}
                       />
                     </Routes>
                   </InvestigatorAuthGuard>
