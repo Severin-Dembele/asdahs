@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../domain/dto/users/create-user.dto';
 import { UpdateUserDto } from '../domain/dto/users/update-user.dto';
 import { PrismaService } from './prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
+import { PrismaClient, Prisma } from '@prisma/client';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const argon2 = require('argon2');
 
@@ -10,29 +11,35 @@ const argon2 = require('argon2');
 export class UsersService {
   constructor(private prisma: PrismaService) {}
   async create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({
-      data: {
-        password: await argon2.hash(createUserDto.password),
-        profile: createUserDto.profile,
-        email: createUserDto.email == null ? uuidv4() : createUserDto.email,
-        name: createUserDto.name,
-        telephone: createUserDto.telephone,
-        role: createUserDto.role,
-        status: 'NOT_STARTED',
-        userCreated: createUserDto.userConnected,
-        churchName: createUserDto.churchName,
-        typeChurch: createUserDto.typeChurch,
-        conferenceId:
-          createUserDto.conferenceId == null
-            ? null
-            : parseInt(createUserDto.conferenceId),
-        selfResponse:
-          createUserDto.selfResponse == null
-            ? null
-            : createUserDto.selfResponse == 'true',
-        langage: createUserDto.langage == null ? null : createUserDto.langage,
-      },
-    });
+    console.log("creation de l'utilisateur");
+    try {
+      return this.prisma.user.create({
+        data: {
+          password: await argon2.hash(createUserDto.password),
+          profile: createUserDto.profile,
+          email: createUserDto.email == null ? uuidv4() : createUserDto.email,
+          name: createUserDto.name,
+          telephone: createUserDto.telephone,
+          role: createUserDto.role,
+          status: 'NOT_STARTED',
+          userCreated: createUserDto.userConnected,
+          churchName: createUserDto.churchName,
+          typeChurch: createUserDto.typeChurch,
+          conferenceId:
+            createUserDto.conferenceId == null
+              ? null
+              : parseInt(createUserDto.conferenceId),
+          selfResponse:
+            createUserDto.selfResponse == null
+              ? null
+              : createUserDto.selfResponse == 'true',
+          langage: createUserDto.langage == null ? null : createUserDto.langage,
+        },
+      });
+    } catch (error) {
+      console.log(error.code)
+      
+    }
   }
 
   async updatePassword(userId, password) {
