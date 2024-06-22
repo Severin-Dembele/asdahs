@@ -25,6 +25,7 @@ import { AuthService } from '../repositories/auth/auth.service';
 import { MailsService } from '../mails/mails.service';
 import generator from 'generate-password-ts';
 import { FormulairesService } from 'src/repositories/formulaires.service';
+import { Prisma } from '@prisma/client';
 
 @Controller('users')
 @ApiTags('users')
@@ -46,39 +47,52 @@ export class UsersController {
     @Body() userDto,
     @Req() request: Request,
   ) {
-    userDto.profile = file ? file.filename : null;
-    userDto.email = userDto.email ? userDto.email : null;
-    const authToken = request.headers['authorization'].split(' ')[1];
-    const data = await this.authService.decodeToken(authToken);
-    const password = generator.generate({
-      length: 8,
-      lowercase: true,
-      uppercase: true,
-      numbers: true,
-    });
-    userDto.password = password;
-    if (userDto.role == 'RESPONDENT') {
-      const userConnected = await this.usersService.findOne(parseInt(data.sub));
-      userDto.userConnected = userConnected.email;
+    try {
+      userDto.profile = file ? file.filename : null;
+      userDto.email = userDto.email ? userDto.email : null;
+      const authToken = request.headers['authorization'].split(' ')[1];
+      const data = await this.authService.decodeToken(authToken);
+      const password = generator.generate({
+        length: 8,
+        lowercase: true,
+        uppercase: true,
+        numbers: true,
+      });
+      userDto.password = password;
+      if (userDto.role == 'RESPONDENT') {
+        const userConnected = await this.usersService.findOne(
+          parseInt(data.sub),
+        );
+        userDto.userConnected = userConnected.email;
+      }
+      const user = await this.usersService.create(userDto);
+      if (user.role == 'RESPONDENT' && userDto.email != null) {
+        const token = await this.authService.generateAccessTokenRespondant(
+          user.id,
+          user.email,
+        );
+        await this.mailService.sendMailAcceptToAnswer(
+          user.email,
+          token,
+          process.env.SERVER_FRONT_URL_ANSWER_FORM,
+        );
+      } else if (user.role == 'INVESTIGATOR') {
+        await this.mailService.sendMailPasswordToUser(
+          user.email,
+          userDto.password,
+        );
+      }
+      return user;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new HttpException(
+            userDto.email + ' already exists',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        }
+      }
     }
-    const user = await this.usersService.create(userDto);
-    if (user.role == 'RESPONDENT' && userDto.email != null) {
-      const token = await this.authService.generateAccessTokenRespondant(
-        user.id,
-        user.email,
-      );
-      await this.mailService.sendMailAcceptToAnswer(
-        user.email,
-        token,
-        process.env.SERVER_FRONT_URL_ANSWER_FORM,
-      );
-    } else if (user.role == 'INVESTIGATOR') {
-      await this.mailService.sendMailPasswordToUser(
-        user.email,
-        userDto.password,
-      );
-    }
-    return user;
   }
 
   @UseGuards(AuthGuard)
