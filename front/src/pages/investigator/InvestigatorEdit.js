@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Modal, Label, Button, TextInput, Textarea, Select } from 'flowbite-react';
 
-function InvestigatorAddUser() {
+function InvestigatorEdit() {
     const navigate = useNavigate();
 
     const { t } = useTranslation();
@@ -50,12 +50,12 @@ function InvestigatorAddUser() {
     const reloadData = () => {
         Promise.all([
             getData(ENDPOINT.conferences),
-         
+            getData(`${ENDPOINT.users}/${token}`)
         ])
-            .then(([confRes]) => {
+            .then(([confRes, userRes]) => {
 
                 setListConference(confRes?.data || [])
-            
+                setFormData(userRes?.data || {})
 
             })
             .catch(error => {
@@ -75,8 +75,14 @@ function InvestigatorAddUser() {
 
         try {
             let response;
-          
+            if (token) {
+                response = await putData(`${ENDPOINT.users}/${token}`, formData);
+            }
+            else {
                 response = await postData(`${ENDPOINT.users}`, formData);
+            }
+
+
             const successMessage = response?.data?.message || `${t("informationSaved")}`;
             setMessage(successMessage);
             setFormData({});
@@ -341,4 +347,4 @@ function InvestigatorAddUser() {
     )
 }
 
-export default InvestigatorAddUser
+export default InvestigatorEdit
