@@ -71,8 +71,14 @@ function InvestigatorAddUser() {
     const [message, setMessage] = useState('Information');
     const [alertModal, setAlertModal] = useState(false);
     const handleSubmit = async () => {
-        setAlertModal(true)
-
+        setAlertModal(true);
+        if (!formData?.email || !formData?.email?.includes('@')) {
+            setFormData({
+                ...formData,
+                selfResponse: false,
+            });
+        }
+        
         try {
             let response;
           
