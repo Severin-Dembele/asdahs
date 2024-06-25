@@ -16,7 +16,7 @@ function LayoutInvestigator() {
                     <Link to="/">
                         <img
                             src={require("../../images/logo.png")}
-                            className="h-24  mr-3 sm:h-14 md:mr-3"
+                            className="md:h-24  mr-3 sm:h-10 md:mr-3 h-10"
                             alt="ASDAHS"
                         />
                     </Link>
@@ -34,7 +34,7 @@ function LayoutInvestigator() {
                 </div>
 
             </nav >
-            <div className=' py-12 sm:py-24'>
+            <div className=' md:py-12 sm:py-24 py-32'>
 
                 <Outlet />
 
