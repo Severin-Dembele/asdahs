@@ -38,6 +38,7 @@ export class UsersController {
     private readonly formulaireService: FormulairesService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(FileInterceptor('profile'))
   @ApiConsumes('multipart/form-data')
@@ -66,7 +67,7 @@ export class UsersController {
         userDto.userConnected = userConnected.email;
       }
       const user = await this.usersService.create(userDto);
-      if (user.role == 'RESPONDENT' && userDto.email != null) {
+      if (user.role == 'RESPONDENT' && userDto.selfResponse == 'true') {
         const token = await this.authService.generateAccessTokenRespondant(
           user.id,
           user.email,
