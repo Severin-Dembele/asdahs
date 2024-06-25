@@ -34,7 +34,7 @@ function LayoutInvestigator() {
                 </div>
 
             </nav >
-            <div className=' md:py-12 sm:py-24 py-32'>
+            <div className='sm:py-36 py-32'>
 
                 <Outlet />
 
