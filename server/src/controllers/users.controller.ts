@@ -36,7 +36,7 @@ export class UsersController {
     private readonly authService: AuthService,
     private readonly mailService: MailsService,
     private readonly formulaireService: FormulairesService,
-  ) {}
+  ) { }
 
   @UseGuards(AuthGuard)
   @Post()
@@ -77,6 +77,13 @@ export class UsersController {
           token,
           process.env.SERVER_FRONT_URL_ANSWER_FORM,
         );
+        await this.mailService.sendWhatsappAcceptToAnswer(
+          user.telephone,
+          token,
+          process.env.SERVER_FRONT_URL_ANSWER_FORM,
+        );
+
+
       } else if (user.role == 'INVESTIGATOR') {
         await this.mailService.sendMailPasswordToUser(
           user.email,
@@ -154,6 +161,13 @@ export class UsersController {
       process.env.SERVER_FRONT_URL,
       formulaire.uuid,
     );
+    await this.mailService.sendWhatsappFormulaireRespondent(
+      user.telephone,
+      token,
+      process.env.SERVER_FRONT_URL,
+      formulaire.uuid,
+    );
+
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
 
@@ -171,9 +185,24 @@ export class UsersController {
 
   @UseInterceptors(FileInterceptor('avatar'))
   @Post('test')
-  test(@UploadedFile() file: Express.Multer.File, @Body() data) {
-    console.log(file);
-    console.log(data);
+  // test(@UploadedFile() file: Express.Multer.File, @Body() data) {
+  //   console.log(file);
+  //   console.log(data);
+  // }
+
+  async test() {
+    await this.mailService.sendWhatsappAcceptToAnswer(
+      "+22657551341",
+      "token",
+      process.env.SERVER_FRONT_URL_ANSWER_FORM,
+    );
+    await this.mailService.sendWhatsappFormulaireRespondent(
+      "+22657551341",
+      "token",
+      process.env.SERVER_FRONT_URL,
+      "formulaire.uuid",
+    );
+
   }
 
   @UseGuards(AuthGuard)
@@ -220,6 +249,13 @@ export class UsersController {
         token,
         process.env.SERVER_FRONT_URL_ANSWER_FORM,
       );
+
+      await this.mailService.sendWhatsappAcceptToAnswer(
+        updateUserDto.telephone,
+        token,
+        process.env.SERVER_FRONT_URL_ANSWER_FORM,
+      );
+
     }
     return this.usersService.update(+id, updateUserDto);
   }

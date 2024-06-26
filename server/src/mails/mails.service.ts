@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
+import { Twilio } from "twilio";
 
 @Injectable()
 export class MailsService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(private readonly mailerService: MailerService) { }
   sendMailDownloadCatalogue(url: string, email: string): void {
     this.mailerService.sendMail({
       to: email,
@@ -27,6 +28,9 @@ export class MailsService {
       },
     });
   }
+
+
+
 
   sendMailAcceptDevis(email: string, fullname: string, token: string) {
     this.mailerService.sendMail({
@@ -65,6 +69,7 @@ export class MailsService {
     });
   }
 
+
   sendMailContact(email: string) {
     this.mailerService.sendMail({
       to: email,
@@ -100,6 +105,31 @@ export class MailsService {
     });
   }
 
+
+  sendWhatsappFormulaireRespondent(tel: string,  token, url, formulaire) {
+    const accountSid = process.env.ACCOUNT_SID;
+    const authToken = process.env.TOKEN;
+
+    if (!accountSid || !authToken) {
+      console.error('Twilio Account SID and Auth Token must be set in environment variables');
+      return;
+    }
+
+    const client = new Twilio(accountSid, authToken);
+
+    const message = client.messages.create({
+      body: `You have consented to participate in the research. By clicking on this link, you will have access to the form to respond. You may choose to respond partially and complete it as soon as possible, provided that you save each step. Please do not share this link with third parties. 
+       \n ${url}?uuid=${formulaire}&token=${token}`,
+      to: `whatsapp:${tel}`, // Use whatsapp: format for WhatsApp messages
+      from: 'whatsapp:+14155238886', // Replace with your Twilio WhatsApp number
+    })
+      .then((message) => console.log(message.sid))
+      .catch((error) => console.error('Failed to send message:', error));
+    console.log(message)
+  }
+
+
+
   sendMailAcceptToAnswer(email: string, token, url) {
     this.mailerService.sendMail({
       to: email,
@@ -112,6 +142,29 @@ export class MailsService {
       },
     });
   }
+
+  sendWhatsappAcceptToAnswer(tel: string, token, url) {
+    const accountSid = process.env.ACCOUNT_SID;
+    const authToken = process.env.TOKEN;
+
+    if (!accountSid || !authToken) {
+      console.error('Twilio Account SID and Auth Token must be set in environment variables');
+      return;
+    }
+
+    const client = new Twilio(accountSid, authToken);
+
+    const message = client.messages.create({
+      body: `You are about to participate in the research dedicated to data collection for the Seventh-day Adventist health study. Please follow this link for the procedure.  \n ${url}?token=${token}`,
+      to: `whatsapp:${tel}`, // Use whatsapp: format for WhatsApp messages
+      from: 'whatsapp:+14155238886', // Replace with your Twilio WhatsApp number
+    })
+      .then((message) => console.log(message.sid))
+      .catch((error) => console.error('Failed to send message:', error));
+    console.log(message)
+  }
+
+
 
   sendMailPasswordToUser(email: string, password: string) {
     this.mailerService.sendMail({
