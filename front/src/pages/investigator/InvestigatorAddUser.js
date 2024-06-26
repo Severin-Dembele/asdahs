@@ -3,6 +3,8 @@ import { ENDPOINT } from '../../utils';
 import { getData, postDataWithNoToken, putDataWithNoToken, postData, putData } from '../../services';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 import { Modal, Label, Button, TextInput, Textarea, Select } from 'flowbite-react';
 
@@ -50,12 +52,12 @@ function InvestigatorAddUser() {
     const reloadData = () => {
         Promise.all([
             getData(ENDPOINT.conferences),
-         
+
         ])
             .then(([confRes]) => {
 
                 setListConference(confRes?.data || [])
-            
+
 
             })
             .catch(error => {
@@ -78,11 +80,11 @@ function InvestigatorAddUser() {
                 selfResponse: false,
             });
         }
-        
+
         try {
             let response;
-          
-                response = await postData(`${ENDPOINT.users}`, formData);
+
+            response = await postData(`${ENDPOINT.users}`, formData);
             const successMessage = response?.data?.message || `${t("informationSaved")}`;
             setMessage(successMessage);
             setFormData({});
@@ -120,7 +122,7 @@ function InvestigatorAddUser() {
                                 type="text" id="name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label
                                 for="telephone"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("phone")}   <span className='font-bold text-xl text-red-800'> *</span></label>
@@ -130,6 +132,24 @@ function InvestigatorAddUser() {
                                 onChange={handleChange}
                                 value={formData.telephone}
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="" required />
+                        </div> */}
+
+                        <div>
+                            <label
+                                for="telephone"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("phone")}   <span className='font-bold text-xl text-red-800'> *</span></label>
+                            <PhoneInput
+                                country={'ke'}
+                                id="telephone"
+                                containerStyle={{ width: '100%' }} // Utilisation de l'objet JavaScript pour définir le style inline
+                                onChange={(value) => {
+                                    setFormData({
+                                        ...formData,
+                                        telephone: value
+                                    });
+                                }}
+                                value={formData?.telephone}
+                            />
                         </div>
 
                         {!token && (

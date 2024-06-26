@@ -157,6 +157,8 @@ function InvestigatorResponseToform() {
     }
     return (
         <div className="min-h-[95vh] flex justify-center ">
+              
+
             <div className="w-full max-w-3xl lg:p-8 bg-whiterounded-lg shadow-lg lg:max-w-5xl md:p-2">
                 <section className="bg-center bg-no-repeat bg-blend-multiply backgrougImage">
                     <div className="max-w-screen-xl px-4 py-24 pt-10 mx-auto text-center lg:py-46 ">
