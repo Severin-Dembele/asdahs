@@ -141,6 +141,9 @@ function InvestigatorEdit() {
                                 id="telephone"
                                 containerStyle={{ width: '100%' }} // Utilisation de l'objet JavaScript pour définir le style inline
                                 onChange={(value) => {
+                                    if (!value.startsWith('+')) {
+                                        value = `+${value}`;
+                                      }
                                     setFormData({
                                         ...formData,
                                         telephone: value

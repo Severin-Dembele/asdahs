@@ -137,12 +137,15 @@ function InvestigatorAddUser() {
                         <div>
                             <label
                                 for="telephone"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("phone")}   <span className='font-bold text-xl text-red-800'> *</span></label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("phone")} {formData?.telephone}  <span className='font-bold text-xl text-red-800'> *</span></label>
                             <PhoneInput
                                 country={'ke'}
                                 id="telephone"
                                 containerStyle={{ width: '100%' }} // Utilisation de l'objet JavaScript pour définir le style inline
                                 onChange={(value) => {
+                                    if (!value.startsWith('+')) {
+                                        value = `+${value}`;
+                                      }
                                     setFormData({
                                         ...formData,
                                         telephone: value
