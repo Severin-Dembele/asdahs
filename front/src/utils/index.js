@@ -5,7 +5,7 @@ const ENDPOINT = {
   usersList: "users/list",
   formations: "formations",
   formulaires: "formulaires",
-  researcheAssistantFillForm:"formulaires/langage-user-connected",
+  researcheAssistantFillForm: "formulaires/langage-user-connected",
   importFile: "importFile",
   questions: "questions",
   reponses: "reponses",
@@ -19,8 +19,8 @@ const ENDPOINT = {
   participants: "participants",
   validateDevis: "devis/validate-devis/",
   security: "auth/login",
-  forgotPassword:"users/forget-password ",
-  resetpassword:"users/reset-password",
+  forgotPassword: "users/forget-password ",
+  resetpassword: "users/reset-password",
   sections: "sections",
   subsections: "sub-sections",
   divisions: "divisions",
@@ -28,7 +28,7 @@ const ENDPOINT = {
   conferences: "conferences",
   churches: "churches",
   accept: "users/accept-answer",
-  statistiques:"dashboard/statistiques"
+  statistiques: "dashboard/statistiques"
 };
 
 export { default as PaginatedTable } from "./PaginatedTable";
@@ -86,10 +86,34 @@ function formatStatus(status) {
 
 function checkForAtSymbol(str) {
   if (typeof str === 'string' && str.includes('@')) {
-      return str;
+    return str;
   } else {
-      return null;
+    return null;
   }
+}
+
+function containsNo(questions, id, newId) {
+  const negativeResponses = ["Non", "No", "Tsia", "Não"];
+  const question = questions.find(q => q.id === id);
+
+  if (question) {
+    const containsNegative = question.reponses.some(response => negativeResponses.includes(response));
+
+    if (containsNegative) {
+      // Crée un nouvel objet avec newId et les réponses incluses dans l'objet trouvé
+      const newQuestion = {
+        id: newId,
+        reponses: [...question.reponses]
+      };
+
+      // Ajoute le nouvel objet au tableau des questions
+      questions.push(newQuestion);
+    }
+
+    return containsNegative;
+  }
+
+  return false;
 }
 
 // Exportation des constantes ENDPOINT
@@ -102,5 +126,6 @@ export {
   OPTIONS_SELCT,
   ROLE_LIST,
   formatStatus,
-  checkForAtSymbol
+  checkForAtSymbol,
+  containsNo
 };

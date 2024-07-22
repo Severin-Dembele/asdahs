@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { postDataWithNoToken1, getData, postDataWithNoTokenForm, postData } from "../../services";
-import { ENDPOINT } from "../../utils";
+import { ENDPOINT, containsNo } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
@@ -20,8 +20,12 @@ function InvestigatorResponseToform() {
     const [currentPage, setCurrentPage] = useState(0);
     const sectionsPerPage = 1; // Nombre de sections par page
 
+
+    const [loading, setloading] = useState(false);
+
     useEffect(() => {
         const reloadData = async () => {
+            setloading(true)
             try {
                 const [adminRes, repRes] = await Promise.all([
                     // getData(`${ENDPOINT.formulaires}/token/${token}`),
@@ -32,6 +36,8 @@ function InvestigatorResponseToform() {
                 setFormulaire(adminRes?.data || {});
             } catch (error) {
                 console.error("Error while fetching data:", error);
+            } finally {
+                setloading(false)
             }
 
         };
@@ -47,20 +53,25 @@ function InvestigatorResponseToform() {
         setFormData(userResponsesByQuestionId || []);
     }, [listResponse]);
 
-  
 
+
+    const [checkedValues, setCheckedValues] = useState({});
 
 
     const handleInputChange = (event) => {
         const { name, value, checked, type } = event.target;
+        setCheckedValues(prevState => ({
+            ...prevState,
+            [name]: checked
+        }));
         const questionId = parseInt(name.split("-")[0], 10); // Convertir l'id en nombre entier
-    
+
         // Find the question index in formData array
         const questionIndex = formData.findIndex((item) => item.id === questionId);
-    
+
         // Prepare updated form data array
         let updatedFormData = [];
-    
+
         if (questionIndex === -1) {
             // If the question is not in formData, add it with the new response
             updatedFormData = [
@@ -75,19 +86,19 @@ function InvestigatorResponseToform() {
             updatedFormData = formData.map((item) =>
                 item.id === questionId
                     ? {
-                          ...item,
-                          reponses: checked && type === "checkbox"
-                              ? [...new Set([...item.reponses, value])]
-                              : [value], // Adjust as needed based on your logic
-                      }
+                        ...item,
+                        reponses: checked && type === "checkbox"
+                            ? [...new Set([...item.reponses, value])]
+                            : [value], // Adjust as needed based on your logic
+                    }
                     : item
             );
         }
-    
+
         // Update formData state with the updated form data
         setFormData(updatedFormData);
     };
-    
+
 
 
     const handleSubmit = async () => {
@@ -127,6 +138,17 @@ function InvestigatorResponseToform() {
     };
 
 
+
+    if (loading) {
+        return (
+            <div className="h-[100vh] flex justify-center items-center text-center">
+                <div className="flex items-center justify-center w-64 h-64 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                    <div className="px-3 py-1  font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200 text-2xl">loading...</div>
+                </div>
+            </div>
+        )
+    }
+
     if (!formulaire?.isValid) {
         return (
             <>
@@ -157,12 +179,12 @@ function InvestigatorResponseToform() {
     }
     return (
         <div className="min-h-[95vh] flex justify-center ">
-              
+
 
             <div className="w-full max-w-3xl lg:p-8 bg-whiterounded-lg shadow-lg lg:max-w-5xl md:p-2">
                 <section className="bg-center bg-no-repeat bg-blend-multiply backgrougImage">
                     <div className="max-w-screen-xl px-4 py-24 pt-10 mx-auto text-center lg:py-46 ">
-                     
+                        {/* {JSON.stringify(formData)} */}
                     </div>
                 </section>
 
@@ -200,19 +222,25 @@ function InvestigatorResponseToform() {
                                         <br />
                                         <ol className="list-decimal list-outside ">
                                             {section?.question?.length > 0 &&
-                                                section?.question.map((question, index) => (
-                                                    <li
-                                                        className="flex flex-wrap mb-7"
-                                                        key={index}
-                                                    >
-                                                        <div className="container mx-auto bg-white rounded-md">
-                                                            <label className="block mb-2 font-semibold text-black text">
-                                                                {question?.title} :
-                                                            </label>
-                                                            {renderFormField(question)}
-                                                        </div>
-                                                    </li>
-                                                ))}
+                                                section?.question.map((question, index) => {
+                                                    if (!containsNo(formData, question?.numero, question?.id)) {
+                                                        return (
+
+                                                            <li
+                                                                className="flex flex-wrap mb-7"
+                                                                key={index}
+                                                            >
+                                                                <div className="container mx-auto bg-white rounded-md">
+                                                                    <label className="block mb-2 font-semibold text-black text">
+                                                                        {question?.title}  :  <span className="text-red-900">{question?.numero}</span>
+                                                                    </label>
+                                                                    {renderFormField(question)}
+                                                                </div>
+                                                            </li>
+                                                        );
+                                                    }
+                                                    return null; // Ajout d'un retour null pour les cas où question.numero est indéfini
+                                                })}
                                             {section?.sous_sections?.length > 0 &&
                                                 section?.sous_sections.map((soussection, indexSous) => (
                                                     <div
@@ -228,19 +256,22 @@ function InvestigatorResponseToform() {
                                                         </span>{" "}
                                                         <br />
                                                         {soussection?.question?.length > 0 &&
-                                                            soussection?.question.map((question, indexQ) => (
-                                                                <li
-                                                                    // className="mb-4 bg-red-400"
-                                                                    key={indexQ}
-                                                                >
-                                                                    <div className="container p-6 py-2 mx-auto bg-white rounded-md">
-                                                                        <label className="block mb-2 text-sm font-semibold text-black">
-                                                                            {question?.title} :
-                                                                        </label>
-                                                                        {renderFormField(question)}
-                                                                    </div>
-                                                                </li>
-                                                            ))}
+                                                            soussection?.question.map((question, indexQ) => {
+                                                                if (!containsNo(formData, question?.numero, question?.id)) {
+                                                                    return (
+                                                                        <li key={indexQ}>
+                                                                            <div className="container p-6 py-2 mx-auto bg-white rounded-md">
+                                                                                <label className="block mb-2 text-sm font-semibold text-black">
+                                                                                    {question?.title} :
+                                                                                </label>
+                                                                                {renderFormField(question)}
+                                                                            </div>
+                                                                        </li>
+                                                                    );
+                                                                }
+                                                                return null; // Ajout d'un retour null pour les cas où question.numero est indéfini
+                                                            })}
+
                                                         <hr className="w-1/6 h-1 mx-auto my-6 bg-blue-900 border-0 rounded md:my-10 dark:bg-gray-700" />
                                                     </div>
                                                 ))}
@@ -360,16 +391,16 @@ function InvestigatorResponseToform() {
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
                 );
-                case "NUMERIC":
-                    return (
-                      <input
+            case "NUMERIC":
+                return (
+                    <input
                         type="number"
                         name={question?.id}
                         defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
                         onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
-                    );
+                    />
+                );
             case "ECHELLE_LINEAIRE":
                 return (
                     <input
@@ -413,6 +444,12 @@ function InvestigatorResponseToform() {
                 return <div class="flex flex-wrap font-normal ">
                     {renderRadioButtons(question)}
                 </div>;
+            case "CHOIX_MULTIPLE_OTHER":
+                return renderMultipleChoiceOther(question);
+            case "CASE_COCHER_OTHER":
+                return <div class="flex flex-wrap font-normal ">
+                    {renderRadioButtonsOther(question)}
+                </div>;
             case "LISTE_DEROULANTE":
                 return renderDropdown(question);
             default:
@@ -450,6 +487,45 @@ function InvestigatorResponseToform() {
         );
     }
 
+
+
+    function renderMultipleChoiceOther(question) {
+        return (
+            <>
+                {question?.option?.map((reponse, idx) => (
+                    <div key={idx} className="flex items-center mb-3">
+                        <input
+                            type="checkbox"
+                            name={question?.id}
+                            value={reponse?.title}
+                            onChange={handleInputChange}
+                            checked={
+                                formData.find(
+                                    (item) =>
+                                        item.id === question?.id &&
+                                        item.reponses.includes(reponse?.title)
+                                )
+                                    ? true
+                                    : false
+                            }
+                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label className="text-sm font-medium text-gray-800 ms-2 dark:text-gray-900">
+                            {reponse?.title}
+                        </label>
+                    </div>
+                ))}
+                <input
+                    type="text"
+                    name={question?.id}
+                    defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+                    onChange={handleInputChange}
+                    className="block border-l-2 border-r-2 rounded-lg px-2 py-2.5  w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                />
+            </>
+        );
+    }
+
     function renderRadioButtons(question) {
         return (
             <>
@@ -476,6 +552,44 @@ function InvestigatorResponseToform() {
                         </label>
                     </div>
                 ))}
+            </>
+        );
+    }
+
+
+    function renderRadioButtonsOther(question) {
+        return (
+            <>
+                {question?.option?.map((reponse, idx) => (
+                    <div key={idx} className="flex items-center mb-4 me-7">
+                        <input
+                            type="radio"
+                            name={question?.id}
+                            value={reponse?.title}
+                            checked={
+                                formData.find(
+                                    (item) =>
+                                        item.id === question?.id &&
+                                        item.reponses.includes(reponse?.title)
+                                )
+                                    ? true
+                                    : false
+                            }
+                            onChange={handleInputChange}
+                            className="w-4 h-4 bg-gray-100 border-gray-300 text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label className="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">
+                            {reponse?.title}
+                        </label>
+                    </div>
+                ))}
+                <input
+                    type="text"
+                    name={question?.id}
+                    defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+                    onChange={handleInputChange}
+                    className="block border-l-2 border-r-2 rounded-lg px-2 py-2.5  w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                />
             </>
         );
     }

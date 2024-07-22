@@ -387,54 +387,155 @@ function VisitorHome() {
         return <div class="flex flex-wrap font-normal ">
           {renderRadioButtons(question)}
         </div>;
+         case "CHOIX_MULTIPLE_OTHER":
+          return renderMultipleChoiceOther(question);
+      case "CASE_COCHER_OTHER":
+          return <div class="flex flex-wrap font-normal ">
+              {renderRadioButtonsOther(question)}
+          </div>;
       case "LISTE_DEROULANTE":
-        return renderDropdown(question);
+          return renderDropdown(question);
       default:
-        return null;
-    }
+          return null;
   }
+}
 
-  function renderMultipleChoice(question) {
-    return (
+function renderMultipleChoice(question) {
+  return (
       <>
-        {question?.option?.map((reponse, idx) => (
-          <div key={idx} className="flex items-center mb-3">
-            <input
-              type="checkbox"
-              name={question?.id}
-              value={reponse?.title}
-              onChange={handleInputChange}
-              className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label className="text-sm font-medium text-gray-800 ms-2 dark:text-gray-900">
-              {reponse?.title}
-            </label>
-          </div>
-        ))}
+          {question?.option?.map((reponse, idx) => (
+              <div key={idx} className="flex items-center mb-3">
+                  <input
+                      type="checkbox"
+                      name={question?.id}
+                      value={reponse?.title}
+                      onChange={handleInputChange}
+                      checked={
+                          formData.find(
+                              (item) =>
+                                  item.id === question?.id &&
+                                  item.reponses.includes(reponse?.title)
+                          )
+                              ? true
+                              : false
+                      }
+                      className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label className="text-sm font-medium text-gray-800 ms-2 dark:text-gray-900">
+                      {reponse?.title}
+                  </label>
+              </div>
+          ))}
       </>
-    );
-  }
+  );
+}
 
-  function renderRadioButtons(question) {
-    return (
+
+
+function renderMultipleChoiceOther(question) {
+  return (
       <>
-        {question?.option?.map((reponse, idx) => (
-          <div key={idx} className="flex items-center mb-4 me-7">
-            <input
-              type="radio"
+          {question?.option?.map((reponse, idx) => (
+              <div key={idx} className="flex items-center mb-3">
+                  <input
+                      type="checkbox"
+                      name={question?.id}
+                      value={reponse?.title}
+                      onChange={handleInputChange}
+                      checked={
+                          formData.find(
+                              (item) =>
+                                  item.id === question?.id &&
+                                  item.reponses.includes(reponse?.title)
+                          )
+                              ? true
+                              : false
+                      }
+                      className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label className="text-sm font-medium text-gray-800 ms-2 dark:text-gray-900">
+                      {reponse?.title}
+                  </label>
+              </div>
+          ))}
+          <input
+              type="text"
               name={question?.id}
-              value={reponse?.title}
+              defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
               onChange={handleInputChange}
-              className="w-4 h-4 bg-gray-100 border-gray-300 text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label className="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">
-              {reponse?.title}
-            </label>
-          </div>
-        ))}
+              className="block border-l-2 border-r-2 rounded-lg px-2 py-2.5  w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          />
       </>
-    );
-  }
+  );
+}
+
+function renderRadioButtons(question) {
+  return (
+      <>
+          {question?.option?.map((reponse, idx) => (
+              <div key={idx} className="flex items-center mb-4 me-7">
+                  <input
+                      type="radio"
+                      name={question?.id}
+                      value={reponse?.title}
+                      checked={
+                          formData.find(
+                              (item) =>
+                                  item.id === question?.id &&
+                                  item.reponses.includes(reponse?.title)
+                          )
+                              ? true
+                              : false
+                      }
+                      onChange={handleInputChange}
+                      className="w-4 h-4 bg-gray-100 border-gray-300 text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label className="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">
+                      {reponse?.title}
+                  </label>
+              </div>
+          ))}
+      </>
+  );
+}
+
+
+function renderRadioButtonsOther(question) {
+  return (
+      <>
+          {question?.option?.map((reponse, idx) => (
+              <div key={idx} className="flex items-center mb-4 me-7">
+                  <input
+                      type="radio"
+                      name={question?.id}
+                      value={reponse?.title}
+                      checked={
+                          formData.find(
+                              (item) =>
+                                  item.id === question?.id &&
+                                  item.reponses.includes(reponse?.title)
+                          )
+                              ? true
+                              : false
+                      }
+                      onChange={handleInputChange}
+                      className="w-4 h-4 bg-gray-100 border-gray-300 text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label className="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">
+                      {reponse?.title}
+                  </label>
+              </div>
+          ))}
+          <input
+              type="text"
+              name={question?.id}
+              defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+              onChange={handleInputChange}
+              className="block border-l-2 border-r-2 rounded-lg px-2 py-2.5  w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          />
+      </>
+  );
+}
 
   function renderDropdown(question) {
     return (

@@ -21,8 +21,11 @@ function InvestigatorResponseToform() {
   const [currentPage, setCurrentPage] = useState(0);
   const sectionsPerPage = 1; // Nombre de sections par page
 
+  const [loading, setloading] = useState(false);
+
   useEffect(() => {
     const reloadData = async () => {
+      setloading(true);
       try {
         const [adminRes, repRes] = await Promise.all([
           // getData(`${ENDPOINT.formulaires}/token/${token}`),
@@ -34,7 +37,9 @@ function InvestigatorResponseToform() {
         setHeaderForm(repRes?.data)
       } catch (error) {
         console.error("Error while fetching data:", error);
-      }
+      }finally {
+        setloading(false)
+    }
 
     };
 
@@ -104,6 +109,15 @@ function InvestigatorResponseToform() {
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
   };
+  if (loading) {
+    return (
+        <div className="h-[100vh] flex justify-center items-center text-center">
+            <div className="flex items-center justify-center w-64 h-64 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+                <div className="px-3 py-1  font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200 text-2xl">loading...</div>
+            </div>
+        </div>
+    )
+}
 
 
   if (!formulaire?.isValid) {
@@ -440,6 +454,12 @@ function InvestigatorResponseToform() {
         return <div class="flex flex-wrap font-normal ">
           {renderRadioButtons(question)}
         </div>;
+      case "CHOIX_MULTIPLE_OTHER":
+        return renderMultipleChoiceOther(question);
+      case "CASE_COCHER_OTHER":
+        return <div class="flex flex-wrap font-normal ">
+          {renderRadioButtonsOther(question)}
+        </div>;
       case "LISTE_DEROULANTE":
         return renderDropdown(question);
       default:
@@ -456,7 +476,6 @@ function InvestigatorResponseToform() {
               type="checkbox"
               name={question?.id}
               value={reponse?.title}
-              disabled
               onChange={handleInputChange}
               checked={
                 formData.find(
@@ -478,6 +497,45 @@ function InvestigatorResponseToform() {
     );
   }
 
+
+
+  function renderMultipleChoiceOther(question) {
+    return (
+      <>
+        {question?.option?.map((reponse, idx) => (
+          <div key={idx} className="flex items-center mb-3">
+            <input
+              type="checkbox"
+              name={question?.id}
+              value={reponse?.title}
+              onChange={handleInputChange}
+              checked={
+                formData.find(
+                  (item) =>
+                    item.id === question?.id &&
+                    item.reponses.includes(reponse?.title)
+                )
+                  ? true
+                  : false
+              }
+              className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label className="text-sm font-medium text-gray-800 ms-2 dark:text-gray-900">
+              {reponse?.title}
+            </label>
+          </div>
+        ))}
+        <input
+          type="text"
+          name={question?.id}
+          defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+          onChange={handleInputChange}
+          className="block border-l-2 border-r-2 rounded-lg px-2 py-2.5  w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        />
+      </>
+    );
+  }
+
   function renderRadioButtons(question) {
     return (
       <>
@@ -487,7 +545,6 @@ function InvestigatorResponseToform() {
               type="radio"
               name={question?.id}
               value={reponse?.title}
-              disabled
               checked={
                 formData.find(
                   (item) =>
@@ -508,6 +565,45 @@ function InvestigatorResponseToform() {
       </>
     );
   }
+
+
+  function renderRadioButtonsOther(question) {
+    return (
+      <>
+        {question?.option?.map((reponse, idx) => (
+          <div key={idx} className="flex items-center mb-4 me-7">
+            <input
+              type="radio"
+              name={question?.id}
+              value={reponse?.title}
+              checked={
+                formData.find(
+                  (item) =>
+                    item.id === question?.id &&
+                    item.reponses.includes(reponse?.title)
+                )
+                  ? true
+                  : false
+              }
+              onChange={handleInputChange}
+              className="w-4 h-4 bg-gray-100 border-gray-300 text-blue-950 focus:ring-blue-950 dark:focus:ring-blue-950 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label className="text-sm font-medium text-gray-900 ms-2 dark:text-gray-300">
+              {reponse?.title}
+            </label>
+          </div>
+        ))}
+        <input
+          type="text"
+          name={question?.id}
+          defaultValue={formData.find((item) => item.id === question?.id)?.reponses[0] || ""}
+          onChange={handleInputChange}
+          className="block border-l-2 border-r-2 rounded-lg px-2 py-2.5  w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        />
+      </>
+    );
+  }
+
 
   function renderDropdown(question) {
     return (
