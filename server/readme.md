@@ -47,3 +47,11 @@ UPDATE `asdahs`.`Question` SET `numero` = '67' WHERE (`id` = '68');
 UPDATE `asdahs`.`Question` SET `numero` = '69' WHERE (`id` = '70');
 UPDATE `asdahs`.`Question` SET `numero` = '70' WHERE (`id` = '71');
 
+
+
+
+SELECT * 
+FROM ReponseRepondu
+INNER JOIN User ON ReponseRepondu.userId = User.id;
+
+SELECT count(*) from Question where numero is null and sectionId<31;

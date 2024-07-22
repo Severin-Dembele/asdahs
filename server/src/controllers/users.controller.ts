@@ -77,11 +77,10 @@ export class UsersController {
           token,
           process.env.SERVER_FRONT_URL_ANSWER_FORM,
         );
-        // await this.mailService.sendWhatsappAcceptToAnswer(
-        //   user.telephone,
-        //   token,
-        //   process.env.SERVER_FRONT_URL_ANSWER_FORM,
-        // );
+        await this.mailService.sendWhatsappAcceptToAnswer(
+          user.telephone,
+          token,
+        );
 
 
       } else if (user.role == 'INVESTIGATOR') {
@@ -161,12 +160,10 @@ export class UsersController {
       process.env.SERVER_FRONT_URL,
       formulaire.uuid,
     );
-    // await this.mailService.sendWhatsappFormulaireRespondent(
-    //   user.telephone,
-    //   token,
-    //   process.env.SERVER_FRONT_URL,
-    //   formulaire.uuid,
-    // );
+    await this.mailService.sendWhatsappFormulaireRespondent(
+      user.telephone,
+      token,
+    );
 
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
@@ -191,17 +188,15 @@ export class UsersController {
   // }
 
   async test() {
-    await this.mailService.sendWhatsappAcceptToAnswer(
-      "+22677121996",
-      "token",
-      process.env.SERVER_FRONT_URL_ANSWER_FORM,
-    );
-    // await this.mailService.sendWhatsappFormulaireRespondent(
+    // await this.mailService.sendWhatsappAcceptToAnswer(
     //   "+22677121996",
     //   "token",
-    //   process.env.SERVER_FRONT_URL,
-    //   "formulaire.uuid",
+    //   process.env.SERVER_FRONT_URL_ANSWER_FORM,
     // );
+    await this.mailService.sendWhatsappFormulaireRespondent(
+      "+22679740561",
+      "token",
+    );
 
   }
 
@@ -250,11 +245,10 @@ export class UsersController {
         process.env.SERVER_FRONT_URL_ANSWER_FORM,
       );
 
-      // await this.mailService.sendWhatsappAcceptToAnswer(
-      //   updateUserDto.telephone,
-      //   token,
-      //   process.env.SERVER_FRONT_URL_ANSWER_FORM,
-      // );
+      await this.mailService.sendWhatsappAcceptToAnswer(
+        updateUserDto.telephone,
+        token,
+      );
 
     }
     return this.usersService.update(+id, updateUserDto);

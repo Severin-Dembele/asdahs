@@ -106,42 +106,35 @@ export class MailsService {
   }
 
 
-  sendWhatsappFormulaireRespondent(tel: string, token, url, formulaire) {
+  async sendWhatsappFormulaireRespondent(tel: string, token) {
     const accountSid = process.env.ACCOUNT_SID;
     const authToken = process.env.TOKEN;
-
+    const url = process.env.SERVER_FRONT_URL;
+    const link = `${url}?token=${token}`
     if (!accountSid || !authToken) {
-      console.error('Twilio Account SID and Auth Token must be set in environment variables');
+      console.error(`Twilio Account SID and Auth Token must be set in environment variables`);
       return;
     }
 
     const client = new Twilio(accountSid, authToken);
 
-    // const message = client.messages.create({
-    //   // body: `You have consented to participate in the research. By clicking on this link, you will have access to the form to respond. You may choose to respond partially and complete it as soon as possible, provided that you save each step. Please do not share this link with third parties. 
-    //   //  \n ${url}?uuid=${formulaire}&token=${token}`,
-    //   body:"Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://www.yummycupcakes.com/",
-    //   to: `whatsapp:${tel}`, // Use whatsapp: format for WhatsApp messages
-    //   from: 'whatsapp:+22673616095', // Replace with your Twilio WhatsApp number
-    // })
-    //   .then((message) => console.log(message.sid))
-    //   .catch((error) => console.error('Failed to send message:', error));
-    // console.log(message)
+    try {
+      const message = await client.messages.create({
+        from: `whatsapp:+16508668156`, // Votre numéro WhatsApp Twilio
+        contentSid: `HX5c24ec0ce7a5e40b0d2e0c2224fbd918`,
+        messagingServiceSid: "MG999867d1dd490d8948686ed53c6a4fdb",
+        contentVariables: JSON.stringify({ 1: link }),
+        to: `whatsapp:${tel}`, // Numéro de téléphone du destinataire
 
-    const message = client.messages.create({
-      to: `whatsapp:${tel}`, // Use whatsapp: format for WhatsApp messages
-      from: 'whatsapp:+22673616095', // Replace with your Twilio WhatsApp number
-      // Use template-specific fields
-      contentSid: 'HX1918e92a563498ecb4bc7e90c0c8a93e', // SID du template de contenu
-      contentVariables: JSON.stringify({
-        1: 'research', // Replace with actual variables used in your template
-        2: `${url}?uuid=${formulaire}&token=${token}`, // Replace with actual variables used in your template
-      }),
-    })
-      .then((message) => console.log(message.sid))
-      .catch((error) => console.error('Failed to send message:', error));
-    console.log(message);
+      });
+
+
+      console.log(message.body);
+    } catch (error) {
+      console.error('Error sending WhatsApp message:', error);
+    }
   }
+
 
 
 
@@ -158,33 +151,14 @@ export class MailsService {
     });
   }
 
-  // sendWhatsappAcceptToAnswer(tel: string, token, url) {
-  //   const accountSid = process.env.ACCOUNT_SID;
-  //   const authToken = process.env.TOKEN;
-
-  //   if (!accountSid || !authToken) {
-  //     console.error('Twilio Account SID and Auth Token must be set in environment variables');
-  //     return;
-  //   }
-
-  //   const client = new Twilio(accountSid, authToken);
-
-  //   const message = client.messages.create({
-  //     // body: `You are about to participate in the research dedicated to data collection for the Seventh-day Adventist health study. Please follow this link for the procedure.  \n ${url}?token=${token}`,
-  //     body: "Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://www.yummycupcakes.com/",
-  //     to: `whatsapp:${tel}`, // Use whatsapp: format for WhatsApp messages
-  //     from: 'whatsapp:+22673616095', // Replace with your Twilio WhatsApp number
-  //   })
-  //     .then((message) => console.log(message.sid))
-  //     .catch((error) => console.error('Failed to send message:', error));
-  //   console.log(message)
-  // }
 
 
-  async sendWhatsappAcceptToAnswer(tel: string, token: string, url: string) {
+
+  async sendWhatsappAcceptToAnswer(tel: string, token: string) {
     const accountSid = process.env.ACCOUNT_SID;
     const authToken = process.env.TOKEN;
-
+    const url = process.env.SERVER_FRONT_URL_ANSWER_FORM;
+    const link = `${url}${token}`
     if (!accountSid || !authToken) {
       console.error(`Twilio Account SID and Auth Token must be set in environment variables`);
       return;
@@ -197,10 +171,11 @@ export class MailsService {
         from: `whatsapp:+16508668156`, // Votre numéro WhatsApp Twilio
         contentSid: `HX3aecce30f47395d2129f6e2bd870dac3`,
         messagingServiceSid: "MG999867d1dd490d8948686ed53c6a4fdb",
-        contentVariables: JSON.stringify({ 1: `Name` }),
+        contentVariables: JSON.stringify({ 1: link }),
         to: `whatsapp:${tel}`, // Numéro de téléphone du destinataire
 
       });
+
 
       console.log(message.body);
     } catch (error) {
