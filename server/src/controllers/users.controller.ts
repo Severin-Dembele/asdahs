@@ -192,16 +192,16 @@ export class UsersController {
 
   async test() {
     await this.mailService.sendWhatsappAcceptToAnswer(
-      "+22657551341",
+      "+22677121996",
       "token",
       process.env.SERVER_FRONT_URL_ANSWER_FORM,
     );
-    await this.mailService.sendWhatsappFormulaireRespondent(
-      "+22657551341",
-      "token",
-      process.env.SERVER_FRONT_URL,
-      "formulaire.uuid",
-    );
+    // await this.mailService.sendWhatsappFormulaireRespondent(
+    //   "+22677121996",
+    //   "token",
+    //   process.env.SERVER_FRONT_URL,
+    //   "formulaire.uuid",
+    // );
 
   }
 
