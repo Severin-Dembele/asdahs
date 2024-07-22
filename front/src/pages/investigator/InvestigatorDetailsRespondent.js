@@ -109,6 +109,7 @@ function InvestigatorResponseToform() {
   const handleNextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
   };
+  
   if (loading) {
     return (
         <div className="h-[100vh] flex justify-center items-center text-center">
