@@ -268,15 +268,8 @@ export class FormulaireController {
         if (user.role == 'RESPONDENT') {
           if (parseInt(numberQuestion as string) > reponseRepondu.length) {
             await this.userService.updateStatusInProgress(user.id);
-          } else if (
-            parseInt(numberQuestion as string) === reponseRepondu.length
-          ) {
-            await this.userService.updateStatusInCompleted(user.id);
           } else {
-            throw new HttpException(
-              'response are too long',
-              HttpStatus.INTERNAL_SERVER_ERROR,
-            );
+            await this.userService.updateStatusInCompleted(user.id);
           }
         }
       }
@@ -341,13 +334,8 @@ export class FormulaireController {
       }
       if (parseInt(numberQuestion as string) > reponseRepondu.length) {
         await this.userService.updateStatusInProgress(userId);
-      } else if (parseInt(numberQuestion as string) === reponseRepondu.length) {
-        await this.userService.updateStatusInCompleted(userId);
       } else {
-        throw new HttpException(
-          'response are too long',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
+        await this.userService.updateStatusInCompleted(userId);
       }
       for (let i = 0; i < reponseRepondu.length; i++) {
         const item: any[] = reponseRepondu[i].reponses;
