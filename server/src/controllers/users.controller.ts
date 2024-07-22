@@ -77,11 +77,11 @@ export class UsersController {
           token,
           process.env.SERVER_FRONT_URL_ANSWER_FORM,
         );
-        await this.mailService.sendWhatsappAcceptToAnswer(
-          user.telephone,
-          token,
-          process.env.SERVER_FRONT_URL_ANSWER_FORM,
-        );
+        // await this.mailService.sendWhatsappAcceptToAnswer(
+        //   user.telephone,
+        //   token,
+        //   process.env.SERVER_FRONT_URL_ANSWER_FORM,
+        // );
 
 
       } else if (user.role == 'INVESTIGATOR') {
@@ -161,12 +161,12 @@ export class UsersController {
       process.env.SERVER_FRONT_URL,
       formulaire.uuid,
     );
-    await this.mailService.sendWhatsappFormulaireRespondent(
-      user.telephone,
-      token,
-      process.env.SERVER_FRONT_URL,
-      formulaire.uuid,
-    );
+    // await this.mailService.sendWhatsappFormulaireRespondent(
+    //   user.telephone,
+    //   token,
+    //   process.env.SERVER_FRONT_URL,
+    //   formulaire.uuid,
+    // );
 
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
@@ -250,11 +250,11 @@ export class UsersController {
         process.env.SERVER_FRONT_URL_ANSWER_FORM,
       );
 
-      await this.mailService.sendWhatsappAcceptToAnswer(
-        updateUserDto.telephone,
-        token,
-        process.env.SERVER_FRONT_URL_ANSWER_FORM,
-      );
+      // await this.mailService.sendWhatsappAcceptToAnswer(
+      //   updateUserDto.telephone,
+      //   token,
+      //   process.env.SERVER_FRONT_URL_ANSWER_FORM,
+      // );
 
     }
     return this.usersService.update(+id, updateUserDto);
