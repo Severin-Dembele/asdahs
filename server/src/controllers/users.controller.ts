@@ -53,6 +53,8 @@ export class UsersController {
       userDto.email = userDto.email ? userDto.email : null;
       const authToken = request.headers['authorization'].split(' ')[1];
       const data = await this.authService.decodeToken(authToken);
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
       const password = generator.generate({
         length: 8,
         lowercase: true,
@@ -72,15 +74,20 @@ export class UsersController {
           user.id,
           user.email,
         );
-        await this.mailService.sendMailAcceptToAnswer(
-          user.email,
-          token,
-          process.env.SERVER_FRONT_URL_ANSWER_FORM,
-        );
-        await this.mailService.sendWhatsappAcceptToAnswer(
-          user.telephone,
-          token,
-        );
+
+        if (emailPattern.test(user.email)) {
+          await this.mailService.sendMailAcceptToAnswer(
+            user.email,
+            token,
+            process.env.SERVER_FRONT_URL_ANSWER_FORM,
+          );
+        }
+        if (user?.telephone) {
+          await this.mailService.sendWhatsappAcceptToAnswer(
+            user.telephone,
+            token
+          );
+        }
 
 
       } else if (user.role == 'INVESTIGATOR') {
@@ -147,6 +154,8 @@ export class UsersController {
     const formulaire = await this.formulaireService.getFormulaireByLangage(
       user.langage,
     );
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (user == null) {
       throw new NotFoundException('User not found');
     }
@@ -154,16 +163,20 @@ export class UsersController {
       user.id,
       user.email,
     );
-    await this.mailService.sendMailFormulaireRespondent(
-      user.email,
-      token,
-      process.env.SERVER_FRONT_URL,
-      formulaire.uuid,
-    );
-    await this.mailService.sendWhatsappFormulaireRespondent(
-      user.telephone,
-      token,
-    );
+    if (emailPattern.test(user?.email)) {
+      await this.mailService.sendMailFormulaireRespondent(
+        user.email,
+        token,
+        process.env.SERVER_FRONT_URL,
+        formulaire.uuid,
+      );
+    }
+    if (user?.email) {
+      await this.mailService.sendWhatsappFormulaireRespondent(
+        user.telephone,
+        token,
+      );
+    }
 
     return this.usersService.acceptToAnswer(data.sub, userResponse);
   }
@@ -188,15 +201,7 @@ export class UsersController {
   // }
 
   async test() {
-    // await this.mailService.sendWhatsappAcceptToAnswer(
-    //   "+22677121996",
-    //   "token",
-    //   process.env.SERVER_FRONT_URL_ANSWER_FORM,
-    // );
-    await this.mailService.sendWhatsappFormulaireRespondent(
-      "+22679740561",
-      "token",
-    );
+    return `Test`
 
   }
 
@@ -233,22 +238,26 @@ export class UsersController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateUserDto,
   ) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     updateUserDto.profile = file ? file.filename : null;
     if (updateUserDto.role == 'RESPONDENT' && updateUserDto.email != null) {
       const token = await this.authService.generateAccessTokenRespondant(
         id,
         updateUserDto.email,
       );
-      await this.mailService.sendMailAcceptToAnswer(
-        updateUserDto.email,
-        token,
-        process.env.SERVER_FRONT_URL_ANSWER_FORM,
-      );
-
-      await this.mailService.sendWhatsappAcceptToAnswer(
-        updateUserDto.telephone,
-        token,
-      );
+      if (emailPattern.test(updateUserDto.email)) {
+        await this.mailService.sendMailAcceptToAnswer(
+          updateUserDto.email,
+          token,
+          process.env.SERVER_FRONT_URL_ANSWER_FORM,
+        );
+      }
+      if (updateUserDto?.telephone) {
+        await this.mailService.sendWhatsappAcceptToAnswer(
+          updateUserDto.telephone,
+          token,
+        );
+      }
 
     }
     return this.usersService.update(+id, updateUserDto);

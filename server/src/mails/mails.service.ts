@@ -158,7 +158,7 @@ export class MailsService {
     const accountSid = process.env.ACCOUNT_SID;
     const authToken = process.env.TOKEN;
     const url = process.env.SERVER_FRONT_URL_ANSWER_FORM;
-    const link = `${url}${token}`
+    const link = `${url}?token=${token}`;
     if (!accountSid || !authToken) {
       console.error(`Twilio Account SID and Auth Token must be set in environment variables`);
       return;
@@ -176,8 +176,6 @@ export class MailsService {
 
       });
 
-
-      console.log(message.body);
     } catch (error) {
       console.error('Error sending WhatsApp message:', error);
     }

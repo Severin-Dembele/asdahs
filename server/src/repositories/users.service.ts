@@ -9,7 +9,7 @@ const argon2 = require('argon2');
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async create(createUserDto: CreateUserDto) {
     console.log("creation de l'utilisateur");
     try {
@@ -25,6 +25,7 @@ export class UsersService {
           userCreated: createUserDto.userConnected,
           churchName: createUserDto.churchName,
           typeChurch: createUserDto.typeChurch,
+          acceptResponse: createUserDto.selfResponse == 'false',
           conferenceId:
             createUserDto.conferenceId == null
               ? null
@@ -38,7 +39,7 @@ export class UsersService {
       });
     } catch (error) {
       console.log(error.code)
-      
+
     }
   }
 
