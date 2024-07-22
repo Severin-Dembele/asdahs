@@ -61,12 +61,12 @@ model User {
   status                 Status                   @default(NOT_STARTED)
   telephone              String
   password               String
-  otp Int?
-  otpExpire DateTime?
+  otp                    Int?
+  otpExpire              DateTime?
   typeChurch             String?
   churchName             String?
   conference             Conference?              @relation(fields: [conferenceId], references: [id])
-  church                 Church ?                  @relation(fields: [churchId], references: [id])
+  church                 Church?                  @relation(fields: [churchId], references: [id])
   isActive               Boolean                  @default(true)
   createAt               DateTime                 @default(now())
   updateAt               DateTime                 @updatedAt
@@ -75,9 +75,9 @@ model User {
   churchId               Int?
   reponseRepondu         ReponseRepondu[]
   conferenceId           Int?
-  acceptResponse         Boolean? 
-  selfResponse  Boolean?
-  langage String?
+  acceptResponse         Boolean?
+  selfResponse           Boolean?
+  langage                String?
 }
 
 enum Status {
@@ -109,8 +109,8 @@ model Section {
 model Formulaire {
   id                     Int                      @id @default(autoincrement())
   title                  String
-  langage String?
-  uuid String?
+  langage                String?
+  uuid                   String?
   description            String?                  @db.Text
   dateDebut              DateTime?
   dateFin                DateTime?
@@ -128,6 +128,7 @@ model Formulaire {
 model Question {
   id             Int              @id @default(autoincrement())
   title          String           @db.Text
+  numero         Int?
   type           QuestionType
   section        Section          @relation(fields: [sectionId], references: [id])
   createdAt      DateTime         @default(now())
