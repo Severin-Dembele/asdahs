@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postDataWithNoToken, setItem, postData } from "../../services";
+import { postDataWithNoToken, setItem, postData, removeItem } from "../../services";
 import { ENDPOINT } from "../../utils";
 import { Modal, Button } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,9 +15,11 @@ export default function Authentification() {
     password: "",
   });
   const [message, setMessage] = useState("Information");
+  const [loading, setloading] = useState(false);
 
   const handleSubmit = async (event) => {
     setAlertModal(true);
+    setloading(true)
     const trimmedUsername = formData?.username?.trim(); // Trim leading and trailing spaces
 
     const postData = {
@@ -32,8 +34,9 @@ export default function Authentification() {
       const successMessage =
         response?.data?.message || `${t("informationSaved")}`;
       setMessage(successMessage);
+      removeItem();
       setItem(response?.data);
-      console.log(response);
+
       setFormData({ username: "", password: "" });
       if (response?.data?.role === "ADMIN") {
         navigation("/africanhealthstudy/panel-administration");
@@ -50,6 +53,8 @@ export default function Authentification() {
       const errorMessage =
         error?.response?.data?.message || `${t("error")}`;
       setMessage(errorMessage);
+    } finally {
+      setloading(false)
     }
   };
 
@@ -63,6 +68,18 @@ export default function Authentification() {
     const { name, value } = event.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
+
+  if (loading) {
+    return (
+      <div className="h-[100vh] flex justify-center items-center text-center">
+        <div className="flex items-center justify-center w-64 h-64 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+          <div className="px-3 py-1  font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200 text-2xl">loading...</div>
+        </div>
+      </div>
+    )
+  }
+
+
   return (
     <>
       <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 lg:px-8">
