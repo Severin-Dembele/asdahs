@@ -153,7 +153,7 @@ export class FormulairesService {
 
   async getNumberQuestionToAnswer(formulaireId) {
     const data: any = await this.prisma.$queryRaw`
-      select CAST(count(q.id) AS CHAR) as questionNumber from Question as q
+      select CAST(count(distinct q.numero) AS CHAR) as questionNumber from Question as q
       inner join Section s on s.id = q.sectionId
       left join Section sous on sous.id = s.sectionId
       where s.formulaireId = ${formulaireId} or sous.formulaireId = ${formulaireId}
