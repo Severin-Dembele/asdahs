@@ -109,7 +109,6 @@ export class UsersController {
     }
   }
 
-  @UseGuards(AuthGuard)
   @Get('/reponses')
   async findReponsesUsersConnected(@Req() request: Request) {
     const authToken = request.headers['authorization'].split(' ')[1];
