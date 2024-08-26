@@ -90,6 +90,32 @@ export class DashboardService {
     `;
   }
 
+  getNotStartedInProgressAndCompletedGroupByUnionDivisionAndConference(){
+    return this.prisma.$queryRaw`
+      select u2.id as unionId, c.id as conferenceId, u2.divisionId,
+       SUM(case when u.status = 'PROGRESS' then 1 else 0 end) as nb_progress,
+       SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
+       SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
+       from User u
+       inner join Conference as c on c.id = u.conferenceId 
+       inner join \`Union\` as u2 on u2.id = c.unionId 
+       group by u2.id, c.id, u2.divisionId
+    `;
+  }
+
+  getNotStartedInProgressAndCompletedGroupByUnionDivision(){
+    return this.prisma.$queryRaw`
+      select u2.id as unionId, u2.divisionId,
+       SUM(case when u.status = 'PROGRESS' then 1 else 0 end) as nb_progress,
+       SUM( case when u.status = 'CLOSED' then 1 else 0 end) as nb_completed,
+       SUM(case when u.status = 'NOT_STARTED' then 1 else 0 end) as nb_no_started
+       from User u
+       inner join Conference as c on c.id = u.conferenceId 
+       inner join \`Union\` as u2 on u2.id = c.unionId 
+       group by u2.id, u2.divisionId
+    `;
+  }
+
   getNotStartedInProgressAndCompletedGroupByUnionRespondent(user: string) {
     return this.prisma.$queryRaw`
       select u2.id as unionId,

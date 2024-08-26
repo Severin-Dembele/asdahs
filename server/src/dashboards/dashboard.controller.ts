@@ -84,4 +84,18 @@ export class DashboardController {
       return this.dashboardService.getNotStartedInProgressAndCompletedGroupByUnion();
     }
   }
+
+  @Get('statistiques/group-by/union/division/conference')
+  async getNotStartedInProgressAndCompletedGroupByUnionDivisionAndConference(
+    @Req() request: Request,
+  ) {
+    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByUnionDivisionAndConference();
+  }
+
+  @Get('statistiques/group-by/union/division')
+  async getNotStartedInProgressAndCompletedGroupByUnionDivision(
+    @Req() request: Request,
+  ) {
+    return this.dashboardService.getNotStartedInProgressAndCompletedGroupByUnionDivision();
+  }
 }
