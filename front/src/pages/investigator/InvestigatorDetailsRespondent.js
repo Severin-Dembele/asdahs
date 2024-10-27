@@ -141,7 +141,7 @@ function InvestigatorResponseToform() {
                 <span className="text-red-700">to this form has expired</span>.
                 We appreciate your understanding. You can contact us directly at
                 the following email address: mail@mail.com. We remain at your
-                disposal for any assistance."
+                disposal for any assistance." 
               </p>
             </div>
           </div>

@@ -23,7 +23,9 @@ function AdminDetailForm() {
 
       setList(adminRes?.data || []);
       setListInitial(adminRes?.data || []);
-    } catch (error) {}
+    } catch (error) {
+      
+    }
   };
 
   useEffect(() => {
@@ -51,6 +53,7 @@ function AdminDetailForm() {
       setMessage(successMessage);
       reloadData();
     } catch (error) {
+      
       const errorMessage =
         error?.response?.data?.message ||
         "Une erreur est survenue, réessayez plus tard !";
